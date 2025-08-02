@@ -132,6 +132,23 @@
       position: relative;
       padding-top: 15px;
     }
+    /* إشعار عند وصول طلب جديد */
+    .notification {
+      animation: fadeIn 0.5s, fadeOut 2.5s 2.5s;
+      transform: translateX(-50%);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+    .status-new { @apply bg-blue-100 text-blue-800; }
+    .status-preparing { @apply bg-yellow-100 text-yellow-800; }
+    .status-delivered { @apply bg-green-100 text-green-800; }
+    .admin-section { display: none; }
   </style>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans">
@@ -164,7 +181,7 @@
   <!-- Hero Section -->
   <section id="home" class="bg-gradient-to-r from-orange-500 to-red-600 text-white py-20 relative overflow-hidden">
     <div class="absolute inset-0 opacity-10">
-      <div class="w-full h-full bg-repeat" style="background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCI+PHBhdGggZD0iTTAgMGwzMDMwIDBoNjAwMHY2MDAwSDMwMzBsLTYwMDAtNjAwMHoiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9Ii4xIi8+PC9zdmc+');"></div>
+      <div class="w-full h-full bg-repeat" style="background-image: url('image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCI+PHBhdGggZD0iTTAgMGwzMDMwIDBoNjAwMHY2MDAwSDMwMzBsLTYwMDAtNjAwMHoiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9Ii4xIi8+PC9zdmc+');"></div>
     </div>
     <div class="container mx-auto px-4 text-center relative z-10">
       <div class="inline-block mb-4">
@@ -262,143 +279,7 @@
       
       <!-- Meals Grid -->
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="meals-grid">
-        <!-- وجبة 1 -->
-        <div class="meal-card bg-white rounded-xl shadow-md overflow-hidden category-main" data-id="1">
-          <div class="relative">
-            <img src="https://images.unsplash.com/photo-1546549032-95919608b8f5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="كباب لحم مشوي" class="meal-img w-full">
-            <div class="meal-overlay"></div>
-            <div class="meal-rating">
-              <i class="fas fa-star text-yellow-400 mr-1"></i> 4.5
-            </div>
-          </div>
-          <div class="meal-info">
-            <div class="flex justify-between items-start">
-              <div>
-                <h3 class="text-xl font-bold text-gray-800 mb-1">كباب لحم مشوي</h3>
-                <p class="text-gray-600 text-sm mb-3">لحم بقري طازج مع بهارات شرقية، مقدم مع أرز بالزعفران</p>
-              </div>
-              <span class="text-lg font-bold text-orange-600 bg-orange-50 px-3 py-1 rounded-full">٣٢ ر.س</span>
-            </div>
-            <button class="order-btn w-full text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center">
-              <i class="fas fa-shopping-cart ml-1"></i> اطلب الآن
-            </button>
-          </div>
-        </div>
-        
-        <!-- وجبة 2 -->
-        <div class="meal-card bg-white rounded-xl shadow-md overflow-hidden category-starters" data-id="2">
-          <div class="relative">
-            <img src="https://images.unsplash.com/photo-1606755965493-17866d6129f5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="سلطة تبولة" class="meal-img w-full">
-            <div class="meal-overlay"></div>
-            <div class="meal-rating">
-              <i class="fas fa-star text-yellow-400 mr-1"></i> 4.2
-            </div>
-          </div>
-          <div class="meal-info">
-            <div class="flex justify-between items-start">
-              <div>
-                <h3 class="text-xl font-bold text-gray-800 mb-1">سلطة تبولة</h3>
-                <p class="text-gray-600 text-sm mb-3">بقدونس طازج، طماطم، بصل، نعناع، وليمون</p>
-              </div>
-              <span class="text-lg font-bold text-orange-600 bg-orange-50 px-3 py-1 rounded-full">١٢ ر.س</span>
-            </div>
-            <button class="order-btn w-full text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center">
-              <i class="fas fa-shopping-cart ml-1"></i> اطلب الآن
-            </button>
-          </div>
-        </div>
-        
-        <!-- وجبة 3 -->
-        <div class="meal-card bg-white rounded-xl shadow-md overflow-hidden category-main" data-id="3">
-          <div class="relative">
-            <img src="https://images.unsplash.com/photo-1603133872878-684f208fb84b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="مندي دجاج" class="meal-img w-full">
-            <div class="meal-overlay"></div>
-            <div class="meal-rating">
-              <i class="fas fa-star text-yellow-400 mr-1"></i> 4.7
-            </div>
-          </div>
-          <div class="meal-info">
-            <div class="flex justify-between items-start">
-              <div>
-                <h3 class="text-xl font-bold text-gray-800 mb-1">مندي دجاج</h3>
-                <p class="text-gray-600 text-sm mb-3">دجاج مطهي على الطريقة اليمنية مع أرز مندي وخلطة بهارات فريدة</p>
-              </div>
-              <span class="text-lg font-bold text-orange-600 bg-orange-50 px-3 py-1 rounded-full">٢٨ ر.س</span>
-            </div>
-            <button class="order-btn w-full text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center">
-              <i class="fas fa-shopping-cart ml-1"></i> اطلب الآن
-            </button>
-          </div>
-        </div>
-        
-        <!-- وجبة 4 -->
-        <div class="meal-card bg-white rounded-xl shadow-md overflow-hidden category-drinks" data-id="4">
-          <div class="relative">
-            <img src="https://images.unsplash.com/photo-1600271886742-f049cd451bba?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="عصير برتقال" class="meal-img w-full">
-            <div class="meal-overlay"></div>
-            <div class="meal-rating">
-              <i class="fas fa-star text-yellow-400 mr-1"></i> 4.3
-            </div>
-          </div>
-          <div class="meal-info">
-            <div class="flex justify-between items-start">
-              <div>
-                <h3 class="text-xl font-bold text-gray-800 mb-1">عصير برتقال طازج</h3>
-                <p class="text-gray-600 text-sm mb-3">مصنوع من برتقال محلي 100% بدون سكر مضاف</p>
-              </div>
-              <span class="text-lg font-bold text-orange-600 bg-orange-50 px-3 py-1 rounded-full">١٠ ر.س</span>
-            </div>
-            <button class="order-btn w-full text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center">
-              <i class="fas fa-shopping-cart ml-1"></i> اطلب الآن
-            </button>
-          </div>
-        </div>
-        
-        <!-- وجبة 5 -->
-        <div class="meal-card bg-white rounded-xl shadow-md overflow-hidden category-desserts" data-id="5">
-          <div class="relative">
-            <img src="https://images.unsplash.com/photo-1565958011705-4c9b84b58e0d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="كنافة نابلسية" class="meal-img w-full">
-            <div class="meal-overlay"></div>
-            <div class="meal-rating">
-              <i class="fas fa-star text-yellow-400 mr-1"></i> 4.8
-            </div>
-          </div>
-          <div class="meal-info">
-            <div class="flex justify-between items-start">
-              <div>
-                <h3 class="text-xl font-bold text-gray-800 mb-1">كنافة نابلسية</h3>
-                <p class="text-gray-600 text-sm mb-3">كنافة مقرمشة مع جبنة وقشطة، مغطاة بشربات حلو</p>
-              </div>
-              <span class="text-lg font-bold text-orange-600 bg-orange-50 px-3 py-1 rounded-full">١٨ ر.س</span>
-            </div>
-            <button class="order-btn w-full text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center">
-              <i class="fas fa-shopping-cart ml-1"></i> اطلب الآن
-            </button>
-          </div>
-        </div>
-        
-        <!-- وجبة 6 -->
-        <div class="meal-card bg-white rounded-xl shadow-md overflow-hidden category-starters" data-id="6">
-          <div class="relative">
-            <img src="https://images.unsplash.com/photo-1626078272560-b77516a8f81f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="شوربة عدس" class="meal-img w-full">
-            <div class="meal-overlay"></div>
-            <div class="meal-rating">
-              <i class="fas fa-star text-yellow-400 mr-1"></i> 4.1
-            </div>
-          </div>
-          <div class="meal-info">
-            <div class="flex justify-between items-start">
-              <div>
-                <h3 class="text-xl font-bold text-gray-800 mb-1">شوربة عدس</h3>
-                <p class="text-gray-600 text-sm mb-3">شوربة عدس دسمة مع ليمون طازج وخبز محمص</p>
-              </div>
-              <span class="text-lg font-bold text-orange-600 bg-orange-50 px-3 py-1 rounded-full">١١ ر.س</span>
-            </div>
-            <button class="order-btn w-full text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center">
-              <i class="fas fa-shopping-cart ml-1"></i> اطلب الآن
-            </button>
-          </div>
-        </div>
+        <!-- سيتم تعبئة هذه الشبكة ديناميكيًا -->
       </div>
     </div>
   </section>
@@ -522,7 +403,7 @@
   </div>
   
   <!-- Admin Dashboard -->
-  <div id="admin-dashboard" class="bg-gray-50 min-h-screen py-8 hidden">
+  <div id="admin-dashboard" class="admin-section bg-gray-50 min-h-screen py-8 hidden">
     <div class="container mx-auto px-4">
       <div class="flex justify-between items-center mb-8">
         <h1 class="text-3xl font-bold text-gray-800">لوحة تحكم المطعم</h1>
@@ -1730,6 +1611,45 @@
       document.querySelector('[data-category="main"]').textContent = translations[restaurantData.currentLang].main;
       document.querySelector('[data-category="drinks"]').textContent = translations[restaurantData.currentLang].drinks;
       document.querySelector('[data-category="desserts"]').textContent = translations[restaurantData.currentLang].desserts;
+      
+      // تحديث النصوص في نموذج الاتصال
+      document.querySelector('label[for="name"]').textContent = translations[restaurantData.currentLang].name;
+      document.querySelector('label[for="phone"]').textContent = translations[restaurantData.currentLang].phone;
+      document.querySelector('label[for="message"]').textContent = translations[restaurantData.currentLang].message;
+      document.querySelector('#contact-form button[type="submit"]').textContent = translations[restaurantData.currentLang].send;
+      
+      // تحديث نموذج الطلب
+      document.querySelectorAll('.order-btn').forEach(btn => {
+        btn.innerHTML = `<i class="fas fa-shopping-cart ml-1"></i> ${translations[restaurantData.currentLang].orderNow}`;
+      });
+      
+      document.querySelector('label[for="quantity"]').textContent = translations[restaurantData.currentLang].quantity;
+      document.querySelector('label[for="additions"]').textContent = translations[restaurantData.currentLang].additions;
+      document.querySelector('label[for="delivery-method"]').textContent = translations[restaurantData.currentLang].deliveryMethod;
+      document.querySelectorAll('label[for="address"]')[0].textContent = translations[restaurantData.currentLang].address;
+      document.querySelector('label[for="name"]').textContent = translations[restaurantData.currentLang].name;
+      document.querySelector('label[for="phone"]').textContent = translations[restaurantData.currentLang].phone;
+      document.getElementById('cancel-order').textContent = translations[restaurantData.currentLang].cancel;
+      document.querySelector('#order-form button[type="submit"]').textContent = translations[restaurantData.currentLang].confirmOrder;
+      
+      // تحديث نموذج تسجيل الدخول
+      document.querySelector('#admin-login-modal label[for="admin-username"]').textContent = translations[restaurantData.currentLang].username;
+      document.querySelector('#admin-login-modal label[for="admin-password"]').textContent = translations[restaurantData.currentLang].password;
+      document.querySelector('#admin-login-modal button[type="submit"]').textContent = translations[restaurantData.currentLang].login;
+      
+      // تحديث لوحة التحكم
+      document.querySelector('#admin-dashboard h1').textContent = translations[restaurantData.currentLang].dashboard;
+      document.querySelectorAll('#orders-table th')[0].textContent = translations[restaurantData.currentLang].orderID;
+      document.querySelectorAll('#orders-table th')[1].textContent = translations[restaurantData.currentLang].customer;
+      document.querySelectorAll('#orders-table th')[2].textContent = translations[restaurantData.currentLang].details;
+      document.querySelectorAll('#orders-table th')[3].textContent = translations[restaurantData.currentLang].time;
+      document.querySelectorAll('#orders-table th')[4].textContent = translations[restaurantData.currentLang].status;
+      document.querySelectorAll('#orders-table th')[5].textContent = translations[restaurantData.currentLang].actions;
+      document.getElementById('export-orders').innerHTML = `<i class="fas fa-file-export mr-2"></i> ${translations[restaurantData.currentLang].export}`;
+      
+      // تحديث واجهة إدارة القائمة
+      document.querySelector('#menu-management h2').textContent = translations[restaurantData.currentLang].menuManagement;
+      document.getElementById('add-menu-item').innerHTML = `<i class="fas fa-plus mr-2"></i> ${translations[restaurantData.currentLang].addItem}`;
       
       // إعادة تحميل القائمة
       loadMenu();
