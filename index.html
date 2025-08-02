@@ -8,16 +8,24 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <style>
     .meal-img {
-      transition: transform 0.3s;
+      transition: all 0.4s ease;
+      border-radius: 12px 12px 0 0;
+      height: 200px;
+      object-fit: cover;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     }
-    .meal-img:hover {
-      transform: scale(1.05);
+    .meal-card:hover .meal-img {
+      transform: scale(1.03);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
     }
     .order-btn {
       background: linear-gradient(45deg, #f97316, #ea580c);
+      transition: all 0.3s ease;
     }
     .order-btn:hover {
       background: linear-gradient(45deg, #ea580c, #c2410c);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
     }
     .nav-link:hover {
       @apply text-orange-500;
@@ -28,20 +36,56 @@
     .lang-switch {
       direction: ltr;
     }
-    /* إضافة أنماط جديدة للنظام المتكامل */
-    .notification {
-      animation: fadeIn 0.5s, fadeOut 2.5s 2.5s;
-      transform: translateX(-50%);
+    /* تحسينات إضافية للصور */
+    .meal-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      border-radius: 12px 12px 0 0;
     }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+    .meal-card:hover .meal-overlay {
+      opacity: 1;
     }
-    @keyframes fadeOut {
-      from { opacity: 1; }
-      to { opacity: 0; }
+    .meal-rating {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 3px 8px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
     }
-    .modal {
+    .meal-card {
+      position: relative;
+      transition: all 0.3s ease;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+    .meal-info {
+      padding: 16px;
+      background: white;
+      border-radius: 0 0 12px 12px;
+    }
+    .offer-img {
+      height: 220px;
+      object-fit: cover;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+    }
+    .offer-card:hover .offer-img {
+      transform: scale(1.05);
+    }
+    /* تحسينات لنموذج الطلب */
+    .order-modal {
       display: none;
       position: fixed;
       top: 0;
@@ -54,16 +98,40 @@
     }
     .modal-content {
       background-color: #fff;
-      margin: 10% auto;
-      padding: 20px;
-      border-radius: 10px;
-      max-width: 600px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      margin: 5% auto;
+      padding: 25px;
+      border-radius: 15px;
+      max-width: 650px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
     }
-    .status-new { @apply bg-blue-100 text-blue-800; }
-    .status-preparing { @apply bg-yellow-100 text-yellow-800; }
-    .status-delivered { @apply bg-green-100 text-green-800; }
-    .admin-section { display: none; }
+    .meal-preview {
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+    .meal-preview img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+    }
+    /* تحسينات للعروض الخاصة */
+    .offer-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #e11d48;
+      color: white;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 14px;
+      z-index: 10;
+    }
+    .offer-content {
+      position: relative;
+      padding-top: 15px;
+    }
   </style>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans">
@@ -71,7 +139,9 @@
   <header class="bg-white shadow-md sticky top-0 z-50">
     <div class="container mx-auto px-4 py-3 flex justify-between items-center">
       <div class="flex items-center space-x-3 space-x-reverse">
-        <img src="https://via.placeholder.com/50" alt="شعار المطعم" class="w-12 h-12 rounded-full">
+        <div class="bg-orange-500 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl">
+          ل
+        </div>
         <h1 class="text-2xl font-bold text-orange-600">مطعم لذيذ</h1>
       </div>
       <nav class="hidden md:flex space-x-8 space-x-reverse">
@@ -82,6 +152,9 @@
         <a href="#contact" class="nav-link">اتصل بنا</a>
       </nav>
       <div class="flex items-center space-x-4 space-x-reverse">
+        <button id="admin-login" class="text-sm px-3 py-1 rounded-full border border-orange-500 text-orange-600 hover:bg-orange-50">
+          لوحة التحكم
+        </button>
         <button id="lang-toggle" class="lang-switch text-sm px-3 py-1 rounded-full border border-gray-300 hover:bg-gray-100">EN</button>
         <button class="md:hidden text-xl"><i class="fas fa-bars"></i></button>
       </div>
@@ -89,11 +162,17 @@
   </header>
   
   <!-- Hero Section -->
-  <section id="home" class="bg-gradient-to-r from-orange-500 to-red-600 text-white py-20">
-    <div class="container mx-auto px-4 text-center">
+  <section id="home" class="bg-gradient-to-r from-orange-500 to-red-600 text-white py-20 relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10">
+      <div class="w-full h-full bg-repeat" style="background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCI+PHBhdGggZD0iTTAgMGwzMDMwIDBoNjAwMHY2MDAwSDMwMzBsLTYwMDAtNjAwMHoiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9Ii4xIi8+PC9zdmc+');"></div>
+    </div>
+    <div class="container mx-auto px-4 text-center relative z-10">
+      <div class="inline-block mb-4">
+        <span class="bg-white text-orange-600 px-4 py-1 rounded-full text-sm font-medium">أفضل 10 مطاعم في المملكة</span>
+      </div>
       <h2 class="text-4xl md:text-5xl font-bold mb-4">أفضل النكهات العربية</h2>
-      <p class="text-xl mb-8 opacity-90">استمتع بوجباتنا الطازجة المُعدة بحب وعناية</p>
-      <button class="bg-white text-orange-600 font-bold px-8 py-3 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition">
+      <p class="text-xl mb-8 opacity-90 max-w-2xl mx-auto">استمتع بوجباتنا الطازجة المُعدة بحب وعناية من قبل أفضل الطهاة</p>
+      <button id="hero-order-btn" class="bg-white text-orange-600 font-bold px-8 py-3 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition">
         اطلب الآن
       </button>
     </div>
@@ -102,30 +181,62 @@
   <!-- Special Offers -->
   <section id="offers" class="py-16 bg-white">
     <div class="container mx-auto px-4">
-      <h2 class="text-3xl font-bold text-center mb-10 text-gray-800">عروض اليوم</h2>
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-gray-800 mb-4">عروض اليوم المميزة</h2>
+        <p class="text-gray-600 max-w-2xl mx-auto">اكتشف عروضنا الحصرية التي نقدمها فقط لعملائنا الأعزاء</p>
+      </div>
       <div class="grid md:grid-cols-3 gap-8">
-        <div class="bg-orange-50 rounded-xl overflow-hidden shadow-lg text-center transform hover:scale-105 transition">
-          <img src="https://via.placeholder.com/300/FFA500/FFFFFF?text=عرض+٢+أكواب" alt="عرض" class="w-full h-48 object-cover">
-          <div class="p-5">
-            <h3 class="text-xl font-bold text-orange-600">عرض الكباب + مشروب</h3>
-            <p class="mt-2 text-gray-600">خصم 25% على وجبة الكباب مع مشروب غازي</p>
-            <span class="block mt-3 font-bold text-lg">٣٥ ر.س فقط</span>
+        <!-- عرض 1 -->
+        <div class="bg-orange-50 rounded-xl overflow-hidden shadow-lg transform hover:scale-105 transition-all duration-300 offer-card">
+          <div class="relative">
+            <span class="offer-badge">خصم 25%</span>
+            <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="عرض الكباب" class="offer-img w-full">
+          </div>
+          <div class="p-5 offer-content">
+            <h3 class="text-xl font-bold text-orange-600 mb-2">عرض الكباب + مشروب</h3>
+            <p class="text-gray-600 mb-3">خصم 25% على وجبة الكباب مع مشروب غازي</p>
+            <div class="flex justify-between items-center">
+              <span class="block font-bold text-lg text-gray-800">٣٥ ر.س فقط</span>
+              <button class="order-btn text-white px-5 py-2 rounded-full text-sm font-medium flex items-center">
+                <i class="fas fa-tag ml-1"></i> استفد الآن
+              </button>
+            </div>
           </div>
         </div>
-        <div class="bg-red-50 rounded-xl overflow-hidden shadow-lg text-center transform hover:scale-105 transition">
-          <img src="https://via.placeholder.com/300/DC143C/FFFFFF?text=حلويات" alt="عرض" class="w-full h-48 object-cover">
-          <div class="p-5">
-            <h3 class="text-xl font-bold text-red-600">حلويات مميزة</h3>
-            <p class="mt-2 text-gray-600">اشترِ واحدة، واحصل على الثانية بنصف السعر</p>
-            <span class="block mt-3 font-bold text-lg">عرض سارٍ اليوم فقط</span>
+        
+        <!-- عرض 2 -->
+        <div class="bg-red-50 rounded-xl overflow-hidden shadow-lg transform hover:scale-105 transition-all duration-300 offer-card">
+          <div class="relative">
+            <span class="offer-badge">عرض محدود</span>
+            <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="حلويات" class="offer-img w-full">
+          </div>
+          <div class="p-5 offer-content">
+            <h3 class="text-xl font-bold text-red-600 mb-2">حلويات مميزة</h3>
+            <p class="text-gray-600 mb-3">اشترِ واحدة، واحصل على الثانية بنصف السعر</p>
+            <div class="flex justify-between items-center">
+              <span class="block font-bold text-lg text-gray-800">عرض سارٍ اليوم فقط</span>
+              <button class="order-btn text-white px-5 py-2 rounded-full text-sm font-medium flex items-center">
+                <i class="fas fa-tag ml-1"></i> استفد الآن
+              </button>
+            </div>
           </div>
         </div>
-        <div class="bg-green-50 rounded-xl overflow-hidden shadow-lg text-center transform hover:scale-105 transition">
-          <img src="https://via.placeholder.com/300/32CD32/FFFFFF?text=توصيل+مجاني" alt="عرض" class="w-full h-48 object-cover">
-          <div class="p-5">
-            <h3 class="text-xl font-bold text-green-600">توصيل مجاني</h3>
-            <p class="mt-2 text-gray-600">لجميع الطلبات فوق 70 ر.س داخل المدينة</p>
-            <span class="block mt-3 font-bold text-lg">وفر حتى 15 ر.س</span>
+        
+        <!-- عرض 3 -->
+        <div class="bg-green-50 rounded-xl overflow-hidden shadow-lg transform hover:scale-105 transition-all duration-300 offer-card">
+          <div class="relative">
+            <span class="offer-badge">جديد</span>
+            <img src="https://images.unsplash.com/photo-1519708227418-c8fd9a72b560?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="توصيل مجاني" class="offer-img w-full">
+          </div>
+          <div class="p-5 offer-content">
+            <h3 class="text-xl font-bold text-green-600 mb-2">توصيل مجاني</h3>
+            <p class="text-gray-600 mb-3">لجميع الطلبات فوق 70 ر.س داخل المدينة</p>
+            <div class="flex justify-between items-center">
+              <span class="block font-bold text-lg text-gray-800">وفر حتى 15 ر.س</span>
+              <button class="order-btn text-white px-5 py-2 rounded-full text-sm font-medium flex items-center">
+                <i class="fas fa-tag ml-1"></i> استفد الآن
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -135,151 +246,260 @@
   <!-- Menu Section -->
   <section id="menu" class="py-16 bg-gray-50">
     <div class="container mx-auto px-4">
-      <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">قائمة الطعام</h2>
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-gray-800 mb-4">قائمة الطعام</h2>
+        <p class="text-gray-600 max-w-2xl mx-auto">استكشف أطباقنا المميزة المعدة بأفضل المكونات الطازجة</p>
+      </div>
+      
       <!-- Categories Tabs -->
       <div class="flex flex-wrap justify-center mb-10 space-x-2 space-x-reverse">
-        <button class="bg-orange-500 text-white px-6 py-2 rounded-full font-medium active-cat" data-category="all">جميع الأصناف</button>
-        <button class="bg-white text-gray-700 px-6 py-2 rounded-full font-medium hover:bg-gray-100" data-category="starters">مقبلات</button>
-        <button class="bg-white text-gray-700 px-6 py-2 rounded-full font-medium hover:bg-gray-100" data-category="main">وجبات رئيسية</button>
-        <button class="bg-white text-gray-700 px-6 py-2 rounded-full font-medium hover:bg-gray-100" data-category="drinks">مشروبات</button>
-        <button class="bg-white text-gray-700 px-6 py-2 rounded-full font-medium hover:bg-gray-100" data-category="desserts">حلويات</button>
+        <button class="category-btn bg-orange-500 text-white px-6 py-2 rounded-full font-medium active-cat" data-category="all">جميع الأصناف</button>
+        <button class="category-btn bg-white text-gray-700 px-6 py-2 rounded-full font-medium hover:bg-gray-100" data-category="starters">مقبلات</button>
+        <button class="category-btn bg-white text-gray-700 px-6 py-2 rounded-full font-medium hover:bg-gray-100" data-category="main">وجبات رئيسية</button>
+        <button class="category-btn bg-white text-gray-700 px-6 py-2 rounded-full font-medium hover:bg-gray-100" data-category="drinks">مشروبات</button>
+        <button class="category-btn bg-white text-gray-700 px-6 py-2 rounded-full font-medium hover:bg-gray-100" data-category="desserts">حلويات</button>
       </div>
+      
       <!-- Meals Grid -->
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="meals-grid">
-        <!-- سيتم تعبئة هذه الشبكة ديناميكيًا -->
-      </div>
-    </div>
-  </section>
-  
-  <!-- About Us -->
-  <section id="about" class="py-16 bg-white">
-    <div class="container mx-auto px-4">
-      <div class="flex flex-col md:flex-row items-center">
-        <div class="md:w-1/2 mb-8 md:mb-0">
-          <img src="https://via.placeholder.com/500" alt="فريق المطبخ" class="rounded-xl shadow-lg w-full">
-        </div>
-        <div class="md:w-1/2 md:pr-12">
-          <h2 class="text-3xl font-bold mb-6 text-gray-800">من نحن</h2>
-          <p class="text-lg text-gray-600 mb-4">
-            نحن مطعم "لذيذ"، نقدم أشهى المأكولات العربية الأصيلة منذ أكثر من 15 عامًا.
-          </p>
-          <p class="text-lg text-gray-600 mb-4">
-            نستخدم فقط أجود المكونات الطازجة، ونطبخ كل وجبة بعناية فائقة، لأن رضاكم هو شغفنا.
-          </p>
-          <p class="text-lg text-gray-600 mb-6">
-            نؤمن أن الطعام ليس مجرد وجبة، بل تجربة ثقافية وعاطفية نتشاركها معكم كل يوم.
-          </p>
-          <div class="flex space-x-6 space-x-reverse">
-            <div class="text-center">
-              <span class="block text-3xl font-bold text-orange-600">15+</span>
-              <span class="text-sm text-gray-500">سنة خبرة</span>
-            </div>
-            <div class="text-center">
-              <span class="block text-3xl font-bold text-orange-600">10K+</span>
-              <span class="text-sm text-gray-500">عميل راضٍ</span>
-            </div>
-            <div class="text-center">
-              <span class="block text-3xl font-bold text-orange-600">50+</span>
-              <span class="text-sm text-gray-500">وصفة أصيلة</span>
+        <!-- وجبة 1 -->
+        <div class="meal-card bg-white rounded-xl shadow-md overflow-hidden category-main" data-id="1">
+          <div class="relative">
+            <img src="https://images.unsplash.com/photo-1546549032-95919608b8f5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="كباب لحم مشوي" class="meal-img w-full">
+            <div class="meal-overlay"></div>
+            <div class="meal-rating">
+              <i class="fas fa-star text-yellow-400 mr-1"></i> 4.5
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  
-  <!-- Contact Us -->
-  <section id="contact" class="py-16 bg-gray-100">
-    <div class="container mx-auto px-4">
-      <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">اتصل بنا</h2>
-      <div class="grid md:grid-cols-2 gap-10">
-        <!-- Contact Form -->
-        <div class="bg-white p-8 rounded-xl shadow-md">
-          <form id="contact-form">
-            <div class="mb-5">
-              <label class="block text-gray-700 font-medium mb-2" for="name">الاسم الكامل</label>
-              <input type="text" id="name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" required>
+          <div class="meal-info">
+            <div class="flex justify-between items-start">
+              <div>
+                <h3 class="text-xl font-bold text-gray-800 mb-1">كباب لحم مشوي</h3>
+                <p class="text-gray-600 text-sm mb-3">لحم بقري طازج مع بهارات شرقية، مقدم مع أرز بالزعفران</p>
+              </div>
+              <span class="text-lg font-bold text-orange-600 bg-orange-50 px-3 py-1 rounded-full">٣٢ ر.س</span>
             </div>
-            <div class="mb-5">
-              <label class="block text-gray-700 font-medium mb-2" for="phone">رقم الجوال</label>
-              <input type="tel" id="phone" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" required>
-            </div>
-            <div class="mb-5">
-              <label class="block text-gray-700 font-medium mb-2" for="message">الرسالة</label>
-              <textarea id="message" rows="5" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" required></textarea>
-            </div>
-            <button type="submit" class="w-full order-btn text-white font-bold py-3 rounded-lg text-lg hover:shadow-lg transform hover:scale-105 transition">
-              إرسال الرسالة
+            <button class="order-btn w-full text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center">
+              <i class="fas fa-shopping-cart ml-1"></i> اطلب الآن
             </button>
-          </form>
-        </div>
-        <!-- Contact Info -->
-        <div class="space-y-8">
-          <div class="flex items-start space-x-4 space-x-reverse">
-            <div class="bg-orange-100 p-3 rounded-full">
-              <i class="fas fa-map-marker-alt text-orange-600"></i>
-            </div>
-            <div>
-              <h3 class="text-xl font-bold text-gray-800">موقعنا</h3>
-              <p class="text-gray-600">الرياض، شارع التخصصي، بجانب مستشفى الملك فيصل</p>
-            </div>
-          </div>
-          <div class="flex items-start space-x-4 space-x-reverse">
-            <div class="bg-orange-100 p-3 rounded-full">
-              <i class="fas fa-phone-alt text-orange-600"></i>
-            </div>
-            <div>
-              <h3 class="text-xl font-bold text-gray-800">الهاتف</h3>
-              <p class="text-gray-600">920000000</p>
-            </div>
-          </div>
-          <div class="flex items-start space-x-4 space-x-reverse">
-            <div class="bg-orange-100 p-3 rounded-full">
-              <i class="fas fa-envelope text-orange-600"></i>
-            </div>
-            <div>
-              <h3 class="text-xl font-bold text-gray-800">البريد الإلكتروني</h3>
-              <p class="text-gray-600">info@ladhed.com</p>
-            </div>
-          </div>
-          <div class="flex items-start space-x-4 space-x-reverse">
-            <div class="bg-orange-100 p-3 rounded-full">
-              <i class="fas fa-clock text-orange-600"></i>
-            </div>
-            <div>
-              <h3 class="text-xl font-bold text-gray-800">ساعات العمل</h3>
-              <p class="text-gray-600">من الأحد إلى الخميس: 10:00 - 23:00</p>
-              <p class="text-gray-600">الجمعة والسبت: 12:00 - 01:00</p>
-            </div>
-          </div>
-          <!-- Social Media -->
-          <div class="flex space-x-4 space-x-reverse mt-6">
-            <a href="#" class="bg-gray-800 text-white p-3 rounded-full hover:bg-orange-600 transition">
-              <i class="fab fa-facebook-f"></i>
-            </a>
-            <a href="#" class="bg-gray-800 text-white p-3 rounded-full hover:bg-orange-600 transition">
-              <i class="fab fa-twitter"></i>
-            </a>
-            <a href="#" class="bg-gray-800 text-white p-3 rounded-full hover:bg-orange-600 transition">
-              <i class="fab fa-instagram"></i>
-            </a>
-            <a href="#" class="bg-gray-800 text-white p-3 rounded-full hover:bg-orange-600 transition">
-              <i class="fab fa-tiktok"></i>
-            </a>
           </div>
         </div>
-      </div>
-      <!-- Map -->
-      <div class="mt-12 bg-white rounded-xl overflow-hidden shadow-lg h-80">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3455.507295797217!2d46.68119027437092!3d24.71355227155872!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e2f03890d1b0555%3A0x9c571a9d0d1b0e1e!2sRiyadh!5e0!3m2!1sen!2ssa!4v1700000000000!5m2!1sen!2ssa" 
-          width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+        
+        <!-- وجبة 2 -->
+        <div class="meal-card bg-white rounded-xl shadow-md overflow-hidden category-starters" data-id="2">
+          <div class="relative">
+            <img src="https://images.unsplash.com/photo-1606755965493-17866d6129f5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="سلطة تبولة" class="meal-img w-full">
+            <div class="meal-overlay"></div>
+            <div class="meal-rating">
+              <i class="fas fa-star text-yellow-400 mr-1"></i> 4.2
+            </div>
+          </div>
+          <div class="meal-info">
+            <div class="flex justify-between items-start">
+              <div>
+                <h3 class="text-xl font-bold text-gray-800 mb-1">سلطة تبولة</h3>
+                <p class="text-gray-600 text-sm mb-3">بقدونس طازج، طماطم، بصل، نعناع، وليمون</p>
+              </div>
+              <span class="text-lg font-bold text-orange-600 bg-orange-50 px-3 py-1 rounded-full">١٢ ر.س</span>
+            </div>
+            <button class="order-btn w-full text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center">
+              <i class="fas fa-shopping-cart ml-1"></i> اطلب الآن
+            </button>
+          </div>
+        </div>
+        
+        <!-- وجبة 3 -->
+        <div class="meal-card bg-white rounded-xl shadow-md overflow-hidden category-main" data-id="3">
+          <div class="relative">
+            <img src="https://images.unsplash.com/photo-1603133872878-684f208fb84b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="مندي دجاج" class="meal-img w-full">
+            <div class="meal-overlay"></div>
+            <div class="meal-rating">
+              <i class="fas fa-star text-yellow-400 mr-1"></i> 4.7
+            </div>
+          </div>
+          <div class="meal-info">
+            <div class="flex justify-between items-start">
+              <div>
+                <h3 class="text-xl font-bold text-gray-800 mb-1">مندي دجاج</h3>
+                <p class="text-gray-600 text-sm mb-3">دجاج مطهي على الطريقة اليمنية مع أرز مندي وخلطة بهارات فريدة</p>
+              </div>
+              <span class="text-lg font-bold text-orange-600 bg-orange-50 px-3 py-1 rounded-full">٢٨ ر.س</span>
+            </div>
+            <button class="order-btn w-full text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center">
+              <i class="fas fa-shopping-cart ml-1"></i> اطلب الآن
+            </button>
+          </div>
+        </div>
+        
+        <!-- وجبة 4 -->
+        <div class="meal-card bg-white rounded-xl shadow-md overflow-hidden category-drinks" data-id="4">
+          <div class="relative">
+            <img src="https://images.unsplash.com/photo-1600271886742-f049cd451bba?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="عصير برتقال" class="meal-img w-full">
+            <div class="meal-overlay"></div>
+            <div class="meal-rating">
+              <i class="fas fa-star text-yellow-400 mr-1"></i> 4.3
+            </div>
+          </div>
+          <div class="meal-info">
+            <div class="flex justify-between items-start">
+              <div>
+                <h3 class="text-xl font-bold text-gray-800 mb-1">عصير برتقال طازج</h3>
+                <p class="text-gray-600 text-sm mb-3">مصنوع من برتقال محلي 100% بدون سكر مضاف</p>
+              </div>
+              <span class="text-lg font-bold text-orange-600 bg-orange-50 px-3 py-1 rounded-full">١٠ ر.س</span>
+            </div>
+            <button class="order-btn w-full text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center">
+              <i class="fas fa-shopping-cart ml-1"></i> اطلب الآن
+            </button>
+          </div>
+        </div>
+        
+        <!-- وجبة 5 -->
+        <div class="meal-card bg-white rounded-xl shadow-md overflow-hidden category-desserts" data-id="5">
+          <div class="relative">
+            <img src="https://images.unsplash.com/photo-1565958011705-4c9b84b58e0d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="كنافة نابلسية" class="meal-img w-full">
+            <div class="meal-overlay"></div>
+            <div class="meal-rating">
+              <i class="fas fa-star text-yellow-400 mr-1"></i> 4.8
+            </div>
+          </div>
+          <div class="meal-info">
+            <div class="flex justify-between items-start">
+              <div>
+                <h3 class="text-xl font-bold text-gray-800 mb-1">كنافة نابلسية</h3>
+                <p class="text-gray-600 text-sm mb-3">كنافة مقرمشة مع جبنة وقشطة، مغطاة بشربات حلو</p>
+              </div>
+              <span class="text-lg font-bold text-orange-600 bg-orange-50 px-3 py-1 rounded-full">١٨ ر.س</span>
+            </div>
+            <button class="order-btn w-full text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center">
+              <i class="fas fa-shopping-cart ml-1"></i> اطلب الآن
+            </button>
+          </div>
+        </div>
+        
+        <!-- وجبة 6 -->
+        <div class="meal-card bg-white rounded-xl shadow-md overflow-hidden category-starters" data-id="6">
+          <div class="relative">
+            <img src="https://images.unsplash.com/photo-1626078272560-b77516a8f81f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="شوربة عدس" class="meal-img w-full">
+            <div class="meal-overlay"></div>
+            <div class="meal-rating">
+              <i class="fas fa-star text-yellow-400 mr-1"></i> 4.1
+            </div>
+          </div>
+          <div class="meal-info">
+            <div class="flex justify-between items-start">
+              <div>
+                <h3 class="text-xl font-bold text-gray-800 mb-1">شوربة عدس</h3>
+                <p class="text-gray-600 text-sm mb-3">شوربة عدس دسمة مع ليمون طازج وخبز محمص</p>
+              </div>
+              <span class="text-lg font-bold text-orange-600 bg-orange-50 px-3 py-1 rounded-full">١١ ر.س</span>
+            </div>
+            <button class="order-btn w-full text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center">
+              <i class="fas fa-shopping-cart ml-1"></i> اطلب الآن
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </section>
+  
+  <!-- Order Modal -->
+  <div id="order-modal" class="order-modal">
+    <div class="modal-content">
+      <span class="close float-left text-2xl cursor-pointer">&times;</span>
+      <h2 class="text-2xl font-bold mb-6">طلب وجبة</h2>
+      
+      <div class="grid md:grid-cols-2 gap-8">
+        <div>
+          <div class="meal-preview">
+            <img id="modal-meal-img" src="" alt="صورة الوجبة">
+          </div>
+          <h3 id="modal-meal-name" class="text-xl font-bold mb-2">اسم الوجبة</h3>
+          <p id="modal-meal-desc" class="text-gray-600 mb-4">وصف الوجبة</p>
+          <p class="text-lg font-bold text-orange-600 mb-6" id="modal-meal-price">السعر</p>
+        </div>
+        
+        <form id="order-form">
+          <input type="hidden" id="meal-id">
+          
+          <div class="mb-4">
+            <label class="block text-gray-700 mb-2">الكمية</label>
+            <input type="number" id="quantity" value="1" min="1" class="w-full px-4 py-2 border border-gray-300 rounded-lg" required>
+          </div>
+          
+          <div class="mb-4">
+            <label class="block text-gray-700 mb-2">الإضافات / الملاحظات</label>
+            <input type="text" id="additions" class="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="مثل: إزالة البصل، إضافة جبنة إضافية...">
+          </div>
+          
+          <div class="mb-6">
+            <label class="block text-gray-700 mb-2">وسيلة التوصيل</label>
+            <div class="grid grid-cols-2 gap-4">
+              <label class="flex items-center p-3 border border-gray-300 rounded-lg cursor-pointer hover:border-orange-500">
+                <input type="radio" name="delivery-method" value="pickup" checked class="form-radio text-orange-500">
+                <span class="mr-3">استلام من المطعم</span>
+              </label>
+              <label class="flex items-center p-3 border border-gray-300 rounded-lg cursor-pointer hover:border-orange-500">
+                <input type="radio" name="delivery-method" value="delivery" class="form-radio text-orange-500">
+                <span class="mr-3">توصيل إلى العنوان</span>
+              </label>
+            </div>
+          </div>
+          
+          <div id="delivery-address" class="mb-4 hidden">
+            <label class="block text-gray-700 mb-2">العنوان الكامل</label>
+            <input type="text" id="address" class="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="أدخل العنوان بالتفصيل">
+          </div>
+          
+          <div class="mb-4">
+            <label class="block text-gray-700 mb-2">الاسم الكامل</label>
+            <input type="text" id="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg" required>
+          </div>
+          
+          <div class="mb-6">
+            <label class="block text-gray-700 mb-2">رقم الجوال</label>
+            <input type="tel" id="phone" class="w-full px-4 py-2 border border-gray-300 rounded-lg" required>
+          </div>
+          
+          <div class="flex space-x-4">
+            <button type="button" id="cancel-order" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg">
+              إلغاء
+            </button>
+            <button type="submit" class="flex-1 order-btn text-white font-bold py-2 px-4 rounded-lg">
+              تأكيد الطلب
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Order Confirmation -->
+  <div id="order-confirmation" class="order-modal">
+    <div class="modal-content text-center" style="max-width: 500px; margin: 10% auto;">
+      <span class="close float-left text-2xl cursor-pointer">&times;</span>
+      <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <i class="fas fa-check text-green-500 text-2xl"></i>
+      </div>
+      <h2 class="text-2xl font-bold text-gray-800 mb-2">تم تأكيد طلبك!</h2>
+      <p class="text-gray-600 mb-6">سيتم إعداد طلبك قريباً. شكرًا لاختيارك مطعمنا!</p>
+      
+      <div class="bg-gray-50 p-4 rounded-lg mb-6 text-right">
+        <p class="mb-2"><span class="font-bold">الوجبة:</span> <span id="confirmation-item"></span></p>
+        <p class="mb-2"><span class="font-bold">الكمية:</span> <span id="confirmation-quantity"></span></p>
+        <p class="mb-2"><span class="font-bold">الإجمالي:</span> <span id="confirmation-total"></span></p>
+        <p class="mb-2"><span class="font-bold">وسيلة التوصيل:</span> <span id="confirmation-delivery"></span></p>
+      </div>
+      
+      <button id="continue-shopping" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-lg w-full">
+        متابعة التسوق
+      </button>
+    </div>
+  </div>
   
   <!-- Admin Login Modal -->
-  <div id="admin-login-modal" class="modal">
-    <div class="modal-content">
+  <div id="admin-login-modal" class="order-modal">
+    <div class="modal-content" style="max-width: 450px;">
       <span class="close float-left text-2xl cursor-pointer">&times;</span>
       <h2 class="text-2xl font-bold mb-6 text-center">تسجيل دخول المشرف</h2>
       <div id="login-error" class="bg-red-100 text-red-700 p-3 rounded mb-4 hidden">
@@ -302,7 +522,7 @@
   </div>
   
   <!-- Admin Dashboard -->
-  <div id="admin-dashboard" class="admin-section bg-gray-50 min-h-screen py-8 hidden">
+  <div id="admin-dashboard" class="bg-gray-50 min-h-screen py-8 hidden">
     <div class="container mx-auto px-4">
       <div class="flex justify-between items-center mb-8">
         <h1 class="text-3xl font-bold text-gray-800">لوحة تحكم المطعم</h1>
@@ -408,102 +628,145 @@
     </div>
   </div>
   
-  <!-- Order Modal -->
-  <div id="order-modal" class="modal">
-    <div class="modal-content">
-      <span class="close float-left text-2xl cursor-pointer">&times;</span>
-      <h2 class="text-2xl font-bold mb-6">طلب وجبة</h2>
+  <!-- About Us -->
+  <section id="about" class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col md:flex-row items-center">
+        <div class="md:w-1/2 mb-8 md:mb-0">
+          <div class="relative rounded-xl overflow-hidden shadow-xl">
+            <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="فريق المطبخ" class="w-full h-auto" style="min-height: 400px; object-fit: cover;">
+            <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+              <h3 class="text-xl font-bold mb-2">فريقنا من الطهاة المحترفين</h3>
+              <p class="text-gray-200">نعمل بجد لتقديم أفضل النكهات لكم</p>
+            </div>
+          </div>
+        </div>
+        <div class="md:w-1/2 md:pr-12">
+          <h2 class="text-3xl font-bold mb-6 text-gray-800">من نحن</h2>
+          <p class="text-lg text-gray-600 mb-4">
+            نحن مطعم "لذيذ"، نقدم أشهى المأكولات العربية الأصيلة منذ أكثر من 15 عامًا.
+          </p>
+          <p class="text-lg text-gray-600 mb-4">
+            نستخدم فقط أجود المكونات الطازجة، ونطبخ كل وجبة بعناية فائقة، لأن رضاكم هو شغفنا.
+          </p>
+          <p class="text-lg text-gray-600 mb-6">
+            نؤمن أن الطعام ليس مجرد وجبة، بل تجربة ثقافية وعاطفية نتشاركها معكم كل يوم.
+          </p>
+          <div class="flex space-x-6 space-x-reverse">
+            <div class="text-center">
+              <span class="block text-3xl font-bold text-orange-600">15+</span>
+              <span class="text-sm text-gray-500">سنة خبرة</span>
+            </div>
+            <div class="text-center">
+              <span class="block text-3xl font-bold text-orange-600">10K+</span>
+              <span class="text-sm text-gray-500">عميل راضٍ</span>
+            </div>
+            <div class="text-center">
+              <span class="block text-3xl font-bold text-orange-600">50+</span>
+              <span class="text-sm text-gray-500">وصفة أصيلة</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Contact Us -->
+  <section id="contact" class="py-16 bg-gray-100">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-gray-800 mb-4">اتصل بنا</h2>
+        <p class="text-gray-600 max-w-2xl mx-auto">لأي استفسارات أو اقتراحات، لا تتردد في التواصل معنا في أي وقت</p>
+      </div>
       
-      <div class="grid md:grid-cols-2 gap-8">
-        <div>
-          <img id="order-item-image" src="" alt="صورة الوجبة" class="w-full h-48 object-cover rounded-lg mb-4">
-          <h3 id="order-item-name" class="text-xl font-bold mb-2">اسم الوجبة</h3>
-          <p id="order-item-description" class="text-gray-600 mb-4">وصف الوجبة</p>
-          <p class="text-lg font-bold text-orange-600 mb-6" id="order-item-price">السعر</p>
+      <div class="grid md:grid-cols-2 gap-10">
+        <!-- Contact Form -->
+        <div class="bg-white p-8 rounded-xl shadow-md">
+          <form id="contact-form">
+            <div class="mb-5">
+              <label class="block text-gray-700 font-medium mb-2" for="name">الاسم الكامل</label>
+              <input type="text" id="name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" required>
+            </div>
+            <div class="mb-5">
+              <label class="block text-gray-700 font-medium mb-2" for="phone">رقم الجوال</label>
+              <input type="tel" id="phone" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" required>
+            </div>
+            <div class="mb-5">
+              <label class="block text-gray-700 font-medium mb-2" for="message">الرسالة</label>
+              <textarea id="message" rows="5" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" required></textarea>
+            </div>
+            <button type="submit" class="w-full order-btn text-white font-bold py-3 rounded-lg text-lg hover:shadow-lg transform hover:scale-105 transition">
+              إرسال الرسالة
+            </button>
+          </form>
         </div>
         
-        <form id="order-form">
-          <input type="hidden" id="order-item-id">
-          
-          <div class="mb-4">
-            <label class="block text-gray-700 mb-2">الكمية</label>
-            <input type="number" id="order-quantity" value="1" min="1" class="w-full px-4 py-2 border border-gray-300 rounded-lg" required>
+        <!-- Contact Info -->
+        <div class="space-y-8">
+          <div class="flex items-start space-x-4 space-x-reverse">
+            <div class="bg-orange-100 p-3 rounded-full">
+              <i class="fas fa-map-marker-alt text-orange-600"></i>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-gray-800">موقعنا</h3>
+              <p class="text-gray-600">الرياض، شارع التخصصي، بجانب مستشفى الملك فيصل</p>
+            </div>
           </div>
-          
-          <div class="mb-4">
-            <label class="block text-gray-700 mb-2">الإضافات / الملاحظات</label>
-            <input type="text" id="order-additions" class="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="مثل: إزالة البصل، إضافة جبنة إضافية...">
+          <div class="flex items-start space-x-4 space-x-reverse">
+            <div class="bg-orange-100 p-3 rounded-full">
+              <i class="fas fa-phone-alt text-orange-600"></i>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-gray-800">الهاتف</h3>
+              <p class="text-gray-600">920000000</p>
+            </div>
           </div>
-          
-          <div class="mb-6">
-            <label class="block text-gray-700 mb-2">وسيلة التوصيل</label>
-            <div class="grid grid-cols-2 gap-4">
-              <label class="flex items-center p-3 border border-gray-300 rounded-lg cursor-pointer hover:border-orange-500">
-                <input type="radio" name="delivery-method" value="pickup" checked class="form-radio text-orange-500">
-                <span class="mr-3">استلام من المطعم</span>
-              </label>
-              <label class="flex items-center p-3 border border-gray-300 rounded-lg cursor-pointer hover:border-orange-500">
-                <input type="radio" name="delivery-method" value="delivery" class="form-radio text-orange-500">
-                <span class="mr-3">توصيل إلى العنوان</span>
-              </label>
+          <div class="flex items-start space-x-4 space-x-reverse">
+            <div class="bg-orange-100 p-3 rounded-full">
+              <i class="fas fa-envelope text-orange-600"></i>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-gray-800">البريد الإلكتروني</h3>
+              <p class="text-gray-600">info@ladhed.com</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-4 space-x-reverse">
+            <div class="bg-orange-100 p-3 rounded-full">
+              <i class="fas fa-clock text-orange-600"></i>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-gray-800">ساعات العمل</h3>
+              <p class="text-gray-600">من الأحد إلى الخميس: 10:00 - 23:00</p>
+              <p class="text-gray-600">الجمعة والسبت: 12:00 - 01:00</p>
             </div>
           </div>
           
-          <div id="delivery-address" class="mb-4 hidden">
-            <label class="block text-gray-700 mb-2">العنوان الكامل</label>
-            <input type="text" id="order-address" class="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="أدخل العنوان بالتفصيل">
+          <!-- Social Media -->
+          <div class="flex space-x-4 space-x-reverse mt-6">
+            <a href="#" class="bg-gray-800 text-white p-3 rounded-full hover:bg-orange-600 transition">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="bg-gray-800 text-white p-3 rounded-full hover:bg-orange-600 transition">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" class="bg-gray-800 text-white p-3 rounded-full hover:bg-orange-600 transition">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" class="bg-gray-800 text-white p-3 rounded-full hover:bg-orange-600 transition">
+              <i class="fab fa-tiktok"></i>
+            </a>
           </div>
-          
-          <div class="mb-4">
-            <label class="block text-gray-700 mb-2">الاسم الكامل</label>
-            <input type="text" id="order-name" class="w-full px-4 py-2 border border-gray-300 rounded-lg" required>
-          </div>
-          
-          <div class="mb-6">
-            <label class="block text-gray-700 mb-2">رقم الجوال</label>
-            <input type="tel" id="order-phone" class="w-full px-4 py-2 border border-gray-300 rounded-lg" required>
-          </div>
-          
-          <div class="flex space-x-4">
-            <button type="button" id="cancel-order" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg">
-              إلغاء
-            </button>
-            <button type="submit" class="flex-1 order-btn text-white font-bold py-2 px-4 rounded-lg">
-              تأكيد الطلب
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Order Confirmation -->
-  <div id="order-confirmation" class="modal">
-    <div class="modal-content text-center">
-      <span class="close float-left text-2xl cursor-pointer">&times;</span>
-      <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-        <i class="fas fa-check text-green-500 text-2xl"></i>
-      </div>
-      <h2 class="text-2xl font-bold text-gray-800 mb-2">تم تأكيد طلبك!</h2>
-      <p class="text-gray-600 mb-6">سيتم إعداد طلبك قريباً. شكرًا لاختيارك مطعمنا!</p>
-      
-      <div class="bg-gray-50 p-4 rounded-lg mb-6 text-right">
-        <p class="mb-2"><span class="font-bold">الوجبة:</span> <span id="confirmation-item"></span></p>
-        <p class="mb-2"><span class="font-bold">الكمية:</span> <span id="confirmation-quantity"></span></p>
-        <p class="mb-2"><span class="font-bold">الإجمالي:</span> <span id="confirmation-total"></span></p>
-        <p class="mb-2"><span class="font-bold">وسيلة التوصيل:</span> <span id="confirmation-delivery"></span></p>
+        </div>
       </div>
       
-      <button id="continue-shopping" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-lg">
-        متابعة التسوق
-      </button>
+      <!-- Map -->
+      <div class="mt-12 bg-white rounded-xl overflow-hidden shadow-lg h-80">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3455.507295797217!2d46.68119027437092!3d24.71355227155872!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e2f03890d1b0555%3A0x9c571a9d0d1b0e1e!2sRiyadh!5e0!3m2!1sen!2ssa!4v1700000000000!5m2!1sen!2ssa" 
+          width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+      </div>
     </div>
-  </div>
-  
-  <!-- Notification -->
-  <div id="notification" class="fixed bottom-8 right-8 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg hidden notification">
-    <i class="fas fa-bell mr-2"></i> طلب جديد وصل!
-  </div>
+  </section>
   
   <!-- Footer -->
   <footer class="bg-gray-800 text-white py-10">
@@ -511,7 +774,9 @@
       <div class="flex flex-col md:flex-row justify-between">
         <div class="mb-6 md:mb-0">
           <div class="flex items-center space-x-3 space-x-reverse">
-            <img src="https://via.placeholder.com/50" alt="شعار المطعم" class="w-12 h-12 rounded-full">
+            <div class="bg-orange-500 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl">
+              ل
+            </div>
             <h2 class="text-2xl font-bold">مطعم لذيذ</h2>
           </div>
           <p class="mt-3 text-gray-400">نقدم أشهى المأكولات العربية بجودة عالية وسرعة في التوصيل.</p>
@@ -520,19 +785,19 @@
           <div>
             <h3 class="font-bold text-lg mb-4">روابط سريعة</h3>
             <ul class="space-y-2">
-              <li><a href="#home" class="text-gray-400 hover:text-white">الرئيسية</a></li>
-              <li><a href="#menu" class="text-gray-400 hover:text-white">القائمة</a></li>
-              <li><a href="#about" class="text-gray-400 hover:text-white">من نحن</a></li>
-              <li><a href="#contact" class="text-gray-400 hover:text-white">اتصل بنا</a></li>
+              <li><a href="#home" class="text-gray-400 hover:text-white flex items-center"><i class="fas fa-chevron-left ml-1 text-xs opacity-75"></i> الرئيسية</a></li>
+              <li><a href="#menu" class="text-gray-400 hover:text-white flex items-center"><i class="fas fa-chevron-left ml-1 text-xs opacity-75"></i> القائمة</a></li>
+              <li><a href="#about" class="text-gray-400 hover:text-white flex items-center"><i class="fas fa-chevron-left ml-1 text-xs opacity-75"></i> من نحن</a></li>
+              <li><a href="#contact" class="text-gray-400 hover:text-white flex items-center"><i class="fas fa-chevron-left ml-1 text-xs opacity-75"></i> اتصل بنا</a></li>
             </ul>
           </div>
           <div>
             <h3 class="font-bold text-lg mb-4">الخدمات</h3>
             <ul class="space-y-2">
-              <li><a href="#" class="text-gray-400 hover:text-white">توصيل للمنزل</a></li>
-              <li><a href="#" class="text-gray-400 hover:text-white">استلام من المطعم</a></li>
-              <li><a href="#" class="text-gray-400 hover:text-white">حجز طاولات</a></li>
-              <li><a href="#" class="text-gray-400 hover:text-white">الدفع الإلكتروني</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white flex items-center"><i class="fas fa-chevron-left ml-1 text-xs opacity-75"></i> توصيل للمنزل</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white flex items-center"><i class="fas fa-chevron-left ml-1 text-xs opacity-75"></i> استلام من المطعم</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white flex items-center"><i class="fas fa-chevron-left ml-1 text-xs opacity-75"></i> حجز طاولات</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white flex items-center"><i class="fas fa-chevron-left ml-1 text-xs opacity-75"></i> الدفع الإلكتروني</a></li>
             </ul>
           </div>
           <div>
@@ -542,6 +807,14 @@
               <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
               <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-tiktok"></i></a>
               <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-snapchat"></i></a>
+            </div>
+            <div class="mt-4">
+              <h4 class="font-bold mb-2">الدفع الآمن</h4>
+              <div class="flex space-x-2">
+                <div class="bg-white p-2 rounded"><i class="fab fa-cc-visa text-blue-600 text-xl"></i></div>
+                <div class="bg-white p-2 rounded"><i class="fab fa-cc-mastercard text-red-600 text-xl"></i></div>
+                <div class="bg-white p-2 rounded"><i class="fab fa-cc-paypal text-blue-500 text-xl"></i></div>
+              </div>
             </div>
           </div>
         </div>
@@ -554,7 +827,7 @@
   </footer>
   
   <script>
-    // 1. بيانات الموقع (في الإنتاج الحقيقي، ستكون من قاعدة بيانات)
+    // 1. بيانات الموقع
     const restaurantData = {
       name: {
         ar: "مطعم لذيذ",
@@ -567,7 +840,7 @@
           description: { ar: "لحم بقري طازج مع بهارات شرقية، مقدم مع أرز بالزعفران", en: "Fresh beef with eastern spices, served with saffron rice" },
           price: 32,
           category: "main",
-          image: "https://via.placeholder.com/300/FF6347/FFFFFF?text=كباب",
+          image: "https://images.unsplash.com/photo-1546549032-95919608b8f5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
           rating: 4.5
         },
         {
@@ -576,7 +849,7 @@
           description: { ar: "بقدونس طازج، طماطم، بصل، نعناع، وليمون", en: "Fresh parsley, tomatoes, onion, mint, and lemon" },
           price: 12,
           category: "starters",
-          image: "https://via.placeholder.com/300/9ACD32/FFFFFF?text=تبولة",
+          image: "https://images.unsplash.com/photo-1606755965493-17866d6129f5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
           rating: 4.2
         },
         {
@@ -585,7 +858,7 @@
           description: { ar: "دجاج مطهي على الطريقة اليمنية مع أرز مندي وخلطة بهارات فريدة", en: "Chicken cooked in Yemeni style with Mandi rice and unique spice mix" },
           price: 28,
           category: "main",
-          image: "https://via.placeholder.com/300/FFD700/000000?text=مندي",
+          image: "https://images.unsplash.com/photo-1603133872878-684f208fb84b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
           rating: 4.7
         },
         {
@@ -594,7 +867,7 @@
           description: { ar: "مصنوع من برتقال محلي 100% بدون سكر مضاف", en: "Made from 100% local oranges with no added sugar" },
           price: 10,
           category: "drinks",
-          image: "https://via.placeholder.com/300/1E90FF/FFFFFF?text=عصير",
+          image: "https://images.unsplash.com/photo-1600271886742-f049cd451bba?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
           rating: 4.3
         },
         {
@@ -603,7 +876,7 @@
           description: { ar: "كنافة مقرمشة مع جبنة وقشطة، مغطاة بشربات حلو", en: "Crispy knafeh with cheese and cream, covered with sweet syrup" },
           price: 18,
           category: "desserts",
-          image: "https://via.placeholder.com/300/FF69B4/FFFFFF?text=كنافة",
+          image: "https://images.unsplash.com/photo-1565958011705-4c9b84b58e0d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
           rating: 4.8
         },
         {
@@ -612,7 +885,7 @@
           description: { ar: "شوربة عدس دسمة مع ليمون طازج وخبز محمص", en: "Thick lentil soup with fresh lemon and toasted bread" },
           price: 11,
           category: "starters",
-          image: "https://via.placeholder.com/300/A0522D/FFFFFF?text=شوربة",
+          image: "https://images.unsplash.com/photo-1626078272560-b77516a8f81f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
           rating: 4.1
         }
       ],
@@ -749,25 +1022,36 @@
       
       filteredMeals.forEach(item => {
         const mealElement = document.createElement('div');
-        mealElement.className = "bg-white rounded-xl shadow-md overflow-hidden transition transform hover:shadow-xl";
+        mealElement.className = "meal-card bg-white rounded-xl shadow-md overflow-hidden";
+        mealElement.dataset.id = item.id;
+        mealElement.dataset.category = item.category;
+        
         mealElement.innerHTML = `
-          <img src="${item.image}" alt="${item.name[restaurantData.currentLang]}" class="meal-img w-full h-48 object-cover">
-          <div class="p-5">
-            <h3 class="text-xl font-bold text-gray-800">${item.name[restaurantData.currentLang]}</h3>
-            <p class="text-gray-600 mt-2 text-sm">${item.description[restaurantData.currentLang]}</p>
-            <div class="flex justify-between items-center mt-4">
-              <span class="text-lg font-bold text-orange-600">${item.price} ر.س</span>
-              <button class="order-btn text-white px-5 py-2 rounded-full text-sm font-medium flex items-center" data-id="${item.id}">
-                <i class="fas fa-shopping-cart ml-1"></i> ${translations[restaurantData.currentLang].orderNow}
-              </button>
+          <div class="relative">
+            <img src="${item.image}" alt="${item.name[restaurantData.currentLang]}" class="meal-img w-full">
+            <div class="meal-overlay"></div>
+            <div class="meal-rating">
+              <i class="fas fa-star text-yellow-400 mr-1"></i> ${item.rating}
             </div>
+          </div>
+          <div class="meal-info">
+            <div class="flex justify-between items-start">
+              <div>
+                <h3 class="text-xl font-bold text-gray-800 mb-1">${item.name[restaurantData.currentLang]}</h3>
+                <p class="text-gray-600 text-sm mb-3">${item.description[restaurantData.currentLang]}</p>
+              </div>
+              <span class="text-lg font-bold text-orange-600 bg-orange-50 px-3 py-1 rounded-full">${item.price} ر.س</span>
+            </div>
+            <button class="order-btn w-full text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center">
+              <i class="fas fa-shopping-cart ml-1"></i> ${translations[restaurantData.currentLang].orderNow}
+            </button>
           </div>
         `;
         mealsGrid.appendChild(mealElement);
       });
       
       // تحديث أزرار الفئات
-      document.querySelectorAll('[data-category]').forEach(btn => {
+      document.querySelectorAll('.category-btn').forEach(btn => {
         btn.classList.remove('bg-orange-500', 'text-white');
         btn.classList.add('bg-white', 'text-gray-700');
         if (btn.dataset.category === category) {
@@ -786,7 +1070,7 @@
       });
       
       // فئات القائمة
-      document.querySelectorAll('[data-category]').forEach(btn => {
+      document.querySelectorAll('.category-btn').forEach(btn => {
         btn.addEventListener('click', function() {
           loadMenu(this.dataset.category);
         });
@@ -794,18 +1078,29 @@
       
       // نموذج الطلب
       document.querySelectorAll('.order-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-          const itemId = this.dataset.id;
-          openOrderModal(itemId);
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const mealCard = this.closest('.meal-card');
+          const mealId = mealCard.dataset.id;
+          openOrderModal(mealId);
         });
       });
       
       // إغلاق النوافذ المنبثقة
       document.querySelectorAll('.close').forEach(btn => {
         btn.addEventListener('click', function() {
-          document.querySelectorAll('.modal').forEach(modal => {
+          document.querySelectorAll('.order-modal').forEach(modal => {
             modal.style.display = 'none';
           });
+        });
+      });
+      
+      // إغلاق النموذج عند النقر خارج المحتوى
+      window.addEventListener('click', function(event) {
+        document.querySelectorAll('.order-modal').forEach(modal => {
+          if (event.target === modal) {
+            modal.style.display = 'none';
+          }
         });
       });
       
@@ -856,35 +1151,57 @@
       document.getElementById('refresh-orders').addEventListener('click', function() {
         loadOrders();
       });
+      
+      // زر طلب الآن في القسم العلوي
+      document.getElementById('hero-order-btn').addEventListener('click', function() {
+        document.getElementById('menu').scrollIntoView({ behavior: 'smooth' });
+      });
+      
+      // زر لوحة التحكم
+      document.getElementById('admin-login').addEventListener('click', function() {
+        document.getElementById('admin-login-modal').style.display = 'block';
+      });
+      
+      // تغيير وسيلة التوصيل
+      document.querySelectorAll('input[name="delivery-method"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+          const deliveryAddress = document.getElementById('delivery-address');
+          if (this.value === 'delivery') {
+            deliveryAddress.classList.remove('hidden');
+          } else {
+            deliveryAddress.classList.add('hidden');
+          }
+        });
+      });
     }
     
     // 6. وظائف النظام
     
     // فتح نموذج الطلب
-    function openOrderModal(itemId) {
-      const item = restaurantData.menu.find(item => item.id == itemId);
+    function openOrderModal(mealId) {
+      const item = restaurantData.menu.find(item => item.id == mealId);
       if (!item) return;
       
-      document.getElementById('order-item-id').value = item.id;
-      document.getElementById('order-item-image').src = item.image;
-      document.getElementById('order-item-name').textContent = item.name[restaurantData.currentLang];
-      document.getElementById('order-item-description').textContent = item.description[restaurantData.currentLang];
-      document.getElementById('order-item-price').textContent = `${item.price} ر.س`;
+      document.getElementById('meal-id').value = item.id;
+      document.getElementById('modal-meal-img').src = item.image;
+      document.getElementById('modal-meal-name').textContent = item.name[restaurantData.currentLang];
+      document.getElementById('modal-meal-desc').textContent = item.description[restaurantData.currentLang];
+      document.getElementById('modal-meal-price').textContent = `${item.price} ر.س`;
       
       document.getElementById('order-modal').style.display = 'block';
     }
     
     // إرسال الطلب
     function submitOrder() {
-      const itemId = document.getElementById('order-item-id').value;
-      const quantity = document.getElementById('order-quantity').value;
-      const additions = document.getElementById('order-additions').value;
+      const mealId = document.getElementById('meal-id').value;
+      const quantity = document.getElementById('quantity').value;
+      const additions = document.getElementById('additions').value;
       const deliveryMethod = document.querySelector('input[name="delivery-method"]:checked').value;
-      const address = deliveryMethod === 'delivery' ? document.getElementById('order-address').value : '';
-      const name = document.getElementById('order-name').value;
-      const phone = document.getElementById('order-phone').value;
+      const address = deliveryMethod === 'delivery' ? document.getElementById('address').value : '';
+      const name = document.getElementById('name').value;
+      const phone = document.getElementById('phone').value;
       
-      const item = restaurantData.menu.find(item => item.id == itemId);
+      const item = restaurantData.menu.find(item => item.id == mealId);
       if (!item) return;
       
       const order = {
@@ -932,10 +1249,15 @@
     
     // عرض الإشعار
     function showNotification() {
-      const notification = document.getElementById('notification');
-      notification.classList.remove('hidden');
+      const notification = document.createElement('div');
+      notification.className = 'fixed bottom-8 right-8 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg notification';
+      notification.innerHTML = `
+        <i class="fas fa-bell mr-2"></i> طلب جديد وصل!
+      `;
+      document.body.appendChild(notification);
+      
       setTimeout(() => {
-        notification.classList.add('hidden');
+        notification.remove();
       }, 3000);
     }
     
@@ -1161,7 +1483,7 @@
           </div>
           <div class="mb-6">
             <label class="block text-gray-700 mb-2">رابط الصورة</label>
-            <input type="url" id="new-item-image" class="w-full px-4 py-2 border border-gray-300 rounded-lg" required value="https://via.placeholder.com/300">
+            <input type="url" id="new-item-image" class="w-full px-4 py-2 border border-gray-300 rounded-lg" required value="https://images.unsplash.com/photo-1546549032-95919608b8f5">
           </div>
           <div class="flex space-x-4">
             <button type="button" id="cancel-add-item" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg">
@@ -1175,7 +1497,7 @@
       `;
       
       const modal = document.createElement('div');
-      modal.className = "modal";
+      modal.className = "order-modal";
       modal.id = "add-menu-item-modal";
       modal.innerHTML = `
         <div class="modal-content">
@@ -1282,7 +1604,7 @@
       `;
       
       const modal = document.createElement('div');
-      modal.className = "modal";
+      modal.className = "order-modal";
       modal.id = "edit-menu-item-modal";
       modal.innerHTML = `
         <div class="modal-content">
