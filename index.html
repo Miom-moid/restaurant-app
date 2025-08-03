@@ -3,75 +3,44 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>مطعم لذيذ - أفضل المأكولات العربية</title>
+  <title>مطعم اليمني - أفضل المأكولات اليمنية الأصيلة</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <style>
     :root {
-      --bg-primary: #f9fafb;
-      --bg-secondary: #ffffff;
-      --text-primary: #1f2937;
-      --text-secondary: #4b5563;
-      --accent-primary: #f97316;
-      --accent-secondary: #ea580c;
-      --card-bg: #ffffff;
-      --border-color: #e5e7eb;
-      --shadow-color: rgba(0, 0, 0, 0.1);
-    }
-    
-    .dark-mode {
-      --bg-primary: #111827;
-      --bg-secondary: #1f2937;
-      --text-primary: #f3f4f6;
-      --text-secondary: #9ca3af;
-      --accent-primary: #fdba74;
-      --accent-secondary: #fb923c;
-      --card-bg: #1e293b;
-      --border-color: #334155;
-      --shadow-color: rgba(0, 0, 0, 0.3);
+      --primary: #eab308; /* اللون الذهبي اليمني */
+      --primary-dark: #ca8a04;
+      --secondary: #1e293b; /* الأزرق الداكن */
+      --light: #f8fafc;
+      --dark: #0f172a;
+      --accent: #f97316; /* البرتقالي للعروض */
     }
     
     body {
-      background-color: var(--bg-primary);
-      color: var(--text-primary);
-      transition: background-color 0.3s ease, color 0.3s ease;
+      background-color: var(--light);
+      color: var(--dark);
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      scroll-behavior: smooth;
     }
     
-    .bg-section {
-      background-color: var(--bg-secondary);
+    .header-bg {
+      background: linear-gradient(135deg, #eab308, #ca8a04);
     }
     
     .card {
-      background-color: var(--card-bg);
-      border-color: var(--border-color);
-      box-shadow: 0 4px 6px var(--shadow-color);
       transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
     
     .card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 10px 15px var(--shadow-color);
-    }
-    
-    .text-primary {
-      color: var(--text-primary);
-    }
-    
-    .text-secondary {
-      color: var(--text-secondary);
-    }
-    
-    .accent-gradient {
-      background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
     }
     
     .meal-img {
       transition: transform 0.4s ease;
-      border-radius: 12px 12px 0 0;
       height: 200px;
       object-fit: cover;
-      box-shadow: 0 4px 6px var(--shadow-color);
     }
     
     .meal-card:hover .meal-img {
@@ -79,24 +48,25 @@
     }
     
     .order-btn {
-      background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
+      background: linear-gradient(45deg, var(--primary), var(--primary-dark));
       transition: all 0.3s ease;
     }
     
     .order-btn:hover {
       transform: translateY(-2px);
-      box-shadow: 0 10px 15px var(--shadow-color);
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
+    }
+    
+    .nav-link {
+      transition: all 0.2s;
     }
     
     .nav-link:hover, .active {
-      color: var(--accent-primary);
+      color: var(--primary);
+      border-bottom: 2px solid var(--primary);
     }
     
-    .active {
-      border-bottom: 2px solid var(--accent-primary);
-    }
-    
-    .lang-switch, .theme-toggle {
+    .lang-switch {
       direction: ltr;
     }
     
@@ -109,7 +79,6 @@
       background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
       opacity: 0;
       transition: opacity 0.3s ease;
-      border-radius: 12px 12px 0 0;
     }
     
     .meal-card:hover .meal-overlay {
@@ -129,39 +98,17 @@
       align-items: center;
     }
     
-    .dark-mode .meal-rating {
-      background: rgba(0, 0, 0, 0.7);
+    .offer-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: var(--accent);
       color: white;
-    }
-    
-    .notification {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background-color: #10b981;
-      color: white;
-      padding: 12px 20px;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      z-index: 1000;
-      transform: translateX(150%);
-      animation: slideIn 0.5s forwards, slideOut 0.5s 2.5s forwards;
-    }
-    
-    @keyframes slideIn {
-      to { transform: translateX(0); }
-    }
-    
-    @keyframes slideOut {
-      to { transform: translateX(150%); }
-    }
-    
-    .glow-effect {
-      text-shadow: 0 0 10px rgba(249, 115, 22, 0.5);
-    }
-    
-    .dark-mode .glow-effect {
-      text-shadow: 0 0 10px rgba(251, 146, 60, 0.7);
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 14px;
+      z-index: 10;
     }
     
     .floating {
@@ -173,49 +120,15 @@
       50% { transform: translateY(-10px); }
       100% { transform: translateY(0px); }
     }
-    
-    .pulse {
-      animation: pulse 2s infinite;
-    }
-    
-    @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.7); }
-      70% { box-shadow: 0 0 0 12px rgba(249, 115, 22, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(249, 115, 22, 0); }
-    }
-    
-    .menu-category.active-cat {
-      background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
-      color: white;
-    }
-    
-    .offer-badge {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: #e11d48;
-      color: white;
-      padding: 5px 12px;
-      border-radius: 20px;
-      font-weight: bold;
-      font-size: 14px;
-      z-index: 10;
-    }
-    
-    .dark-mode .offer-badge {
-      background: #f43f5e;
-    }
   </style>
 </head>
-<body class="bg-section">
+<body class="bg-gray-50">
   <!-- Header & Navigation -->
-  <header class="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50">
+  <header class="bg-white shadow-md sticky top-0 z-50">
     <div class="container mx-auto px-4 py-3 flex justify-between items-center">
       <div class="flex items-center space-x-3 space-x-reverse">
-        <div class="bg-orange-500 dark:bg-orange-400 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl">
-          ل
-        </div>
-        <h1 class="text-2xl font-bold text-orange-600 dark:text-orange-400">مطعم لذيذ</h1>
+        <img src="https://images.unsplash.com/photo-1590301157504-3c66c5a1d429?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" alt="شعار المطعم اليمني" class="w-12 h-12 rounded-full object-cover">
+        <h1 class="text-2xl font-bold" style="color: var(--primary);">مطعم اليمني</h1>
       </div>
       <nav class="hidden md:flex space-x-8 space-x-reverse">
         <a href="#home" class="nav-link active">الرئيسية</a>
@@ -225,51 +138,45 @@
         <a href="#contact" class="nav-link">اتصل بنا</a>
       </nav>
       <div class="flex items-center space-x-4 space-x-reverse">
-        <button id="theme-toggle" class="theme-toggle text-sm px-3 py-1 rounded-full border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
-          <i class="fas fa-moon"></i>
-        </button>
-        <button id="lang-toggle" class="lang-switch text-sm px-3 py-1 rounded-full border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">EN</button>
+        <button id="lang-toggle" class="lang-switch text-sm px-3 py-1 rounded-full border border-gray-300 hover:bg-gray-100">EN</button>
         <button class="md:hidden text-xl"><i class="fas fa-bars"></i></button>
       </div>
     </div>
   </header>
   
   <!-- Hero Section -->
-  <section id="home" class="bg-gradient-to-r from-orange-500 to-red-600 text-white py-20 relative overflow-hidden">
-    <div class="absolute inset-0 opacity-10">
-      <div class="w-full h-full bg-repeat" style="background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCI+PHBhdGggZD0iTTAgMGwzMDMwIDBoNjAwMHY2MDAwSDMwMzBsLTYwMDAtNjAwMHoiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9Ii4xIi8+PC9zdmc+');"></div>
-    </div>
-    <div class="container mx-auto px-4 text-center relative z-10">
+  <section id="home" class="header-bg text-white py-20">
+    <div class="container mx-auto px-4 text-center">
       <div class="inline-block mb-4 floating">
-        <span class="bg-white text-orange-600 px-4 py-1 rounded-full text-sm font-medium">أفضل 10 مطاعم في المملكة</span>
+        <span class="bg-white text-yellow-600 px-4 py-1 rounded-full text-sm font-medium">أفضل 5 مطاعم يمنية في المملكة</span>
       </div>
-      <h2 class="text-4xl md:text-5xl font-bold mb-4 glow-effect">أفضل النكهات العربية</h2>
-      <p class="text-xl mb-8 opacity-90 max-w-2xl mx-auto">استمتع بوجباتنا الطازجة المُعدة بحب وعناية من قبل أفضل الطهاة</p>
-      <button id="hero-order-btn" class="bg-white text-orange-600 font-bold px-8 py-3 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition pulse">
+      <h2 class="text-4xl md:text-5xl font-bold mb-4">أفضل النكهات اليمنية الأصيلة</h2>
+      <p class="text-xl mb-8 opacity-90 max-w-2xl mx-auto">استمتع بوجباتنا الطازجة المُعدة بحب وعناية من قبل أفضل الطهاة اليمنيين</p>
+      <button id="hero-order-btn" class="bg-white text-yellow-600 font-bold px-8 py-3 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition">
         اطلب الآن
       </button>
     </div>
   </section>
   
   <!-- Special Offers -->
-  <section id="offers" class="py-16 bg-section">
+  <section id="offers" class="py-16 bg-white">
     <div class="container mx-auto px-4">
       <div class="text-center mb-12">
-        <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-4">عروض اليوم المميزة</h2>
-        <p class="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">اكتشف عروضنا الحصرية التي نقدمها فقط لعملائنا الأعزاء</p>
+        <h2 class="text-3xl font-bold text-gray-800 mb-4">عروض اليوم المميزة</h2>
+        <p class="text-gray-600 max-w-2xl mx-auto">اكتشف عروضنا الحصرية للأكلات اليمنية الأصيلة</p>
       </div>
       <div class="grid md:grid-cols-3 gap-8">
         <!-- عرض 1 -->
-        <div class="bg-orange-50 dark:bg-orange-900/20 rounded-xl overflow-hidden shadow-lg transform hover:scale-105 transition-all duration-300">
+        <div class="bg-yellow-50 rounded-xl overflow-hidden shadow-lg transform hover:scale-105 transition-all duration-300">
           <div class="relative">
             <span class="offer-badge">خصم 25%</span>
-            <img src="https://images.unsplash.com/photo-1596797038008-6e7d10e6f8d1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="عرض المنسف" class="w-full h-56 object-cover">
+            <img src="https://images.unsplash.com/photo-1590301157504-3c66c5a1d429?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="عرض الماند" class="w-full h-56 object-cover">
           </div>
           <div class="p-5">
-            <h3 class="text-xl font-bold text-orange-600 dark:text-orange-400 mb-2">عرض المنسف + مشروب</h3>
-            <p class="text-gray-600 dark:text-gray-300 mb-3">خصم 25% على وجبة المنسف مع مشروب غازي</p>
+            <h3 class="text-xl font-bold text-yellow-600 mb-2">عرض الماند + مشروب</h3>
+            <p class="text-gray-600 mb-3">خصم 25% على وجبة الماند مع مشروب غازي</p>
             <div class="flex justify-between items-center">
-              <span class="block font-bold text-lg text-gray-800 dark:text-white">٤٥ ر.س فقط</span>
+              <span class="block font-bold text-lg text-gray-800">٤٠ ر.س فقط</span>
               <button class="order-btn text-white px-5 py-2 rounded-full text-sm font-medium flex items-center">
                 <i class="fas fa-tag ml-1"></i> استفد الآن
               </button>
@@ -278,16 +185,16 @@
         </div>
         
         <!-- عرض 2 -->
-        <div class="bg-red-50 dark:bg-red-900/20 rounded-xl overflow-hidden shadow-lg transform hover:scale-105 transition-all duration-300">
+        <div class="bg-red-50 rounded-xl overflow-hidden shadow-lg transform hover:scale-105 transition-all duration-300">
           <div class="relative">
             <span class="offer-badge">عرض محدود</span>
-            <img src="https://images.unsplash.com/photo-1563245357-83c42b8a5c0d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="حلويات" class="w-full h-56 object-cover">
+            <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="حلويات يمنية" class="w-full h-56 object-cover">
           </div>
           <div class="p-5">
-            <h3 class="text-xl font-bold text-red-600 dark:text-red-400 mb-2">حلويات مميزة</h3>
-            <p class="text-gray-600 dark:text-gray-300 mb-3">اشترِ واحدة، واحصل على الثانية بنصف السعر</p>
+            <h3 class="text-xl font-bold text-red-600 mb-2">حلويات يمنية</h3>
+            <p class="text-gray-600 mb-3">اشترِ واحدة، واحصل على الثانية بنصف السعر</p>
             <div class="flex justify-between items-center">
-              <span class="block font-bold text-lg text-gray-800 dark:text-white">عرض سارٍ اليوم فقط</span>
+              <span class="block font-bold text-lg text-gray-800">عرض سارٍ اليوم فقط</span>
               <button class="order-btn text-white px-5 py-2 rounded-full text-sm font-medium flex items-center">
                 <i class="fas fa-tag ml-1"></i> استفد الآن
               </button>
@@ -296,16 +203,16 @@
         </div>
         
         <!-- عرض 3 -->
-        <div class="bg-green-50 dark:bg-green-900/20 rounded-xl overflow-hidden shadow-lg transform hover:scale-105 transition-all duration-300">
+        <div class="bg-green-50 rounded-xl overflow-hidden shadow-lg transform hover:scale-105 transition-all duration-300">
           <div class="relative">
             <span class="offer-badge">جديد</span>
-            <img src="https://images.unsplash.com/photo-1587918842454-870dbd7f6168?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="توصيل مجاني" class="w-full h-56 object-cover">
+            <img src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="توصيل مجاني" class="w-full h-56 object-cover">
           </div>
           <div class="p-5">
-            <h3 class="text-xl font-bold text-green-600 dark:text-green-400 mb-2">توصيل مجاني</h3>
-            <p class="text-gray-600 dark:text-gray-300 mb-3">لجميع الطلبات فوق 70 ر.س داخل المدينة</p>
+            <h3 class="text-xl font-bold text-green-600 mb-2">توصيل مجاني</h3>
+            <p class="text-gray-600 mb-3">لجميع الطلبات فوق 70 ر.س داخل المدينة</p>
             <div class="flex justify-between items-center">
-              <span class="block font-bold text-lg text-gray-800 dark:text-white">وفر حتى 15 ر.س</span>
+              <span class="block font-bold text-lg text-gray-800">وفر حتى 15 ر.س</span>
               <button class="order-btn text-white px-5 py-2 rounded-full text-sm font-medium flex items-center">
                 <i class="fas fa-tag ml-1"></i> استفد الآن
               </button>
@@ -317,28 +224,28 @@
   </section>
   
   <!-- Menu Section -->
-  <section id="menu" class="py-16 bg-gray-50 dark:bg-gray-900">
+  <section id="menu" class="py-16 bg-gray-50">
     <div class="container mx-auto px-4">
       <div class="text-center mb-12">
-        <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-4">قائمة الطعام</h2>
-        <p class="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">استكشف أطباقنا المميزة المعدة بأفضل المكونات الطازجة</p>
+        <h2 class="text-3xl font-bold text-gray-800 mb-4">قائمة الطعام اليمنية</h2>
+        <p class="text-gray-600 max-w-2xl mx-auto">استكشف أطباقنا المميزة المعدة بأفضل المكونات الطازجة</p>
       </div>
       
       <!-- Categories Tabs -->
       <div class="flex flex-wrap justify-center mb-10 space-x-2 space-x-reverse">
-        <button class="menu-category bg-orange-500 text-white px-6 py-2 rounded-full font-medium active-cat" data-category="all">جميع الأصناف</button>
-        <button class="menu-category bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-6 py-2 rounded-full font-medium hover:bg-gray-100 dark:hover:bg-gray-700" data-category="starters">مقبلات</button>
-        <button class="menu-category bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-6 py-2 rounded-full font-medium hover:bg-gray-100 dark:hover:bg-gray-700" data-category="main">وجبات رئيسية</button>
-        <button class="menu-category bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-6 py-2 rounded-full font-medium hover:bg-gray-100 dark:hover:bg-gray-700" data-category="drinks">مشروبات</button>
-        <button class="menu-category bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-6 py-2 rounded-full font-medium hover:bg-gray-100 dark:hover:bg-gray-700" data-category="desserts">حلويات</button>
+        <button class="menu-category bg-yellow-500 text-white px-6 py-2 rounded-full font-medium active-cat" data-category="all">جميع الأصناف</button>
+        <button class="menu-category bg-white text-gray-700 px-6 py-2 rounded-full font-medium hover:bg-gray-100" data-category="starters">مقبلات</button>
+        <button class="menu-category bg-white text-gray-700 px-6 py-2 rounded-full font-medium hover:bg-gray-100" data-category="main">وجبات رئيسية</button>
+        <button class="menu-category bg-white text-gray-700 px-6 py-2 rounded-full font-medium hover:bg-gray-100" data-category="drinks">مشروبات</button>
+        <button class="menu-category bg-white text-gray-700 px-6 py-2 rounded-full font-medium hover:bg-gray-100" data-category="desserts">حلويات</button>
       </div>
       
       <!-- Meals Grid -->
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="meals-grid">
-        <!-- المنسف -->
-        <div class="meal-card card bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden category-main" data-id="1">
+        <!-- الماند -->
+        <div class="meal-card card bg-white rounded-xl shadow-md overflow-hidden category-main" data-id="1">
           <div class="relative">
-            <img src="https://images.unsplash.com/photo-1596797038008-6e7d10e6f8d1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="المنسف" class="meal-img w-full">
+            <img src="https://images.unsplash.com/photo-1590301157504-3c66c5a1d429?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="المندي اليمني" class="meal-img w-full">
             <div class="meal-overlay"></div>
             <div class="meal-rating">
               <i class="fas fa-star text-yellow-400 mr-1"></i> 4.8
@@ -347,10 +254,10 @@
           <div class="p-5">
             <div class="flex justify-between items-start">
               <div>
-                <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-1">المنسف الأردني</h3>
-                <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">وجبة تقليدية من لحم الضأن والرز مع الصلصة اللبنة واللبن، مغطاة بخبز الشراك</p>
+                <h3 class="text-xl font-bold text-gray-800 mb-1">المندي اليمني</h3>
+                <p class="text-gray-600 text-sm mb-3">أرز مطبوخ على الطريقة اليمنية مع الدجاج أو اللحم وخلطة بهارات فريدة</p>
               </div>
-              <span class="text-lg font-bold text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-900/30 px-3 py-1 rounded-full">٤٥ ر.س</span>
+              <span class="text-lg font-bold text-yellow-600 bg-yellow-50 px-3 py-1 rounded-full">٤٠ ر.س</span>
             </div>
             <button class="order-btn w-full text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center mt-3">
               <i class="fas fa-shopping-cart ml-1"></i> اطلب الآن
@@ -358,10 +265,10 @@
           </div>
         </div>
         
-        <!-- المقلوبة -->
-        <div class="meal-card card bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden category-main" data-id="2">
+        <!-- الفاهيتا -->
+        <div class="meal-card card bg-white rounded-xl shadow-md overflow-hidden category-main" data-id="2">
           <div class="relative">
-            <img src="https://images.unsplash.com/photo-1519996529931-22113992317a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="المقلوبة" class="meal-img w-full">
+            <img src="https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="الفاهيتا اليمنية" class="meal-img w-full">
             <div class="meal-overlay"></div>
             <div class="meal-rating">
               <i class="fas fa-star text-yellow-400 mr-1"></i> 4.6
@@ -370,10 +277,10 @@
           <div class="p-5">
             <div class="flex justify-between items-start">
               <div>
-                <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-1">المقلوبة الفلسطينية</h3>
-                <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">أرز مطبوخ مع الدجاج والخضروات، يقدم بطبق مقلوب مع مكسرات محمصة</p>
+                <h3 class="text-xl font-bold text-gray-800 mb-1">الفاهيتا اليمنية</h3>
+                <p class="text-gray-600 text-sm mb-3">لحم مفروم مع البصل والطماطم والبهارات اليمنية المميزة</p>
               </div>
-              <span class="text-lg font-bold text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-900/30 px-3 py-1 rounded-full">٣٨ ر.س</span>
+              <span class="text-lg font-bold text-yellow-600 bg-yellow-50 px-3 py-1 rounded-full">٣٥ ر.س</span>
             </div>
             <button class="order-btn w-full text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center mt-3">
               <i class="fas fa-shopping-cart ml-1"></i> اطلب الآن
@@ -381,10 +288,10 @@
           </div>
         </div>
         
-        <!-- الكبسة -->
-        <div class="meal-card card bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden category-main" data-id="3">
+        <!-- المفلفل -->
+        <div class="meal-card card bg-white rounded-xl shadow-md overflow-hidden category-main" data-id="3">
           <div class="relative">
-            <img src="https://images.unsplash.com/photo-1607532924163-16e2cf6982d7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="الكبسة" class="meal-img w-full">
+            <img src="https://images.unsplash.com/photo-1604908178395-5d2a1ad69e96?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="المفلفل" class="meal-img w-full">
             <div class="meal-overlay"></div>
             <div class="meal-rating">
               <i class="fas fa-star text-yellow-400 mr-1"></i> 4.7
@@ -393,10 +300,10 @@
           <div class="p-5">
             <div class="flex justify-between items-start">
               <div>
-                <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-1">الكبسة السعودية</h3>
-                <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">أرز مطبوخ مع الدجاج أو اللحم، مضاف إليه خليط من التوابل العربية المميزة</p>
+                <h3 class="text-xl font-bold text-gray-800 mb-1">المفلفل اليمني</h3>
+                <p class="text-gray-600 text-sm mb-3">لحم مفروم مع البصل والطماطم والبهارات اليمنية المميزة</p>
               </div>
-              <span class="text-lg font-bold text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-900/30 px-3 py-1 rounded-full">٣٦ ر.س</span>
+              <span class="text-lg font-bold text-yellow-600 bg-yellow-50 px-3 py-1 rounded-full">٣٨ ر.س</span>
             </div>
             <button class="order-btn w-full text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center mt-3">
               <i class="fas fa-shopping-cart ml-1"></i> اطلب الآن
@@ -404,10 +311,10 @@
           </div>
         </div>
         
-        <!-- الفلافل -->
-        <div class="meal-card card bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden category-starters" data-id="4">
+        <!-- المطبق -->
+        <div class="meal-card card bg-white rounded-xl shadow-md overflow-hidden category-main" data-id="4">
           <div class="relative">
-            <img src="https://images.unsplash.com/photo-1603048886790-7be99b59960e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="الفلافل" class="meal-img w-full">
+            <img src="https://images.unsplash.com/photo-1596797038008-6e7d10e6f8d1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="المطبق" class="meal-img w-full">
             <div class="meal-overlay"></div>
             <div class="meal-rating">
               <i class="fas fa-star text-yellow-400 mr-1"></i> 4.5
@@ -416,10 +323,10 @@
           <div class="p-5">
             <div class="flex justify-between items-start">
               <div>
-                <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-1">الفلافل المصرية</h3>
-                <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">فلافل مقرمشة مصنوعة من الحمص والبهارات، تقدم مع الخبز والسلطات</p>
+                <h3 class="text-xl font-bold text-gray-800 mb-1">المطبق اليمني</h3>
+                <p class="text-gray-600 text-sm mb-3">عجينة مفرودة مع اللحم والبيض والبصل، مقرمشة ومغطاة بالزيت</p>
               </div>
-              <span class="text-lg font-bold text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-900/30 px-3 py-1 rounded-full">١٥ ر.س</span>
+              <span class="text-lg font-bold text-yellow-600 bg-yellow-50 px-3 py-1 rounded-full">٣٢ ر.س</span>
             </div>
             <button class="order-btn w-full text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center mt-3">
               <i class="fas fa-shopping-cart ml-1"></i> اطلب الآن
@@ -428,9 +335,9 @@
         </div>
         
         <!-- الكنافة -->
-        <div class="meal-card card bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden category-desserts" data-id="5">
+        <div class="meal-card card bg-white rounded-xl shadow-md overflow-hidden category-desserts" data-id="5">
           <div class="relative">
-            <img src="https://images.unsplash.com/photo-1603002533-253d85c9d23d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="الكنافة" class="meal-img w-full">
+            <img src="https://images.unsplash.com/photo-1603002533-253d85c9d23d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="الكنافة النابلسية" class="meal-img w-full">
             <div class="meal-overlay"></div>
             <div class="meal-rating">
               <i class="fas fa-star text-yellow-400 mr-1"></i> 4.9
@@ -439,10 +346,10 @@
           <div class="p-5">
             <div class="flex justify-between items-start">
               <div>
-                <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-1">الكنافة النابلسية</h3>
-                <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">كنافة مقرمشة مع جبنة عكاوية وقشطة، مغطاة بشربات حلو وفستق مطحون</p>
+                <h3 class="text-xl font-bold text-gray-800 mb-1">الكنافة اليمنية</h3>
+                <p class="text-gray-600 text-sm mb-3">كنافة مقرمشة مع جبنة وقشطة، مغطاة بشربات حلو وفستق مطحون</p>
               </div>
-              <span class="text-lg font-bold text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-900/30 px-3 py-1 rounded-full">٢٢ ر.س</span>
+              <span class="text-lg font-bold text-yellow-600 bg-yellow-50 px-3 py-1 rounded-full">٢٢ ر.س</span>
             </div>
             <button class="order-btn w-full text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center mt-3">
               <i class="fas fa-shopping-cart ml-1"></i> اطلب الآن
@@ -450,79 +357,10 @@
           </div>
         </div>
         
-        <!-- المعمول -->
-        <div class="meal-card card bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden category-desserts" data-id="6">
+        <!-- سلطة الزبادي -->
+        <div class="meal-card card bg-white rounded-xl shadow-md overflow-hidden category-starters" data-id="6">
           <div class="relative">
-            <img src="https://images.unsplash.com/photo-1589373093958-0c33a3e211f8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="المعمول" class="meal-img w-full">
-            <div class="meal-overlay"></div>
-            <div class="meal-rating">
-              <i class="fas fa-star text-yellow-400 mr-1"></i> 4.7
-            </div>
-          </div>
-          <div class="p-5">
-            <div class="flex justify-between items-start">
-              <div>
-                <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-1">المعمول السوري</h3>
-                <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">معمول تقليدي مع التمر أو الجوز، مغطى بسمسم ناعم، مذاق لا يقاوم</p>
-              </div>
-              <span class="text-lg font-bold text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-900/30 px-3 py-1 rounded-full">١٨ ر.س</span>
-            </div>
-            <button class="order-btn w-full text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center mt-3">
-              <i class="fas fa-shopping-cart ml-1"></i> اطلب الآن
-            </button>
-          </div>
-        </div>
-        
-        <!-- الطبقات -->
-        <div class="meal-card card bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden category-desserts" data-id="7">
-          <div class="relative">
-            <img src="https://images.unsplash.com/photo-1598208859668-38d5e450c9f3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="الطبقات" class="meal-img w-full">
-            <div class="meal-overlay"></div>
-            <div class="meal-rating">
-              <i class="fas fa-star text-yellow-400 mr-1"></i> 4.6
-            </div>
-          </div>
-          <div class="p-5">
-            <div class="flex justify-between items-start">
-              <div>
-                <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-1">طبقات بالقشطة</h3>
-                <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">طبقات مقرمشة مع طبقات من القشطة والكريمة، مغطاة بشربات حلو وفستق</p>
-              </div>
-              <span class="text-lg font-bold text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-900/30 px-3 py-1 rounded-full">٢٠ ر.س</span>
-            </div>
-            <button class="order-btn w-full text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center mt-3">
-              <i class="fas fa-shopping-cart ml-1"></i> اطلب الآن
-            </button>
-          </div>
-        </div>
-        
-        <!-- البقلاوة -->
-        <div class="meal-card card bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden category-desserts" data-id="8">
-          <div class="relative">
-            <img src="https://images.unsplash.com/photo-1587918842454-870dbd7f6168?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="البقلاوة" class="meal-img w-full">
-            <div class="meal-overlay"></div>
-            <div class="meal-rating">
-              <i class="fas fa-star text-yellow-400 mr-1"></i> 4.5
-            </div>
-          </div>
-          <div class="p-5">
-            <div class="flex justify-between items-start">
-              <div>
-                <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-1">البقلاوة التركية</h3>
-                <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">طبقات رقيقة من العجين مع الجوز المطحون، مغطاة بشربات حلو وفستق</p>
-              </div>
-              <span class="text-lg font-bold text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-900/30 px-3 py-1 rounded-full">٢٥ ر.س</span>
-            </div>
-            <button class="order-btn w-full text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center mt-3">
-              <i class="fas fa-shopping-cart ml-1"></i> اطلب الآن
-            </button>
-          </div>
-        </div>
-        
-        <!-- عصير التمر الهندي -->
-        <div class="meal-card card bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden category-drinks" data-id="9">
-          <div class="relative">
-            <img src="https://images.unsplash.com/photo-1600271886742-f049cd451bba?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="عصير التمر الهندي" class="meal-img w-full">
+            <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="سلطة الزبادي" class="meal-img w-full">
             <div class="meal-overlay"></div>
             <div class="meal-rating">
               <i class="fas fa-star text-yellow-400 mr-1"></i> 4.4
@@ -531,10 +369,10 @@
           <div class="p-5">
             <div class="flex justify-between items-start">
               <div>
-                <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-1">عصير التمر الهندي</h3>
-                <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">مصنوع من ثمار التمر الهندي الطبيعية مع القليل من السكر</p>
+                <h3 class="text-xl font-bold text-gray-800 mb-1">سلطة الزبادي اليمنية</h3>
+                <p class="text-gray-600 text-sm mb-3">زبادي طازج مع الثوم والبقدونس والزيت الزيتون</p>
               </div>
-              <span class="text-lg font-bold text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-900/30 px-3 py-1 rounded-full">١٢ ر.س</span>
+              <span class="text-lg font-bold text-yellow-600 bg-yellow-50 px-3 py-1 rounded-full">١٥ ر.س</span>
             </div>
             <button class="order-btn w-full text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center mt-3">
               <i class="fas fa-shopping-cart ml-1"></i> اطلب الآن
@@ -547,19 +385,19 @@
   
   <!-- Order Modal -->
   <div id="order-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden z-50">
-    <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 max-w-md w-full relative">
-      <button class="close-modal absolute top-4 right-4 text-2xl text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white">
+    <div class="bg-white rounded-2xl p-8 max-w-md w-full relative">
+      <button class="close-modal absolute top-4 right-4 text-2xl text-gray-500 hover:text-gray-800">
         <i class="fas fa-times"></i>
       </button>
-      <h2 class="text-2xl font-bold mb-6 text-gray-800 dark:text-white">طلب وجبة</h2>
+      <h2 class="text-2xl font-bold mb-6 text-gray-800">طلب وجبة</h2>
       
       <div class="grid md:grid-cols-1 gap-6">
         <div class="rounded-xl overflow-hidden shadow-lg">
           <img id="modal-meal-img" src="" alt="صورة الوجبة" class="w-full h-64 object-cover">
           <div class="p-4">
-            <h3 id="modal-meal-name" class="text-xl font-bold text-gray-800 dark:text-white mb-1">اسم الوجبة</h3>
-            <p id="modal-meal-desc" class="text-gray-600 dark:text-gray-300 mb-2">وصف الوجبة</p>
-            <p class="text-lg font-bold text-orange-600 dark:text-orange-400 mb-4" id="modal-meal-price">السعر</p>
+            <h3 id="modal-meal-name" class="text-xl font-bold text-gray-800 mb-1">اسم الوجبة</h3>
+            <p id="modal-meal-desc" class="text-gray-600 mb-2">وصف الوجبة</p>
+            <p class="text-lg font-bold text-yellow-600 mb-4" id="modal-meal-price">السعر</p>
           </div>
         </div>
         
@@ -567,46 +405,46 @@
           <input type="hidden" id="meal-id">
           
           <div class="mb-4">
-            <label class="block text-gray-700 dark:text-gray-300 mb-2">الكمية</label>
-            <input type="number" id="quantity" value="1" min="1" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white" required>
+            <label class="block text-gray-700 mb-2">الكمية</label>
+            <input type="number" id="quantity" value="1" min="1" class="w-full px-4 py-2 border border-gray-300 rounded-lg" required>
           </div>
           
           <div class="mb-4">
-            <label class="block text-gray-700 dark:text-gray-300 mb-2">الإضافات / الملاحظات</label>
-            <input type="text" id="additions" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white" placeholder="مثل: إزالة البصل، إضافة جبنة إضافية...">
+            <label class="block text-gray-700 mb-2">الإضافات / الملاحظات</label>
+            <input type="text" id="additions" class="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="مثل: إزالة البصل، إضافة جبنة إضافية...">
           </div>
           
           <div class="mb-6">
-            <label class="block text-gray-700 dark:text-gray-300 mb-2">وسيلة التوصيل</label>
+            <label class="block text-gray-700 mb-2">وسيلة التوصيل</label>
             <div class="grid grid-cols-2 gap-4">
-              <label class="flex items-center p-3 border border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:border-orange-500 dark:hover:border-orange-400 bg-white dark:bg-gray-700">
-                <input type="radio" name="delivery-method" value="pickup" checked class="form-radio text-orange-500">
-                <span class="mr-3 text-gray-800 dark:text-white">استلام من المطعم</span>
+              <label class="flex items-center p-3 border border-gray-300 rounded-lg cursor-pointer hover:border-yellow-500 bg-white">
+                <input type="radio" name="delivery-method" value="pickup" checked class="form-radio text-yellow-500">
+                <span class="mr-3">استلام من المطعم</span>
               </label>
-              <label class="flex items-center p-3 border border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:border-orange-500 dark:hover:border-orange-400 bg-white dark:bg-gray-700">
-                <input type="radio" name="delivery-method" value="delivery" class="form-radio text-orange-500">
-                <span class="mr-3 text-gray-800 dark:text-white">توصيل إلى العنوان</span>
+              <label class="flex items-center p-3 border border-gray-300 rounded-lg cursor-pointer hover:border-yellow-500 bg-white">
+                <input type="radio" name="delivery-method" value="delivery" class="form-radio text-yellow-500">
+                <span class="mr-3">توصيل إلى العنوان</span>
               </label>
             </div>
           </div>
           
           <div id="delivery-address" class="mb-4 hidden">
-            <label class="block text-gray-700 dark:text-gray-300 mb-2">العنوان الكامل</label>
-            <input type="text" id="address" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white" placeholder="أدخل العنوان بالتفصيل">
+            <label class="block text-gray-700 mb-2">العنوان الكامل</label>
+            <input type="text" id="address" class="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="أدخل العنوان بالتفصيل">
           </div>
           
           <div class="mb-4">
-            <label class="block text-gray-700 dark:text-gray-300 mb-2">الاسم الكامل</label>
-            <input type="text" id="name" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white" required>
+            <label class="block text-gray-700 mb-2">الاسم الكامل</label>
+            <input type="text" id="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg" required>
           </div>
           
           <div class="mb-6">
-            <label class="block text-gray-700 dark:text-gray-300 mb-2">رقم الجوال</label>
-            <input type="tel" id="phone" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white" required>
+            <label class="block text-gray-700 mb-2">رقم الجوال</label>
+            <input type="tel" id="phone" class="w-full px-4 py-2 border border-gray-300 rounded-lg" required>
           </div>
           
           <div class="flex space-x-4 space-x-reverse">
-            <button type="button" id="cancel-order" class="flex-1 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-white font-bold py-2 px-4 rounded-lg">
+            <button type="button" id="cancel-order" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg">
               إلغاء
             </button>
             <button type="submit" class="flex-1 order-btn text-white font-bold py-2 px-4 rounded-lg">
@@ -620,199 +458,66 @@
   
   <!-- Order Confirmation -->
   <div id="order-confirmation" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden z-50">
-    <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 max-w-md text-center w-full">
-      <button class="close-modal absolute top-4 right-4 text-2xl text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white">
+    <div class="bg-white rounded-2xl p-8 max-w-md text-center w-full">
+      <button class="close-modal absolute top-4 right-4 text-2xl text-gray-500 hover:text-gray-800">
         <i class="fas fa-times"></i>
       </button>
-      <div class="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+      <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
         <i class="fas fa-check text-green-500 text-2xl"></i>
       </div>
-      <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-2">تم تأكيد طلبك!</h2>
-      <p class="text-gray-600 dark:text-gray-300 mb-6">سيتم إعداد طلبك قريباً. شكرًا لاختيارك مطعمنا!</p>
+      <h2 class="text-2xl font-bold text-gray-800 mb-2">تم تأكيد طلبك!</h2>
+      <p class="text-gray-600 mb-6">سيتم إعداد طلبك قريباً. شكرًا لاختيارك مطعمنا!</p>
       
-      <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg mb-6 text-right">
-        <p class="mb-2"><span class="font-bold text-gray-800 dark:text-white">الوجبة:</span> <span id="confirmation-item" class="text-gray-800 dark:text-white"></span></p>
-        <p class="mb-2"><span class="font-bold text-gray-800 dark:text-white">الكمية:</span> <span id="confirmation-quantity" class="text-gray-800 dark:text-white"></span></p>
-        <p class="mb-2"><span class="font-bold text-gray-800 dark:text-white">الإجمالي:</span> <span id="confirmation-total" class="text-gray-800 dark:text-white"></span></p>
-        <p class="mb-2"><span class="font-bold text-gray-800 dark:text-white">وسيلة التوصيل:</span> <span id="confirmation-delivery" class="text-gray-800 dark:text-white"></span></p>
+      <div class="bg-gray-50 p-4 rounded-lg mb-6 text-right">
+        <p class="mb-2"><span class="font-bold text-gray-800">الوجبة:</span> <span id="confirmation-item" class="text-gray-800"></span></p>
+        <p class="mb-2"><span class="font-bold text-gray-800">الكمية:</span> <span id="confirmation-quantity" class="text-gray-800"></span></p>
+        <p class="mb-2"><span class="font-bold text-gray-800">الإجمالي:</span> <span id="confirmation-total" class="text-gray-800"></span></p>
+        <p class="mb-2"><span class="font-bold text-gray-800">وسيلة التوصيل:</span> <span id="confirmation-delivery" class="text-gray-800"></span></p>
       </div>
       
-      <button id="continue-shopping" class="bg-amber-500 dark:bg-amber-600 hover:bg-amber-600 dark:hover:bg-amber-700 text-white font-bold py-3 px-6 rounded-lg w-full">
+      <button id="continue-shopping" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-lg w-full">
         متابعة التسوق
       </button>
     </div>
   </div>
   
-  <!-- Admin Login Modal -->
-  <div id="admin-login-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden z-50">
-    <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 max-w-md w-full relative">
-      <button class="close-modal absolute top-4 right-4 text-2xl text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white">
-        <i class="fas fa-times"></i>
-      </button>
-      <h2 class="text-2xl font-bold mb-6 text-center text-gray-800 dark:text-white">تسجيل دخول المشرف</h2>
-      <div id="login-error" class="bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 p-3 rounded mb-4 hidden">
-        اسم المستخدم أو كلمة المرور غير صحيحة
-      </div>
-      <form id="admin-login-form">
-        <div class="mb-4">
-          <label class="block text-gray-700 dark:text-gray-300 mb-2" for="admin-username">اسم المستخدم</label>
-          <input type="text" id="admin-username" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white" required>
-        </div>
-        <div class="mb-6">
-          <label class="block text-gray-700 dark:text-gray-300 mb-2" for="admin-password">كلمة المرور</label>
-          <input type="password" id="admin-password" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white" required>
-        </div>
-        <button type="submit" class="w-full order-btn text-white font-bold py-3 rounded-lg">
-          تسجيل الدخول
-        </button>
-      </form>
-    </div>
-  </div>
-  
-  <!-- Admin Dashboard -->
-  <div id="admin-dashboard" class="bg-gray-50 dark:bg-gray-900 min-h-screen py-8 hidden">
-    <div class="container mx-auto px-4">
-      <div class="flex justify-between items-center mb-8">
-        <h1 class="text-3xl font-bold text-gray-800 dark:text-white">لوحة تحكم المطعم</h1>
-        <div class="flex items-center space-x-4">
-          <span class="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 px-3 py-1 rounded-full">مفعل</span>
-          <button id="admin-logout" class="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white">
-            <i class="fas fa-sign-out-alt mr-2"></i> تسجيل الخروج
-          </button>
-        </div>
-      </div>
-      
-      <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 card">
-          <div class="flex items-center">
-            <div class="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-lg mr-4">
-              <i class="fas fa-shopping-cart text-blue-600 dark:text-blue-400 text-xl"></i>
-            </div>
-            <div>
-              <h3 class="text-gray-500 dark:text-gray-400 text-sm">إجمالي الطلبات</h3>
-              <p class="text-2xl font-bold text-gray-800 dark:text-white" id="total-orders">0</p>
-            </div>
-          </div>
-        </div>
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 card">
-          <div class="flex items-center">
-            <div class="bg-green-100 dark:bg-green-900/30 p-3 rounded-lg mr-4">
-              <i class="fas fa-check-circle text-green-600 dark:text-green-400 text-xl"></i>
-            </div>
-            <div>
-              <h3 class="text-gray-500 dark:text-gray-400 text-sm">تم التوصيل</h3>
-              <p class="text-2xl font-bold text-gray-800 dark:text-white" id="delivered-orders">0</p>
-            </div>
-          </div>
-        </div>
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 card">
-          <div class="flex items-center">
-            <div class="bg-yellow-100 dark:bg-yellow-900/30 p-3 rounded-lg mr-4">
-              <i class="fas fa-clock text-yellow-600 dark:text-yellow-400 text-xl"></i>
-            </div>
-            <div>
-              <h3 class="text-gray-500 dark:text-gray-400 text-sm">تحت التحضير</h3>
-              <p class="text-2xl font-bold text-gray-800 dark:text-white" id="preparing-orders">0</p>
-            </div>
-          </div>
-        </div>
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 card">
-          <div class="flex items-center">
-            <div class="bg-red-100 dark:bg-red-900/30 p-3 rounded-lg mr-4">
-              <i class="fas fa-exclamation-circle text-red-600 dark:text-red-400 text-xl"></i>
-            </div>
-            <div>
-              <h3 class="text-gray-500 dark:text-gray-400 text-sm">طلبات جديدة</h3>
-              <p class="text-2xl font-bold text-gray-800 dark:text-white" id="new-orders">0</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden card">
-        <div class="p-6 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
-          <h2 class="text-xl font-bold text-gray-800 dark:text-white">إدارة الطلبات</h2>
-          <div class="flex space-x-2">
-            <button id="export-orders" class="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-lg text-sm flex items-center">
-              <i class="fas fa-file-export mr-2"></i> تصدير
-            </button>
-            <button id="refresh-orders" class="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-lg text-sm">
-              <i class="fas fa-sync-alt"></i>
-            </button>
-          </div>
-        </div>
-        
-        <div class="overflow-x-auto">
-          <table class="min-w-full">
-            <thead class="bg-gray-50 dark:bg-gray-700">
-              <tr>
-                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">رقم الطلب</th>
-                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">العميل</th>
-                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">الطلب</th>
-                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">الوقت</th>
-                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">الحالة</th>
-                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">الإجراءات</th>
-              </tr>
-            </thead>
-            <tbody id="orders-table" class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-              <!-- سيتم تعبئة الطلبات هنا -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-      
-      <div class="mt-8 bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 card">
-        <div class="flex justify-between items-center mb-6">
-          <h2 class="text-xl font-bold text-gray-800 dark:text-white">إدارة القائمة</h2>
-          <button id="add-menu-item" class="bg-amber-500 dark:bg-amber-600 hover:bg-amber-600 dark:hover:bg-amber-700 text-white px-4 py-2 rounded-lg flex items-center">
-            <i class="fas fa-plus mr-2"></i> إضافة وجبة
-          </button>
-        </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="menu-management">
-          <!-- سيتم تعبئة واجهة إدارة القائمة هنا -->
-        </div>
-      </div>
-    </div>
-  </div>
-  
   <!-- About Us -->
-  <section id="about" class="py-16 bg-white dark:bg-gray-800">
+  <section id="about" class="py-16 bg-white">
     <div class="container mx-auto px-4">
       <div class="flex flex-col md:flex-row items-center">
         <div class="md:w-1/2 mb-8 md:mb-0">
           <div class="relative rounded-xl overflow-hidden shadow-xl">
-            <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="فريق المطبخ" class="w-full h-auto" style="min-height: 400px; object-fit: cover;">
+            <img src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="فريق المطبخ اليمني" class="w-full h-auto" style="min-height: 400px; object-fit: cover;">
             <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
             <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
-              <h3 class="text-xl font-bold mb-2">فريقنا من الطهاة المحترفين</h3>
+              <h3 class="text-xl font-bold mb-2">فريقنا من الطهاة اليمنيين المحترفين</h3>
               <p class="text-gray-200">نعمل بجد لتقديم أفضل النكهات لكم</p>
             </div>
           </div>
         </div>
         <div class="md:w-1/2 md:pr-12">
-          <h2 class="text-3xl font-bold mb-6 text-gray-800 dark:text-white">من نحن</h2>
-          <p class="text-lg text-gray-600 dark:text-gray-300 mb-4">
-            نحن مطعم "لذيذ"، نقدم أشهى المأكولات العربية الأصيلة منذ أكثر من 15 عامًا.
+          <h2 class="text-3xl font-bold mb-6 text-gray-800">من نحن</h2>
+          <p class="text-lg text-gray-600 mb-4">
+            نحن مطعم "اليمني"، نقدم أشهى المأكولات اليمنية الأصيلة منذ أكثر من 10 سنوات.
           </p>
-          <p class="text-lg text-gray-600 dark:text-gray-300 mb-4">
+          <p class="text-lg text-gray-600 mb-4">
             نستخدم فقط أجود المكونات الطازجة، ونطبخ كل وجبة بعناية فائقة، لأن رضاكم هو شغفنا.
           </p>
-          <p class="text-lg text-gray-600 dark:text-gray-300 mb-6">
+          <p class="text-lg text-gray-600 mb-6">
             نؤمن أن الطعام ليس مجرد وجبة، بل تجربة ثقافية وعاطفية نتشاركها معكم كل يوم.
           </p>
           <div class="flex space-x-6 space-x-reverse">
             <div class="text-center">
-              <span class="block text-3xl font-bold text-orange-600 dark:text-orange-400">15+</span>
-              <span class="text-sm text-gray-500 dark:text-gray-400">سنة خبرة</span>
+              <span class="block text-3xl font-bold text-yellow-600">10+</span>
+              <span class="text-sm text-gray-500">سنة خبرة</span>
             </div>
             <div class="text-center">
-              <span class="block text-3xl font-bold text-orange-600 dark:text-orange-400">10K+</span>
-              <span class="text-sm text-gray-500 dark:text-gray-400">عميل راضٍ</span>
+              <span class="block text-3xl font-bold text-yellow-600">5K+</span>
+              <span class="text-sm text-gray-500">عميل راضٍ</span>
             </div>
             <div class="text-center">
-              <span class="block text-3xl font-bold text-orange-600 dark:text-orange-400">50+</span>
-              <span class="text-sm text-gray-500 dark:text-gray-400">وصفة أصيلة</span>
+              <span class="block text-3xl font-bold text-yellow-600">30+</span>
+              <span class="text-sm text-gray-500">وصفة أصيلة</span>
             </div>
           </div>
         </div>
@@ -821,28 +526,28 @@
   </section>
   
   <!-- Contact Us -->
-  <section id="contact" class="py-16 bg-gray-100 dark:bg-gray-900">
+  <section id="contact" class="py-16 bg-gray-100">
     <div class="container mx-auto px-4">
       <div class="text-center mb-12">
-        <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-4">اتصل بنا</h2>
-        <p class="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">لأي استفسارات أو اقتراحات، لا تتردد في التواصل معنا في أي وقت</p>
+        <h2 class="text-3xl font-bold text-gray-800 mb-4">اتصل بنا</h2>
+        <p class="text-gray-600 max-w-2xl mx-auto">لأي استفسارات أو اقتراحات، لا تتردد في التواصل معنا في أي وقت</p>
       </div>
       
       <div class="grid md:grid-cols-2 gap-10">
         <!-- Contact Form -->
-        <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-md card">
+        <div class="bg-white p-8 rounded-xl shadow-md">
           <form id="contact-form">
             <div class="mb-5">
-              <label class="block text-gray-700 dark:text-gray-300 font-medium mb-2" for="name">الاسم الكامل</label>
-              <input type="text" id="name" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" required>
+              <label class="block text-gray-700 font-medium mb-2" for="name">الاسم الكامل</label>
+              <input type="text" id="name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
             </div>
             <div class="mb-5">
-              <label class="block text-gray-700 dark:text-gray-300 font-medium mb-2" for="phone">رقم الجوال</label>
-              <input type="tel" id="phone" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" required>
+              <label class="block text-gray-700 font-medium mb-2" for="phone">رقم الجوال</label>
+              <input type="tel" id="phone" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
             </div>
             <div class="mb-5">
-              <label class="block text-gray-700 dark:text-gray-300 font-medium mb-2" for="message">الرسالة</label>
-              <textarea id="message" rows="5" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500" required></textarea>
+              <label class="block text-gray-700 font-medium mb-2" for="message">الرسالة</label>
+              <textarea id="message" rows="5" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" required></textarea>
             </div>
             <button type="submit" class="w-full order-btn text-white font-bold py-3 rounded-lg text-lg hover:shadow-lg transform hover:scale-105 transition">
               إرسال الرسالة
@@ -853,55 +558,55 @@
         <!-- Contact Info -->
         <div class="space-y-8">
           <div class="flex items-start space-x-4 space-x-reverse">
-            <div class="bg-orange-100 dark:bg-orange-900/30 p-3 rounded-full">
-              <i class="fas fa-map-marker-alt text-orange-600 dark:text-orange-400"></i>
+            <div class="bg-yellow-100 p-3 rounded-full">
+              <i class="fas fa-map-marker-alt text-yellow-600"></i>
             </div>
             <div>
-              <h3 class="text-xl font-bold text-gray-800 dark:text-white">موقعنا</h3>
-              <p class="text-gray-600 dark:text-gray-300">الرياض، شارع التخصصي، بجانب مستشفى الملك فيصل</p>
+              <h3 class="text-xl font-bold text-gray-800">موقعنا</h3>
+              <p class="text-gray-600">الرياض، شارع التخصصي، بجانب مستشفى الملك فيصل</p>
             </div>
           </div>
           <div class="flex items-start space-x-4 space-x-reverse">
-            <div class="bg-orange-100 dark:bg-orange-900/30 p-3 rounded-full">
-              <i class="fas fa-phone-alt text-orange-600 dark:text-orange-400"></i>
+            <div class="bg-yellow-100 p-3 rounded-full">
+              <i class="fas fa-phone-alt text-yellow-600"></i>
             </div>
             <div>
-              <h3 class="text-xl font-bold text-gray-800 dark:text-white">الهاتف</h3>
-              <p class="text-gray-600 dark:text-gray-300">920000000</p>
+              <h3 class="text-xl font-bold text-gray-800">الهاتف</h3>
+              <p class="text-gray-600">920000000</p>
             </div>
           </div>
           <div class="flex items-start space-x-4 space-x-reverse">
-            <div class="bg-orange-100 dark:bg-orange-900/30 p-3 rounded-full">
-              <i class="fas fa-envelope text-orange-600 dark:text-orange-400"></i>
+            <div class="bg-yellow-100 p-3 rounded-full">
+              <i class="fas fa-envelope text-yellow-600"></i>
             </div>
             <div>
-              <h3 class="text-xl font-bold text-gray-800 dark:text-white">البريد الإلكتروني</h3>
-              <p class="text-gray-600 dark:text-gray-300">info@ladhed.com</p>
+              <h3 class="text-xl font-bold text-gray-800">البريد الإلكتروني</h3>
+              <p class="text-gray-600">info@alyamani.com</p>
             </div>
           </div>
           <div class="flex items-start space-x-4 space-x-reverse">
-            <div class="bg-orange-100 dark:bg-orange-900/30 p-3 rounded-full">
-              <i class="fas fa-clock text-orange-600 dark:text-orange-400"></i>
+            <div class="bg-yellow-100 p-3 rounded-full">
+              <i class="fas fa-clock text-yellow-600"></i>
             </div>
             <div>
-              <h3 class="text-xl font-bold text-gray-800 dark:text-white">ساعات العمل</h3>
-              <p class="text-gray-600 dark:text-gray-300">من الأحد إلى الخميس: 10:00 - 23:00</p>
-              <p class="text-gray-600 dark:text-gray-300">الجمعة والسبت: 12:00 - 01:00</p>
+              <h3 class="text-xl font-bold text-gray-800">ساعات العمل</h3>
+              <p class="text-gray-600">من الأحد إلى الخميس: 10:00 - 23:00</p>
+              <p class="text-gray-600">الجمعة والسبت: 12:00 - 01:00</p>
             </div>
           </div>
           
           <!-- Social Media -->
           <div class="flex space-x-4 space-x-reverse mt-6">
-            <a href="#" class="bg-gray-800 dark:bg-gray-700 text-white p-3 rounded-full hover:bg-orange-600 dark:hover:bg-orange-400 transition">
+            <a href="#" class="bg-gray-800 text-white p-3 rounded-full hover:bg-yellow-600 transition">
               <i class="fab fa-facebook-f"></i>
             </a>
-            <a href="#" class="bg-gray-800 dark:bg-gray-700 text-white p-3 rounded-full hover:bg-orange-600 dark:hover:bg-orange-400 transition">
+            <a href="#" class="bg-gray-800 text-white p-3 rounded-full hover:bg-yellow-600 transition">
               <i class="fab fa-twitter"></i>
             </a>
-            <a href="#" class="bg-gray-800 dark:bg-gray-700 text-white p-3 rounded-full hover:bg-orange-600 dark:hover:bg-orange-400 transition">
+            <a href="#" class="bg-gray-800 text-white p-3 rounded-full hover:bg-yellow-600 transition">
               <i class="fab fa-instagram"></i>
             </a>
-            <a href="#" class="bg-gray-800 dark:bg-gray-700 text-white p-3 rounded-full hover:bg-orange-600 dark:hover:bg-orange-400 transition">
+            <a href="#" class="bg-gray-800 text-white p-3 rounded-full hover:bg-yellow-600 transition">
               <i class="fab fa-tiktok"></i>
             </a>
           </div>
@@ -909,7 +614,7 @@
       </div>
       
       <!-- Map -->
-      <div class="mt-12 bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg h-80 card">
+      <div class="mt-12 bg-white rounded-xl overflow-hidden shadow-lg h-80">
         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3455.507295797217!2d46.68119027437092!3d24.71355227155872!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e2f03890d1b0555%3A0x9c571a9d0d1b0e1e!2sRiyadh!5e0!3m2!1sen!2ssa!4v1700000000000!5m2!1sen!2ssa" 
           width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" class="rounded-xl"></iframe>
       </div>
@@ -917,17 +622,15 @@
   </section>
   
   <!-- Footer -->
-  <footer class="bg-gray-800 dark:bg-gray-900 text-white py-10">
+  <footer class="bg-gray-800 text-white py-10">
     <div class="container mx-auto px-4">
       <div class="flex flex-col md:flex-row justify-between">
         <div class="mb-6 md:mb-0">
           <div class="flex items-center space-x-3 space-x-reverse">
-            <div class="bg-orange-500 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl">
-              ل
-            </div>
-            <h2 class="text-2xl font-bold">مطعم لذيذ</h2>
+            <img src="https://images.unsplash.com/photo-1590301157504-3c66c5a1d429?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" alt="شعار المطعم" class="w-12 h-12 rounded-full object-cover">
+            <h2 class="text-2xl font-bold">مطعم اليمني</h2>
           </div>
-          <p class="mt-3 text-gray-400">نقدم أشهى المأكولات العربية بجودة عالية وسرعة في التوصيل.</p>
+          <p class="mt-3 text-gray-400">نقدم أشهى المأكولات اليمنية بجودة عالية وسرعة في التوصيل.</p>
         </div>
         <div class="grid grid-cols-2 md:grid-cols-3 gap-8">
           <div>
@@ -967,9 +670,9 @@
           </div>
         </div>
       </div>
-      <hr class="border-gray-700 dark:border-gray-800 my-8">
+      <hr class="border-gray-700 my-8">
       <div class="text-center text-gray-500">
-        &copy; 2025 مطعم لذيذ. جميع الحقوق محفوظة.
+        &copy; 2025 مطعم اليمني. جميع الحقوق محفوظة.
       </div>
     </div>
   </footer>
@@ -978,64 +681,64 @@
     // 1. بيانات الموقع
     const restaurantData = {
       name: {
-        ar: "مطعم لذيذ",
-        en: "Delicious Restaurant"
+        ar: "مطعم اليمني",
+        en: "Al Yamani Restaurant"
       },
       menu: [
         {
           id: 1,
-          name: { ar: "المنسف الأردني", en: "Jordanian Mansaf" },
+          name: { ar: "المندي اليمني", en: "Yemeni Mandi" },
           description: { 
-            ar: "وجبة تقليدية من لحم الضأن والرز مع الصلصة اللبنة واللبن، مغطاة بخبز الشراك", 
-            en: "Traditional dish of lamb and rice with yogurt sauce, covered with shrak bread"
+            ar: "أرز مطبوخ على الطريقة اليمنية مع الدجاج أو اللحم وخلطة بهارات فريدة", 
+            en: "Rice cooked Yemeni style with chicken or meat and special spice blend"
           },
-          price: 45,
+          price: 40,
           category: "main",
-          image: "https://images.unsplash.com/photo-1596797038008-6e7d10e6f8d1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+          image: "https://images.unsplash.com/photo-1590301157504-3c66c5a1d429?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
           rating: 4.8
         },
         {
           id: 2,
-          name: { ar: "المقلوبة الفلسطينية", en: "Palestinian Maqluba" },
+          name: { ar: "الفاهيتا اليمنية", en: "Yemeni Fahita" },
           description: { 
-            ar: "أرز مطبوخ مع الدجاج والخضروات، يقدم بطبق مقلوب مع مكسرات محمصة", 
-            en: "Rice cooked with chicken and vegetables, served upside down with toasted nuts"
+            ar: "لحم مفروم مع البصل والطماطم والبهارات اليمنية المميزة", 
+            en: "Ground meat with onions, tomatoes, and special Yemeni spices"
           },
-          price: 38,
+          price: 35,
           category: "main",
-          image: "https://images.unsplash.com/photo-1519996529931-22113992317a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+          image: "https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
           rating: 4.6
         },
         {
           id: 3,
-          name: { ar: "الكبسة السعودية", en: "Saudi Kabsa" },
+          name: { ar: "المفلفل اليمني", en: "Yemeni Mafalfel" },
           description: { 
-            ar: "أرز مطبوخ مع الدجاج أو اللحم، مضاف إليه خليط من التوابل العربية المميزة", 
-            en: "Rice cooked with chicken or meat, with a special blend of Arabic spices"
+            ar: "لحم مفروم مع البصل والطماطم والبهارات اليمنية المميزة", 
+            en: "Ground meat with onions, tomatoes, and special Yemeni spices"
           },
-          price: 36,
+          price: 38,
           category: "main",
-          image: "https://images.unsplash.com/photo-1607532924163-16e2cf6982d7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+          image: "https://images.unsplash.com/photo-1604908178395-5d2a1ad69e96?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
           rating: 4.7
         },
         {
           id: 4,
-          name: { ar: "الفلافل المصرية", en: "Egyptian Falafel" },
+          name: { ar: "المطبق اليمني", en: "Yemeni Mataz" },
           description: { 
-            ar: "فلافل مقرمشة مصنوعة من الحمص والبهارات، تقدم مع الخبز والسلطات", 
-            en: "Crispy falafel made from chickpeas and spices, served with bread and salads"
+            ar: "عجينة مفرودة مع اللحم والبيض والبصل، مقرمشة ومغطاة بالزيت", 
+            en: "Flatbread with meat, eggs, and onions, crispy and covered with oil"
           },
-          price: 15,
-          category: "starters",
-          image: "https://images.unsplash.com/photo-1603048886790-7be99b59960e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+          price: 32,
+          category: "main",
+          image: "https://images.unsplash.com/photo-1596797038008-6e7d10e6f8d1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
           rating: 4.5
         },
         {
           id: 5,
-          name: { ar: "الكنافة النابلسية", en: "Nablusi Knafeh" },
+          name: { ar: "الكنافة اليمنية", en: "Yemeni Knafeh" },
           description: { 
-            ar: "كنافة مقرمشة مع جبنة عكاوية وقشطة، مغطاة بشربات حلو وفستق مطحون", 
-            en: "Crispy knafeh with Akkawi cheese and cream, covered with sweet syrup and ground pistachios"
+            ar: "كنافة مقرمشة مع جبنة وقشطة، مغطاة بشربات حلو وفستق مطحون", 
+            en: "Crispy knafeh with cheese and cream, covered with sweet syrup and ground pistachios"
           },
           price: 22,
           category: "desserts",
@@ -1044,222 +747,22 @@
         },
         {
           id: 6,
-          name: { ar: "المعمول السوري", en: "Syrian Ma'amoul" },
+          name: { ar: "سلطة الزبادي اليمنية", en: "Yemeni Laban Salad" },
           description: { 
-            ar: "معمول تقليدي مع التمر أو الجوز، مغطى بسمسم ناعم، مذاق لا يقاوم", 
-            en: "Traditional ma'amoul with dates or walnuts, covered with fine sesame, irresistible taste"
+            ar: "زبادي طازج مع الثوم والبقدونس والزيت الزيتون", 
+            en: "Fresh yogurt with garlic, parsley, and olive oil"
           },
-          price: 18,
-          category: "desserts",
-          image: "https://images.unsplash.com/photo-1589373093958-0c33a3e211f8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-          rating: 4.7
-        },
-        {
-          id: 7,
-          name: { ar: "طبقات بالقشطة", en: "Muhallabia Layers" },
-          description: { 
-            ar: "طبقات مقرمشة مع طبقات من القشطة والكريمة، مغطاة بشربات حلو وفستق", 
-            en: "Crispy layers with cream and custard, covered with sweet syrup and pistachios"
-          },
-          price: 20,
-          category: "desserts",
-          image: "https://images.unsplash.com/photo-1598208859668-38d5e450c9f3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-          rating: 4.6
-        },
-        {
-          id: 8,
-          name: { ar: "البقلاوة التركية", en: "Turkish Baklava" },
-          description: { 
-            ar: "طبقات رقيقة من العجين مع الجوز المطحون، مغطاة بشربات حلو وفستق", 
-            en: "Thin layers of dough with ground walnuts, covered with sweet syrup and pistachios"
-          },
-          price: 25,
-          category: "desserts",
-          image: "https://images.unsplash.com/photo-1587918842454-870dbd7f6168?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-          rating: 4.5
-        },
-        {
-          id: 9,
-          name: { ar: "عصير التمر الهندي", en: "Tamarind Juice" },
-          description: { 
-            ar: "مصنوع من ثمار التمر الهندي الطبيعية مع القليل من السكر", 
-            en: "Made from natural tamarind fruit with a little sugar"
-          },
-          price: 12,
-          category: "drinks",
-          image: "https://images.unsplash.com/photo-1600271886742-f049cd451bba?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+          price: 15,
+          category: "starters",
+          image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
           rating: 4.4
         }
       ],
       orders: [],
-      currentLang: 'ar',
-      darkMode: false
+      currentLang: 'ar'
     };
     
-    // 2. وظائف الترجمة
-    const translations = {
-      ar: {
-        home: "الرئيسية",
-        menu: "القائمة",
-        offers: "العروض",
-        about: "من نحن",
-        contact: "اتصل بنا",
-        orderNow: "اطلب الآن",
-        allCategories: "جميع الأصناف",
-        starters: "مقبلات",
-        main: "وجبات رئيسية",
-        drinks: "مشروبات",
-        desserts: "حلويات",
-        quantity: "الكمية",
-        additions: "الإضافات / الملاحظات",
-        deliveryMethod: "وسيلة التوصيل",
-        pickup: "استلام من المطعم",
-        delivery: "توصيل إلى العنوان",
-        address: "العنوان الكامل",
-        name: "الاسم الكامل",
-        phone: "رقم الجوال",
-        confirmOrder: "تأكيد الطلب",
-        cancel: "إلغاء",
-        orderConfirmed: "تم تأكيد طلبك!",
-        orderConfirmation: "سيتم إعداد طلبك قريباً. شكرًا لاختيارك مطعمنا!",
-        item: "الوجبة",
-        total: "الإجمالي",
-        continueShopping: "متابعة التسوق",
-        adminLogin: "تسجيل دخول المشرف",
-        username: "اسم المستخدم",
-        password: "كلمة المرور",
-        login: "تسجيل الدخول",
-        dashboard: "لوحة التحكم",
-        orders: "الطلبات",
-        new: "جديد",
-        preparing: "تحت التحضير",
-        delivered: "تم التوصيل",
-        status: "الحالة",
-        customer: "العميل",
-        time: "الوقت",
-        actions: "الإجراءات",
-        changeStatus: "تغيير الحالة",
-        export: "تصدير",
-        menuManagement: "إدارة القائمة",
-        addItem: "إضافة وجبة",
-        edit: "تعديل",
-        delete: "حذف",
-        save: "حفظ",
-        send: "إرسال",
-        messageSent: "تم إرسال الرسالة بنجاح!",
-        error: "حدث خطأ، يرجى المحاولة مرة أخرى"
-      },
-      en: {
-        home: "Home",
-        menu: "Menu",
-        offers: "Offers",
-        about: "About Us",
-        contact: "Contact Us",
-        orderNow: "Order Now",
-        allCategories: "All Categories",
-        starters: "Starters",
-        main: "Main Courses",
-        drinks: "Drinks",
-        desserts: "Desserts",
-        quantity: "Quantity",
-        additions: "Additions / Notes",
-        deliveryMethod: "Delivery Method",
-        pickup: "Pickup from Restaurant",
-        delivery: "Home Delivery",
-        address: "Full Address",
-        name: "Full Name",
-        phone: "Phone Number",
-        confirmOrder: "Confirm Order",
-        cancel: "Cancel",
-        orderConfirmed: "Your order has been confirmed!",
-        orderConfirmation: "Your order will be prepared shortly. Thank you for choosing our restaurant!",
-        item: "Item",
-        total: "Total",
-        continueShopping: "Continue Shopping",
-        adminLogin: "Admin Login",
-        username: "Username",
-        password: "Password",
-        login: "Login",
-        dashboard: "Dashboard",
-        orders: "Orders",
-        new: "New",
-        preparing: "Preparing",
-        delivered: "Delivered",
-        status: "Status",
-        customer: "Customer",
-        time: "Time",
-        actions: "Actions",
-        changeStatus: "Change Status",
-        export: "Export",
-        menuManagement: "Menu Management",
-        addItem: "Add Item",
-        edit: "Edit",
-        delete: "Delete",
-        save: "Save",
-        send: "Send",
-        messageSent: "Message sent successfully!",
-        error: "An error occurred, please try again"
-      }
-    };
-    
-    // 3. تهيئة الموقع
-    document.addEventListener('DOMContentLoaded', function() {
-      // تحقق من تفضيلات المستخدم للوضع المظلم
-      checkDarkModePreference();
-      
-      // تحميل القائمة
-      loadMenu();
-      
-      // تعيين معالجات الأحداث
-      setupEventListeners();
-      
-      // تحقق من تسجيل الدخول
-      checkAdminLogin();
-    });
-    
-    // 4. التحقق من تفضيلات المستخدم للوضع المظلم
-    function checkDarkModePreference() {
-      // تحقق من localStorage
-      const savedDarkMode = localStorage.getItem('darkMode');
-      if (savedDarkMode === 'true') {
-        enableDarkMode();
-      } else {
-        disableDarkMode();
-      }
-    }
-    
-    // 5. تفعيل الوضع المظلم
-    function enableDarkMode() {
-      document.documentElement.classList.add('dark-mode');
-      document.documentElement.classList.remove('light-mode');
-      document.body.classList.add('dark');
-      document.body.classList.remove('light');
-      restaurantData.darkMode = true;
-      localStorage.setItem('darkMode', 'true');
-      document.getElementById('theme-toggle').innerHTML = '<i class="fas fa-sun"></i>';
-    }
-    
-    // 6. تعطيل الوضع المظلم
-    function disableDarkMode() {
-      document.documentElement.classList.add('light-mode');
-      document.documentElement.classList.remove('dark-mode');
-      document.body.classList.add('light');
-      document.body.classList.remove('dark');
-      restaurantData.darkMode = false;
-      localStorage.setItem('darkMode', 'false');
-      document.getElementById('theme-toggle').innerHTML = '<i class="fas fa-moon"></i>';
-    }
-    
-    // 7. تبديل الوضع المظلم
-    function toggleDarkMode() {
-      if (restaurantData.darkMode) {
-        disableDarkMode();
-      } else {
-        enableDarkMode();
-      }
-    }
-    
-    // 8. تحميل القائمة
+    // 2. تحميل القائمة
     function loadMenu(category = 'all') {
       const mealsGrid = document.getElementById('meals-grid');
       mealsGrid.innerHTML = '';
@@ -1270,7 +773,7 @@
       
       filteredMeals.forEach(item => {
         const mealElement = document.createElement('div');
-        mealElement.className = "meal-card card bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden";
+        mealElement.className = "meal-card card bg-white rounded-xl shadow-md overflow-hidden";
         mealElement.dataset.id = item.id;
         mealElement.dataset.category = item.category;
         
@@ -1285,13 +788,13 @@
           <div class="p-5">
             <div class="flex justify-between items-start">
               <div>
-                <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-1">${item.name[restaurantData.currentLang]}</h3>
-                <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">${item.description[restaurantData.currentLang]}</p>
+                <h3 class="text-xl font-bold text-gray-800 mb-1">${item.name[restaurantData.currentLang]}</h3>
+                <p class="text-gray-600 text-sm mb-3">${item.description[restaurantData.currentLang]}</p>
               </div>
-              <span class="text-lg font-bold text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-900/30 px-3 py-1 rounded-full">${item.price} ر.س</span>
+              <span class="text-lg font-bold text-yellow-600 bg-yellow-50 px-3 py-1 rounded-full">${item.price} ر.س</span>
             </div>
             <button class="order-btn w-full text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center mt-3">
-              <i class="fas fa-shopping-cart ml-1"></i> ${translations[restaurantData.currentLang].orderNow}
+              <i class="fas fa-shopping-cart ml-1"></i> اطلب الآن
             </button>
           </div>
         `;
@@ -1300,29 +803,17 @@
       
       // تحديث أزرار الفئات
       document.querySelectorAll('.menu-category').forEach(btn => {
-        btn.classList.remove('bg-orange-500', 'text-white', 'active-cat');
-        btn.classList.add('bg-white', 'dark:bg-gray-800', 'text-gray-700', 'dark:text-gray-300');
+        btn.classList.remove('bg-yellow-500', 'text-white', 'active-cat');
+        btn.classList.add('bg-white', 'text-gray-700');
         if (btn.dataset.category === category) {
-          btn.classList.remove('bg-white', 'dark:bg-gray-800', 'text-gray-700', 'dark:text-gray-300');
-          btn.classList.add('bg-orange-500', 'text-white', 'active-cat');
+          btn.classList.remove('bg-white', 'text-gray-700');
+          btn.classList.add('bg-yellow-500', 'text-white', 'active-cat');
         }
       });
     }
     
-    // 9. إعداد معالجات الأحداث
+    // 3. إعداد معالجات الأحداث
     function setupEventListeners() {
-      // تبديل اللغة
-      document.getElementById('lang-toggle').addEventListener('click', function() {
-        restaurantData.currentLang = restaurantData.currentLang === 'ar' ? 'en' : 'ar';
-        this.textContent = restaurantData.currentLang === 'ar' ? 'EN' : 'AR';
-        updateLanguage();
-      });
-      
-      // تبديل الوضع المظلم
-      document.getElementById('theme-toggle').addEventListener('click', function() {
-        toggleDarkMode();
-      });
-      
       // فئات القائمة
       document.querySelectorAll('.menu-category').forEach(btn => {
         btn.addEventListener('click', function() {
@@ -1343,19 +834,22 @@
       // إغلاق النوافذ المنبثقة
       document.querySelectorAll('.close-modal').forEach(btn => {
         btn.addEventListener('click', function() {
-          document.querySelectorAll('.modal').forEach(modal => {
-            modal.classList.add('hidden');
-          });
+          document.getElementById('order-modal').classList.add('hidden');
+          document.getElementById('order-confirmation').classList.add('hidden');
         });
       });
       
       // إغلاق النموذج عند النقر خارج المحتوى
-      document.querySelectorAll('.modal').forEach(modal => {
-        modal.addEventListener('click', function(e) {
-          if (e.target === this) {
-            this.classList.add('hidden');
-          }
-        });
+      document.getElementById('order-modal').addEventListener('click', function(e) {
+        if (e.target === this) {
+          this.classList.add('hidden');
+        }
+      });
+      
+      document.getElementById('order-confirmation').addEventListener('click', function(e) {
+        if (e.target === this) {
+          this.classList.add('hidden');
+        }
       });
       
       // إرسال نموذج الطلب
@@ -1374,43 +868,6 @@
         document.getElementById('order-confirmation').classList.add('hidden');
       });
       
-      // تسجيل دخول المشرف
-      document.getElementById('admin-login-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        adminLogin();
-      });
-      
-      // تسجيل خروج المشرف
-      document.getElementById('admin-logout').addEventListener('click', function() {
-        adminLogout();
-      });
-      
-      // نموذج الاتصال
-      document.getElementById('contact-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        submitContactForm();
-      });
-      
-      // إضافة وجبة
-      document.getElementById('add-menu-item').addEventListener('click', function() {
-        openAddMenuItemModal();
-      });
-      
-      // تصدير الطلبات
-      document.getElementById('export-orders').addEventListener('click', function() {
-        exportOrders();
-      });
-      
-      // تحديث الطلبات
-      document.getElementById('refresh-orders').addEventListener('click', function() {
-        loadOrders();
-      });
-      
-      // زر طلب الآن في القسم العلوي
-      document.getElementById('hero-order-btn').addEventListener('click', function() {
-        document.getElementById('menu').scrollIntoView({ behavior: 'smooth' });
-      });
-      
       // تغيير وسيلة التوصيل
       document.querySelectorAll('input[name="delivery-method"]').forEach(radio => {
         radio.addEventListener('change', function() {
@@ -1422,9 +879,14 @@
           }
         });
       });
+      
+      // زر طلب الآن في القسم العلوي
+      document.getElementById('hero-order-btn').addEventListener('click', function() {
+        document.getElementById('menu').scrollIntoView({ behavior: 'smooth' });
+      });
     }
     
-    // 10. وظائف النظام
+    // 4. وظائف النظام
     
     // فتح نموذج الطلب
     function openOrderModal(mealId) {
@@ -1478,546 +940,28 @@
       document.getElementById('confirmation-quantity').textContent = quantity;
       document.getElementById('confirmation-total').textContent = (item.price * quantity) + ' ر.س';
       document.getElementById('confirmation-delivery').textContent = 
-        deliveryMethod === 'pickup' ? 
-        translations[restaurantData.currentLang].pickup : 
-        translations[restaurantData.currentLang].delivery;
+        deliveryMethod === 'pickup' ? 'استلام من المطعم' : 'توصيل إلى العنوان';
       
       // إغلاق نموذج الطلب وعرض تأكيد الطلب
       document.getElementById('order-modal').classList.add('hidden');
       document.getElementById('order-confirmation').classList.remove('hidden');
-      
-      // إظهار إشعار في لوحة التحكم
-      showNotification();
-      
-      // تحديث لوحة التحكم إذا كانت مفتوحة
-      if (!document.getElementById('admin-dashboard').classList.contains('hidden')) {
-        loadOrders();
-        updateDashboardStats();
-      }
     }
     
-    // عرض الإشعار
-    function showNotification() {
-      const notification = document.createElement('div');
-      notification.className = 'notification';
-      notification.innerHTML = `
-        <i class="fas fa-bell mr-2"></i> طلب جديد وصل!
-      `;
-      document.body.appendChild(notification);
-      
-      setTimeout(() => {
-        notification.remove();
-      }, 3000);
-    }
+    // نموذج الاتصال
+    document.getElementById('contact-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('تم إرسال الرسالة بنجاح!');
+      this.reset();
+    });
     
-    // تحديث لوحة التحكم
-    function loadOrders() {
-      const ordersTable = document.getElementById('orders-table');
-      ordersTable.innerHTML = '';
-      
-      if (restaurantData.orders.length === 0) {
-        ordersTable.innerHTML = `
-          <tr>
-            <td colspan="6" class="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
-              لا توجد طلبات حالياً
-            </td>
-          </tr>
-        `;
-        return;
-      }
-      
-      // عكس الطلبات لعرض أحدث الطلبات أولاً
-      const reversedOrders = [...restaurantData.orders].reverse();
-      
-      reversedOrders.forEach(order => {
-        const orderRow = document.createElement('tr');
-        orderRow.innerHTML = `
-          <td class="px-6 py-4 whitespace-nowrap">#${order.id.toString().substr(-6)}</td>
-          <td class="px-6 py-4">
-            <div class="font-medium text-gray-800 dark:text-white">${order.name}</div>
-            <div class="text-gray-500 dark:text-gray-400">${order.phone}</div>
-          </td>
-          <td class="px-6 py-4">
-            <div class="text-gray-800 dark:text-white">${order.item.name}</div>
-            <div class="text-gray-500 dark:text-gray-400 text-sm">${order.quantity} × ${order.item.price} ر.س</div>
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap text-gray-800 dark:text-white">${order.timestamp}</td>
-          <td class="px-6 py-4 whitespace-nowrap">
-            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full status-${order.status} ${order.status === 'new' ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200' : order.status === 'preparing' ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-200' : 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200'}">
-              ${translations[restaurantData.currentLang][order.status]}
-            </span>
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-            <select class="status-change border border-gray-300 dark:border-gray-600 rounded px-2 py-1 bg-white dark:bg-gray-700 text-gray-800 dark:text-white" data-id="${order.id}">
-              <option value="new" ${order.status === 'new' ? 'selected' : ''}>${translations[restaurantData.currentLang].new}</option>
-              <option value="preparing" ${order.status === 'preparing' ? 'selected' : ''}>${translations[restaurantData.currentLang].preparing}</option>
-              <option value="delivered" ${order.status === 'delivered' ? 'selected' : ''}>${translations[restaurantData.currentLang].delivered}</option>
-            </select>
-          </td>
-        `;
-        ordersTable.appendChild(orderRow);
-      });
-      
-      // إضافة معالجات الأحداث لقائمة تغيير الحالة
-      document.querySelectorAll('.status-change').forEach(select => {
-        select.addEventListener('change', function() {
-          const orderId = this.dataset.id;
-          const newStatus = this.value;
-          updateOrderStatus(orderId, newStatus);
-        });
-      });
-    }
-    
-    // تحديث حالة الطلب
-    function updateOrderStatus(orderId, newStatus) {
-      const orderIndex = restaurantData.orders.findIndex(order => order.id == orderId);
-      if (orderIndex !== -1) {
-        restaurantData.orders[orderIndex].status = newStatus;
-        loadOrders();
-        updateDashboardStats();
-      }
-    }
-    
-    // تحديث إحصائيات لوحة التحكم
-    function updateDashboardStats() {
-      const totalOrders = restaurantData.orders.length;
-      const deliveredOrders = restaurantData.orders.filter(o => o.status === 'delivered').length;
-      const preparingOrders = restaurantData.orders.filter(o => o.status === 'preparing').length;
-      const newOrders = restaurantData.orders.filter(o => o.status === 'new').length;
-      
-      document.getElementById('total-orders').textContent = totalOrders;
-      document.getElementById('delivered-orders').textContent = deliveredOrders;
-      document.getElementById('preparing-orders').textContent = preparingOrders;
-      document.getElementById('new-orders').textContent = newOrders;
-    }
-    
-    // تسجيل دخول المشرف
-    function adminLogin() {
-      const username = document.getElementById('admin-username').value;
-      const password = document.getElementById('admin-password').value;
-      
-      // في النظام الحقيقي، سيكون هذا اتصال بـ API
-      if (username === 'admin' && password === 'password123') {
-        // حفظ حالة تسجيل الدخول في localStorage
-        localStorage.setItem('adminLoggedIn', 'true');
-        
-        // إخفاء نموذج تسجيل الدخول وعرض لوحة التحكم
-        document.getElementById('admin-login-modal').classList.add('hidden');
-        document.getElementById('admin-dashboard').classList.remove('hidden');
-        
-        // تحميل البيانات
-        loadOrders();
-        updateDashboardStats();
-        loadMenuManagement();
-      } else {
-        document.getElementById('login-error').classList.remove('hidden');
-      }
-    }
-    
-    // تسجيل خروج المشرف
-    function adminLogout() {
-      // إزالة حالة تسجيل الدخول
-      localStorage.removeItem('adminLoggedIn');
-      
-      // إخفاء لوحة التحكم وعرض نموذج تسجيل الدخول
-      document.getElementById('admin-dashboard').classList.add('hidden');
-      document.getElementById('admin-login-modal').classList.remove('hidden');
-      
-      // إعادة تعيين حقول تسجيل الدخول
-      document.getElementById('admin-username').value = '';
-      document.getElementById('admin-password').value = '';
-      document.getElementById('login-error').classList.add('hidden');
-    }
-    
-    // التحقق من تسجيل الدخول
-    function checkAdminLogin() {
-      // التحقق من حالة تسجيل الدخول
-      const isLoggedIn = localStorage.getItem('adminLoggedIn') === 'true';
-      if (isLoggedIn) {
-        document.getElementById('admin-dashboard').classList.remove('hidden');
-        loadOrders();
-        updateDashboardStats();
-        loadMenuManagement();
-      } else {
-        document.getElementById('admin-dashboard').classList.add('hidden');
-        document.getElementById('admin-login-modal').classList.add('hidden');
-      }
-    }
-    
-    // تحميل واجهة إدارة القائمة
-    function loadMenuManagement() {
-      const menuManagement = document.getElementById('menu-management');
-      menuManagement.innerHTML = '';
-      
-      restaurantData.menu.forEach(item => {
-        const menuItem = document.createElement('div');
-        menuItem.className = "bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden card";
-        menuItem.innerHTML = `
-          <img src="${item.image}" alt="${item.name[restaurantData.currentLang]}" class="w-full h-48 object-cover">
-          <div class="p-4">
-            <div class="flex justify-between items-start">
-              <div>
-                <h3 class="text-lg font-bold text-gray-800 dark:text-white">${item.name[restaurantData.currentLang]}</h3>
-                <p class="text-gray-600 dark:text-gray-300 text-sm mt-1">${item.description[restaurantData.currentLang]}</p>
-              </div>
-              <span class="bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-200 font-bold px-3 py-1 rounded-full">
-                ${item.price} ر.س
-              </span>
-            </div>
-            <div class="mt-4 flex justify-between">
-              <button class="text-amber-600 dark:text-amber-400 hover:text-amber-900 dark:hover:text-amber-200 edit-item" data-id="${item.id}">
-                <i class="fas fa-edit"></i>
-              </button>
-              <button class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-200 delete-item" data-id="${item.id}">
-                <i class="fas fa-trash-alt"></i>
-              </button>
-            </div>
-          </div>
-        `;
-        menuManagement.appendChild(menuItem);
-      });
-      
-      // إضافة معالجات الأحداث
-      document.querySelectorAll('.edit-item').forEach(btn => {
-        btn.addEventListener('click', function() {
-          const itemId = this.dataset.id;
-          openEditMenuItemModal(itemId);
-        });
-      });
-      
-      document.querySelectorAll('.delete-item').forEach(btn => {
-        btn.addEventListener('click', function() {
-          const itemId = this.dataset.id;
-          deleteMenuItem(itemId);
-        });
-      });
-    }
-    
-    // فتح نموذج إضافة وجبة
-    function openAddMenuItemModal() {
-      const modal = document.createElement('div');
-      modal.className = "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50";
-      modal.id = "add-menu-item-modal";
-      
-      modal.innerHTML = `
-        <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 max-w-md w-full relative">
-          <button class="close-modal absolute top-4 right-4 text-2xl text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white">
-            <i class="fas fa-times"></i>
-          </button>
-          <h2 class="text-2xl font-bold mb-6 text-gray-800 dark:text-white">إضافة وجبة جديدة</h2>
-          <form id="add-menu-item-form">
-            <div class="mb-4">
-              <label class="block text-gray-700 dark:text-gray-300 mb-2">اسم الوجبة (عربي)</label>
-              <input type="text" id="new-item-name-ar" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white" required>
-            </div>
-            <div class="mb-4">
-              <label class="block text-gray-700 dark:text-gray-300 mb-2">اسم الوجبة (إنجليزي)</label>
-              <input type="text" id="new-item-name-en" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white" required>
-            </div>
-            <div class="mb-4">
-              <label class="block text-gray-700 dark:text-gray-300 mb-2">الوصف (عربي)</label>
-              <textarea id="new-item-desc-ar" rows="3" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white" required></textarea>
-            </div>
-            <div class="mb-4">
-              <label class="block text-gray-700 dark:text-gray-300 mb-2">الوصف (إنجليزي)</label>
-              <textarea id="new-item-desc-en" rows="3" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white" required></textarea>
-            </div>
-            <div class="mb-4">
-              <label class="block text-gray-700 dark:text-gray-300 mb-2">السعر</label>
-              <input type="number" id="new-item-price" min="1" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white" required>
-            </div>
-            <div class="mb-6">
-              <label class="block text-gray-700 dark:text-gray-300 mb-2">الفئة</label>
-              <select id="new-item-category" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white" required>
-                <option value="starters">${translations[restaurantData.currentLang].starters}</option>
-                <option value="main">${translations[restaurantData.currentLang].main}</option>
-                <option value="drinks">${translations[restaurantData.currentLang].drinks}</option>
-                <option value="desserts">${translations[restaurantData.currentLang].desserts}</option>
-              </select>
-            </div>
-            <div class="mb-6">
-              <label class="block text-gray-700 dark:text-gray-300 mb-2">رابط الصورة</label>
-              <input type="url" id="new-item-image" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white" required value="https://images.unsplash.com/photo-1596797038008-6e7d10e6f8d1">
-            </div>
-            <div class="flex space-x-4 space-x-reverse">
-              <button type="button" id="cancel-add-item" class="flex-1 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-white font-bold py-2 px-4 rounded-lg">
-                ${translations[restaurantData.currentLang].cancel}
-              </button>
-              <button type="submit" class="flex-1 order-btn text-white font-bold py-2 px-4 rounded-lg">
-                ${translations[restaurantData.currentLang].save}
-              </button>
-            </div>
-          </form>
-        </div>
-      `;
-      
-      document.body.appendChild(modal);
-      
-      // إغلاق النموذج
-      document.querySelector('#add-menu-item-modal .close-modal').addEventListener('click', function() {
-        document.getElementById('add-menu-item-modal').remove();
-      });
-      
-      // إلغاء الإضافة
-      document.getElementById('cancel-add-item').addEventListener('click', function() {
-        document.getElementById('add-menu-item-modal').remove();
-      });
-      
-      // إرسال النموذج
-      document.getElementById('add-menu-item-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        addMenuItem();
-      });
-    }
-    
-    // إضافة وجبة جديدة
-    function addMenuItem() {
-      const newItem = {
-        id: Date.now(),
-        name: {
-          ar: document.getElementById('new-item-name-ar').value,
-          en: document.getElementById('new-item-name-en').value
-        },
-        description: {
-          ar: document.getElementById('new-item-desc-ar').value,
-          en: document.getElementById('new-item-desc-en').value
-        },
-        price: parseInt(document.getElementById('new-item-price').value),
-        category: document.getElementById('new-item-category').value,
-        image: document.getElementById('new-item-image').value
-      };
-      
-      restaurantData.menu.push(newItem);
-      loadMenuManagement();
-      document.getElementById('add-menu-item-modal').remove();
-      
-      // تحديث القائمة الرئيسية
+    // تحميل الموقع
+    document.addEventListener('DOMContentLoaded', function() {
+      // تحميل القائمة
       loadMenu();
-    }
-    
-    // فتح نموذج تعديل وجبة
-    function openEditMenuItemModal(itemId) {
-      const item = restaurantData.menu.find(item => item.id == itemId);
-      if (!item) return;
       
-      const modal = document.createElement('div');
-      modal.className = "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50";
-      modal.id = "edit-menu-item-modal";
-      
-      modal.innerHTML = `
-        <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 max-w-md w-full relative">
-          <button class="close-modal absolute top-4 right-4 text-2xl text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white">
-            <i class="fas fa-times"></i>
-          </button>
-          <h2 class="text-2xl font-bold mb-6 text-gray-800 dark:text-white">تعديل وجبة</h2>
-          <form id="edit-menu-item-form">
-            <input type="hidden" id="edit-item-id" value="${item.id}">
-            <div class="mb-4">
-              <label class="block text-gray-700 dark:text-gray-300 mb-2">اسم الوجبة (عربي)</label>
-              <input type="text" id="edit-item-name-ar" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white" required value="${item.name.ar}">
-            </div>
-            <div class="mb-4">
-              <label class="block text-gray-700 dark:text-gray-300 mb-2">اسم الوجبة (إنجليزي)</label>
-              <input type="text" id="edit-item-name-en" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white" required value="${item.name.en}">
-            </div>
-            <div class="mb-4">
-              <label class="block text-gray-700 dark:text-gray-300 mb-2">الوصف (عربي)</label>
-              <textarea id="edit-item-desc-ar" rows="3" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white" required>${item.description.ar}</textarea>
-            </div>
-            <div class="mb-4">
-              <label class="block text-gray-700 dark:text-gray-300 mb-2">الوصف (إنجليزي)</label>
-              <textarea id="edit-item-desc-en" rows="3" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white" required>${item.description.en}</textarea>
-            </div>
-            <div class="mb-4">
-              <label class="block text-gray-700 dark:text-gray-300 mb-2">السعر</label>
-              <input type="number" id="edit-item-price" min="1" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white" required value="${item.price}">
-            </div>
-            <div class="mb-6">
-              <label class="block text-gray-700 dark:text-gray-300 mb-2">الفئة</label>
-              <select id="edit-item-category" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white" required>
-                <option value="starters" ${item.category === 'starters' ? 'selected' : ''}>${translations[restaurantData.currentLang].starters}</option>
-                <option value="main" ${item.category === 'main' ? 'selected' : ''}>${translations[restaurantData.currentLang].main}</option>
-                <option value="drinks" ${item.category === 'drinks' ? 'selected' : ''}>${translations[restaurantData.currentLang].drinks}</option>
-                <option value="desserts" ${item.category === 'desserts' ? 'selected' : ''}>${translations[restaurantData.currentLang].desserts}</option>
-              </select>
-            </div>
-            <div class="mb-6">
-              <label class="block text-gray-700 dark:text-gray-300 mb-2">رابط الصورة</label>
-              <input type="url" id="edit-item-image" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white" required value="${item.image}">
-            </div>
-            <div class="flex space-x-4 space-x-reverse">
-              <button type="button" id="cancel-edit-item" class="flex-1 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-white font-bold py-2 px-4 rounded-lg">
-                ${translations[restaurantData.currentLang].cancel}
-              </button>
-              <button type="submit" class="flex-1 order-btn text-white font-bold py-2 px-4 rounded-lg">
-                ${translations[restaurantData.currentLang].save}
-              </button>
-            </div>
-          </form>
-        </div>
-      `;
-      
-      document.body.appendChild(modal);
-      
-      // إغلاق النموذج
-      document.querySelector('#edit-menu-item-modal .close-modal').addEventListener('click', function() {
-        document.getElementById('edit-menu-item-modal').remove();
-      });
-      
-      // إلغاء التعديل
-      document.getElementById('cancel-edit-item').addEventListener('click', function() {
-        document.getElementById('edit-menu-item-modal').remove();
-      });
-      
-      // إرسال النموذج
-      document.getElementById('edit-menu-item-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        saveEditedItem();
-      });
-    }
-    
-    // حفظ التعديلات على الوجبة
-    function saveEditedItem() {
-      const itemId = document.getElementById('edit-item-id').value;
-      const itemIndex = restaurantData.menu.findIndex(item => item.id == itemId);
-      
-      if (itemIndex !== -1) {
-        restaurantData.menu[itemIndex] = {
-          id: parseInt(itemId),
-          name: {
-            ar: document.getElementById('edit-item-name-ar').value,
-            en: document.getElementById('edit-item-name-en').value
-          },
-          description: {
-            ar: document.getElementById('edit-item-desc-ar').value,
-            en: document.getElementById('edit-item-desc-en').value
-          },
-          price: parseInt(document.getElementById('edit-item-price').value),
-          category: document.getElementById('edit-item-category').value,
-          image: document.getElementById('edit-item-image').value
-        };
-        
-        loadMenuManagement();
-        document.getElementById('edit-menu-item-modal').remove();
-        
-        // تحديث القائمة الرئيسية
-        loadMenu();
-      }
-    }
-    
-    // حذف وجبة
-    function deleteMenuItem(itemId) {
-      if (confirm('هل أنت متأكد من رغبتك في حذف هذه الوجبة؟')) {
-        restaurantData.menu = restaurantData.menu.filter(item => item.id != itemId);
-        loadMenuManagement();
-        loadMenu();
-      }
-    }
-    
-    // إرسال نموذج الاتصال
-    function submitContactForm() {
-      const name = document.getElementById('name').value;
-      const phone = document.getElementById('phone').value;
-      const message = document.getElementById('message').value;
-      
-      // في النظام الحقيقي، سيتم إرسال البيانات إلى الخادم
-      console.log('تم إرسال الرسالة:', { name, phone, message });
-      
-      // عرض رسالة تأكيد
-      alert(translations[restaurantData.currentLang].messageSent);
-      
-      // إعادة تعيين النموذج
-      document.getElementById('contact-form').reset();
-    }
-    
-    // تصدير الطلبات
-    function exportOrders() {
-      // في النظام الحقيقي، سيتم إنشاء ملف Excel أو PDF
-      alert('جاري تصدير الطلبات...');
-      
-      // مثال على البيانات التي سيتم تصديرها
-      const exportData = restaurantData.orders.map(order => ({
-        'رقم الطلب': order.id,
-        'العميل': order.name,
-        'الهاتف': order.phone,
-        'الوجبة': order.item.name,
-        'الكمية': order.quantity,
-        'الإجمالي': order.quantity * order.item.price,
-        'الحالة': translations[restaurantData.currentLang][order.status],
-        'الوقت': order.timestamp
-      }));
-      
-      console.log('بيانات التصدير:', exportData);
-    }
-    
-    // تحديث اللغة
-    function updateLanguage() {
-      // تحديث النصوص في الواجهة
-      document.querySelector('h1').textContent = restaurantData.name[restaurantData.currentLang];
-      document.querySelectorAll('.nav-link')[0].textContent = translations[restaurantData.currentLang].home;
-      document.querySelectorAll('.nav-link')[1].textContent = translations[restaurantData.currentLang].menu;
-      document.querySelectorAll('.nav-link')[2].textContent = translations[restaurantData.currentLang].offers;
-      document.querySelectorAll('.nav-link')[3].textContent = translations[restaurantData.currentLang].about;
-      document.querySelectorAll('.nav-link')[4].textContent = translations[restaurantData.currentLang].contact;
-      
-      // تحديث عناوين الأقسام
-      document.querySelector('#offers h2').textContent = translations[restaurantData.currentLang].offers;
-      document.querySelector('#menu h2').textContent = translations[restaurantData.currentLang].menu;
-      document.querySelector('#about h2').textContent = translations[restaurantData.currentLang].about;
-      document.querySelector('#contact h2').textContent = translations[restaurantData.currentLang].contact;
-      
-      // تحديث زر اللغة
-      document.getElementById('lang-toggle').textContent = restaurantData.currentLang === 'ar' ? 'EN' : 'AR';
-      
-      // تحديث أزرار الفئات
-      document.querySelector('[data-category="all"]').textContent = translations[restaurantData.currentLang].allCategories;
-      document.querySelector('[data-category="starters"]').textContent = translations[restaurantData.currentLang].starters;
-      document.querySelector('[data-category="main"]').textContent = translations[restaurantData.currentLang].main;
-      document.querySelector('[data-category="drinks"]').textContent = translations[restaurantData.currentLang].drinks;
-      document.querySelector('[data-category="desserts"]').textContent = translations[restaurantData.currentLang].desserts;
-      
-      // تحديث نموذج الاتصال
-      document.querySelector('label[for="name"]').textContent = translations[restaurantData.currentLang].name;
-      document.querySelector('label[for="phone"]').textContent = translations[restaurantData.currentLang].phone;
-      document.querySelector('label[for="message"]').textContent = translations[restaurantData.currentLang].message;
-      document.querySelector('#contact-form button[type="submit"]').textContent = translations[restaurantData.currentLang].send;
-      
-      // تحديث نموذج الطلب
-      document.querySelectorAll('.order-btn').forEach(btn => {
-        btn.innerHTML = `<i class="fas fa-shopping-cart ml-1"></i> ${translations[restaurantData.currentLang].orderNow}`;
-      });
-      
-      document.querySelector('label[for="quantity"]').textContent = translations[restaurantData.currentLang].quantity;
-      document.querySelector('label[for="additions"]').textContent = translations[restaurantData.currentLang].additions;
-      document.querySelector('label[for="delivery-method"]').textContent = translations[restaurantData.currentLang].deliveryMethod;
-      document.querySelectorAll('label[for="address"]')[0].textContent = translations[restaurantData.currentLang].address;
-      document.querySelector('label[for="name"]').textContent = translations[restaurantData.currentLang].name;
-      document.querySelector('label[for="phone"]').textContent = translations[restaurantData.currentLang].phone;
-      document.getElementById('cancel-order').textContent = translations[restaurantData.currentLang].cancel;
-      document.querySelector('#order-form button[type="submit"]').textContent = translations[restaurantData.currentLang].confirmOrder;
-      
-      // تحديث نموذج تسجيل الدخول
-      document.querySelector('#admin-login-modal label[for="admin-username"]').textContent = translations[restaurantData.currentLang].username;
-      document.querySelector('#admin-login-modal label[for="admin-password"]').textContent = translations[restaurantData.currentLang].password;
-      document.querySelector('#admin-login-modal button[type="submit"]').textContent = translations[restaurantData.currentLang].login;
-      
-      // تحديث لوحة التحكم
-      document.querySelector('#admin-dashboard h1').textContent = translations[restaurantData.currentLang].dashboard;
-      document.querySelectorAll('#orders-table th')[0].textContent = translations[restaurantData.currentLang].orderID;
-      document.querySelectorAll('#orders-table th')[1].textContent = translations[restaurantData.currentLang].customer;
-      document.querySelectorAll('#orders-table th')[2].textContent = translations[restaurantData.currentLang].details;
-      document.querySelectorAll('#orders-table th')[3].textContent = translations[restaurantData.currentLang].time;
-      document.querySelectorAll('#orders-table th')[4].textContent = translations[restaurantData.currentLang].status;
-      document.querySelectorAll('#orders-table th')[5].textContent = translations[restaurantData.currentLang].actions;
-      document.getElementById('export-orders').innerHTML = `<i class="fas fa-file-export mr-2"></i> ${translations[restaurantData.currentLang].export}`;
-      
-      // تحديث واجهة إدارة القائمة
-      document.querySelector('#menu-management h2').textContent = translations[restaurantData.currentLang].menuManagement;
-      document.getElementById('add-menu-item').innerHTML = `<i class="fas fa-plus mr-2"></i> ${translations[restaurantData.currentLang].addItem}`;
-      
-      // إعادة تحميل القائمة
-      loadMenu();
-    }
+      // تعيين معالجات الأحداث
+      setupEventListeners();
+    });
   </script>
 </body>
 </html>
