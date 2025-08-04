@@ -1,473 +1,906 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>مطعم لذيذ - أفضل المأكولات العربية</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        :root {
-            --bg-primary: #f9fafb;
-            --bg-secondary: #ffffff;
-            --text-primary: #1f2937;
-            --text-secondary: #4b5563;
-            --accent-primary: #f97316;
-            --accent-secondary: #ea580c;
-            --card-bg: #ffffff;
-        }
-        
-        .dark-mode {
-            --bg-primary: #111827;
-            --bg-secondary: #1f2937;
-            --text-primary: #f3f4f6;
-            --text-secondary: #d1d5db;
-            --card-bg: #374151;
-        }
-        
-        body {
-            background-color: var(--bg-primary);
-            color: var(--text-primary);
-            transition: background-color 0.3s, color 0.3s;
-            font-family: 'Cairo', sans-serif;
-        }
-        
-        .dark-mode body {
-            background-color: var(--bg-primary);
-            color: var(--text-primary);
-        }
-        
-        .card {
-            background-color: var(--card-bg);
-            transition: all 0.3s;
-        }
-        
-        .dark-mode .card {
-            background-color: var(--card-bg);
-        }
-        
-        .meal-img {
-            height: 180px;
-            object-fit: cover;
-        }
-        
-        .meal-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        
-        .meal-card:hover .meal-overlay {
-            opacity: 1;
-        }
-        
-        .meal-rating {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 3px 8px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-        }
-        
-        .notification {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: #10b981;
-            color: white;
-            padding: 12px 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-            transform: translateX(150%);
-            animation: slideIn 0.5s forwards, slideOut 0.5s 2.5s forwards;
-        }
-        
-        @keyframes slideIn {
-            to { transform: translateX(0); }
-        }
-        
-        @keyframes slideOut {
-            to { transform: translateX(150%); }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>مطعم اليمني - قائمة الطعام اليمنية الأصيلة</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #eab308; /* اللون الذهبي اليمني */
+      --primary-dark: #ca8a04;
+      --secondary: #1e293b; /* الأزرق الداكن */
+      --light: #f8fafc;
+      --dark: #0f172a;
+      --accent: #f97316; /* البرتقالي للعروض */
+    }
+    
+    body {
+      background-color: var(--light);
+      color: var(--dark);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    .header-bg {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    }
+    
+    .category-card {
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .category-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
+    }
+    
+    .meal-img {
+      transition: transform 0.4s ease;
+      height: 200px;
+      object-fit: cover;
+    }
+    
+    .meal-card:hover .meal-img {
+      transform: scale(1.03);
+    }
+    
+    .order-btn {
+      background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+      transition: all 0.3s ease;
+    }
+    
+    .order-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
+    }
+    
+    .active-category {
+      color: var(--primary);
+      border-bottom: 3px solid var(--primary);
+      font-weight: bold;
+    }
+    
+    .category-badge {
+      background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+      color: white;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      margin-right: 5px;
+    }
+    
+    .meal-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .meal-card:hover .meal-overlay {
+      opacity: 1;
+    }
+    
+    .meal-rating {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 3px 8px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+    }
+    
+    .floating {
+      animation: floating 3s ease-in-out infinite;
+    }
+    
+    @keyframes floating {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+    }
+    
+    /* تصميم خاص لقائمة الطعام */
+    .menu-section {
+      padding: 4rem 0;
+    }
+    
+    .menu-category-title {
+      position: relative;
+      padding-bottom: 1rem;
+      margin-bottom: 2rem;
+    }
+    
+    .menu-category-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 70px;
+      height: 3px;
+      background: var(--primary);
+    }
+    
+    .menu-item {
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px dashed #e2e8f0;
+    }
+    
+    .menu-item:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    
+    .menu-item-img {
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .menu-price {
+      font-weight: bold;
+      color: var(--primary);
+      font-size: 1.25rem;
+    }
+    
+    .highlight {
+      background: linear-gradient(120deg, rgba(234, 179, 8, 0.15), transparent);
+      padding: 0.5rem;
+      border-radius: 8px;
+    }
+    
+    .ingredient-tag {
+      display: inline-block;
+      background: #f1f5f9;
+      color: #475569;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      margin: 2px;
+    }
+    
+    .spicy-level {
+      color: #e53e3e;
+      margin-right: 5px;
+    }
+    
+    .special-badge {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      background: var(--accent);
+      color: white;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 0.85rem;
+      z-index: 10;
+    }
+    
+    .print-btn {
+      background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s;
+    }
+    
+    .print-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+  </style>
 </head>
-<body class="transition-colors duration-300">
-    <!-- Header -->
-    <header class="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-3">
-            <div class="flex justify-between items-center">
-                <div class="flex items-center">
-                    <div class="bg-orange-500 text-white p-2 rounded-lg">
-                        <i class="fas fa-utensils text-2xl"></i>
-                    </div>
-                    <h1 class="text-2xl font-bold text-orange-600 dark:text-orange-400 mr-2">مطعم لذيذ</h1>
-                </div>
-                <div class="flex items-center space-x-4 space-x-reverse">
-                    <button id="theme-toggle" class="text-gray-600 dark:text-gray-300 hover:text-orange-500">
-                        <i class="fas fa-moon"></i>
-                    </button>
-                    <button id="cart-btn" class="relative text-gray-600 dark:text-gray-300 hover:text-orange-500">
-                        <i class="fas fa-shopping-cart text-xl"></i>
-                        <span id="cart-count" class="absolute -top-2 -right-2 bg-orange-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">0</span>
-                    </button>
-                    <button class="md:hidden text-gray-600 dark:text-gray-300">
-                        <i class="fas fa-bars text-xl"></i>
-                    </button>
-                </div>
-            </div>
-            <nav class="hidden md:flex justify-center space-x-8 space-x-reverse mt-4">
-                <a href="#home" class="text-orange-600 dark:text-orange-400 font-medium hover:text-orange-800 dark:hover:text-orange-300">الرئيسية</a>
-                <a href="#menu" class="text-gray-600 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400">القائمة</a>
-                <a href="#offers" class="text-gray-600 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400">العروض</a>
-                <a href="#about" class="text-gray-600 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400">من نحن</a>
-                <a href="#contact" class="text-gray-600 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400">اتصل بنا</a>
-            </nav>
-        </div>
-    </header>
-
-    <!-- Main Content -->
-    <main class="container mx-auto px-4 py-8">
-        <!-- Menu Section -->
-        <section id="menu" class="py-8">
-            <div class="text-center mb-8">
-                <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-4">قائمة الطعام</h2>
-                <p class="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">استكشف أطباقنا المميزة المعدة بأفضل المكونات الطازجة</p>
-            </div>
-
-            <!-- Categories Tabs -->
-            <div class="flex flex-wrap justify-center mb-6 space-x-2 space-x-reverse">
-                <button class="menu-category bg-orange-500 text-white px-4 py-1.5 rounded-full font-medium active-cat" data-category="all">جميع الأصناف</button>
-                <button class="menu-category text-gray-600 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 px-4 py-1.5 rounded-full" data-category="main">الأطباق الرئيسية</button>
-                <button class="menu-category text-gray-600 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 px-4 py-1.5 rounded-full" data-category="starters">المقبلات</button>
-                <button class="menu-category text-gray-600 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 px-4 py-1.5 rounded-full" data-category="drinks">المشروبات</button>
-                <button class="menu-category text-gray-600 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 px-4 py-1.5 rounded-full" data-category="desserts">الحلويات</button>
-            </div>
-
-            <!-- Menu Items -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                <!-- المنسف -->
-                <div class="meal-card card bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden category-main" data-id="1">
-                    <div class="relative">
-                        <img src="https://placehold.co/400x300/FFA500/FFFFFF?text=المنسف" alt="المنسف" class="meal-img w-full">
-                        <div class="meal-overlay"></div>
-                        <div class="meal-rating">
-                            <i class="fas fa-star text-yellow-400 mr-1"></i> 4.8
-                        </div>
-                    </div>
-                    <div class="p-4">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-1">المنسف</h3>
-                                <p class="text-gray-600 dark:text-gray-300 text-sm mb-2">وجبة تقليدية من لحم الضأن والرز مع الصلصة اللبنة واللبن، مغطاة بخبز الشراك</p>
-                            </div>
-                            <span class="text-lg font-bold text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-900/30 px-3 py-1 rounded-full">٤٥ ر.س</span>
-                        </div>
-                        <button class="order-btn w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center mt-2">
-                            <i class="fas fa-shopping-cart ml-1"></i> اطلب الآن
-                        </button>
-                    </div>
-                </div>
-
-                <!-- المقلوبة -->
-                <div class="meal-card card bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden category-main" data-id="2">
-                    <div class="relative">
-                        <img src="https://placehold.co/400x300/FFA500/FFFFFF?text=المقلوبة" alt="المقلوبة" class="meal-img w-full">
-                        <div class="meal-overlay"></div>
-                        <div class="meal-rating">
-                            <i class="fas fa-star text-yellow-400 mr-1"></i> 4.6
-                        </div>
-                    </div>
-                    <div class="p-4">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-1">المقلوبة الفلسطينية</h3>
-                                <p class="text-gray-600 dark:text-gray-300 text-sm mb-2">أرز مطبوخ مع الدجاج والخضروات، يقدم بطبق مقلوب مع مكسرات محمصة</p>
-                            </div>
-                            <span class="text-lg font-bold text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-900/30 px-3 py-1 rounded-full">٤٠ ر.س</span>
-                        </div>
-                        <button class="order-btn w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center mt-2">
-                            <i class="fas fa-shopping-cart ml-1"></i> اطلب الآن
-                        </button>
-                    </div>
-                </div>
-
-                <!-- الكبسة -->
-                <div class="meal-card card bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden category-main" data-id="3">
-                    <div class="relative">
-                        <img src="https://placehold.co/400x300/FFA500/FFFFFF?text=الكبسة" alt="الكبسة" class="meal-img w-full">
-                        <div class="meal-overlay"></div>
-                        <div class="meal-rating">
-                            <i class="fas fa-star text-yellow-400 mr-1"></i> 4.7
-                        </div>
-                    </div>
-                    <div class="p-4">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-1">الكبسة</h3>
-                                <p class="text-gray-600 dark:text-gray-300 text-sm mb-2">أرز مطبوخ مع اللحم أو الدجاج، مع خليط من التوابل التقليدية</p>
-                            </div>
-                            <span class="text-lg font-bold text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-900/30 px-3 py-1 rounded-full">٤٢ ر.س</span>
-                        </div>
-                        <button class="order-btn w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center mt-2">
-                            <i class="fas fa-shopping-cart ml-1"></i> اطلب الآن
-                        </button>
-                    </div>
-                </div>
-
-                <!-- الفلافل -->
-                <div class="meal-card card bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden category-starters" data-id="4">
-                    <div class="relative">
-                        <img src="https://placehold.co/400x300/FFA500/FFFFFF?text=الفلافل" alt="الفلافل" class="meal-img w-full">
-                        <div class="meal-overlay"></div>
-                        <div class="meal-rating">
-                            <i class="fas fa-star text-yellow-400 mr-1"></i> 4.5
-                        </div>
-                    </div>
-                    <div class="p-4">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-1">الفلافل</h3>
-                                <p class="text-gray-600 dark:text-gray-300 text-sm mb-2">كرات من الحمص المطحون مع البقدونس والثوم، مقلية حتى تصبح مقرمشة</p>
-                            </div>
-                            <span class="text-lg font-bold text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-900/30 px-3 py-1 rounded-full">١٥ ر.س</span>
-                        </div>
-                        <button class="order-btn w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center mt-2">
-                            <i class="fas fa-shopping-cart ml-1"></i> اطلب الآن
-                        </button>
-                    </div>
-                </div>
-
-                <!-- الكنافة -->
-                <div class="meal-card card bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden category-desserts" data-id="5">
-                    <div class="relative">
-                        <img src="https://placehold.co/400x300/FFA500/FFFFFF?text=الكنافة" alt="الكنافة" class="meal-img w-full">
-                        <div class="meal-overlay"></div>
-                        <div class="meal-rating">
-                            <i class="fas fa-star text-yellow-400 mr-1"></i> 4.9
-                        </div>
-                    </div>
-                    <div class="p-4">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-1">الكنافة النابلسية</h3>
-                                <p class="text-gray-600 dark:text-gray-300 text-sm mb-2">كنافة مقرمشة مع جبنة عكاوية وقشطة، مغطاة بشربات حلو وفستق مطحون</p>
-                            </div>
-                            <span class="text-lg font-bold text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-900/30 px-3 py-1 rounded-full">٢٢ ر.س</span>
-                        </div>
-                        <button class="order-btn w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center mt-2">
-                            <i class="fas fa-shopping-cart ml-1"></i> اطلب الآن
-                        </button>
-                    </div>
-                </div>
-
-                <!-- المعمول -->
-                <div class="meal-card card bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden category-desserts" data-id="6">
-                    <div class="relative">
-                        <img src="https://placehold.co/400x300/FFA500/FFFFFF?text=المعمول" alt="المعمول" class="meal-img w-full">
-                        <div class="meal-overlay"></div>
-                        <div class="meal-rating">
-                            <i class="fas fa-star text-yellow-400 mr-1"></i> 4.7
-                        </div>
-                    </div>
-                    <div class="p-4">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-1">المعمول السوري</h3>
-                                <p class="text-gray-600 dark:text-gray-300 text-sm mb-2">معمول تقليدي مع التمر أو الجوز، مغطى بسمسم ناعم، مذاق لا يقاوم</p>
-                            </div>
-                            <span class="text-lg font-bold text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-900/30 px-3 py-1 rounded-full">١٨ ر.س</span>
-                        </div>
-                        <button class="order-btn w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded-lg text-sm flex items-center justify-center mt-2">
-                            <i class="fas fa-shopping-cart ml-1"></i> اطلب الآن
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Order Modal -->
-    <div id="order-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden z-50">
-        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 max-w-md w-full relative">
-            <button class="close-modal absolute top-4 right-4 text-2xl text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white">
-                <i class="fas fa-times"></i>
-            </button>
-            <h2 class="text-2xl font-bold mb-6 text-gray-800 dark:text-white">طلب وجبة</h2>
-            <div class="rounded-xl overflow-hidden shadow-lg">
-                <img id="modal-meal-img" src="" alt="صورة الوجبة" class="w-full h-48 object-cover">
-                <div class="p-4">
-                    <h3 id="modal-meal-name" class="text-xl font-bold text-gray-800 dark:text-white mb-1">اسم الوجبة</h3>
-                    <p id="modal-meal-desc" class="text-gray-600 dark:text-gray-300 mb-2">وصف الوجبة</p>
-                    <p class="text-lg font-bold text-orange-600 dark:text-orange-400 mb-4" id="modal-meal-price">السعر</p>
-                </div>
-            </div>
-            <form id="order-form">
-                <input type="hidden" id="meal-id">
-                <div class="mb-4">
-                    <label class="block text-gray-700 dark:text-gray-300 mb-2">الكمية</label>
-                    <input type="number" id="quantity" min="1" value="1" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white">
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700 dark:text-gray-300 mb-2">الإضافات / ملاحظات</label>
-                    <textarea id="notes" rows="2" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white" placeholder="مثل: بدون فلفل، إضافات خاصة..."></textarea>
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700 dark:text-gray-300 mb-2">طريقة التوصيل</label>
-                    <select id="delivery-method" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white">
-                        <option value="pickup">استلام من المطعم</option>
-                        <option value="delivery">توصيل للمنزل</option>
-                    </select>
-                </div>
-                <div id="delivery-address" class="mb-4 hidden">
-                    <label class="block text-gray-700 dark:text-gray-300 mb-2">العنوان الكامل</label>
-                    <input type="text" id="address" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white" placeholder="الشارع، المنطقة، رقم المنزل">
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700 dark:text-gray-300 mb-2">الاسم الكامل</label>
-                    <input type="text" id="name" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white" required>
-                </div>
-                <div class="mb-6">
-                    <label class="block text-gray-700 dark:text-gray-300 mb-2">رقم الجوال</label>
-                    <input type="tel" id="phone" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white" required>
-                </div>
-                <div class="flex space-x-4 space-x-reverse">
-                    <button type="button" id="cancel-order" class="flex-1 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-white font-bold py-2 px-4 rounded-lg">إلغاء</button>
-                    <button type="submit" class="flex-1 bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-lg">تأكيد الطلب</button>
-                </div>
-            </form>
-        </div>
+<body class="bg-gray-50">
+  <!-- Header & Navigation -->
+  <header class="bg-white shadow-md sticky top-0 z-50">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+      <div class="flex items-center space-x-3 space-x-reverse">
+        <img src="/home/ubuntu/upload/search_images/olm6zxbKqI7O.jpg" alt="شعار المطعم اليمني" class="w-12 h-12 rounded-full object-cover">
+        <h1 class="text-2xl font-bold" style="color: var(--primary);">مطعم اليمني</h1>
+      </div>
+      <nav class="hidden md:flex space-x-8 space-x-reverse">
+        <a href="#menu" class="nav-link active-category">القائمة</a>
+        <a href="#about" class="nav-link">من نحن</a>
+        <a href="#contact" class="nav-link">اتصل بنا</a>
+      </nav>
+      <div class="flex items-center space-x-4 space-x-reverse">
+        <button class="print-btn" id="print-menu">
+          <i class="fas fa-print"></i> طباعة القائمة
+        </button>
+        <button id="lang-toggle" class="lang-switch text-sm px-3 py-1 rounded-full border border-gray-300 hover:bg-gray-100">EN</button>
+      </div>
     </div>
-
-    <!-- Confirmation Modal -->
-    <div id="confirmation-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden z-50">
-        <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 max-w-md w-full relative">
-            <button class="close-modal absolute top-4 right-4 text-2xl text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white">
-                <i class="fas fa-times"></i>
-            </button>
-            <div class="text-center">
-                <div class="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i class="fas fa-check-circle text-4xl text-green-500"></i>
-                </div>
-                <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-2">تم تأكيد طلبك!</h2>
-                <p class="text-gray-600 dark:text-gray-300 mb-6">سيتم إعداد طلبك قريباً. شكرًا لاختيارك مطعمنا!</p>
-                <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg mb-6 text-right">
-                    <p class="mb-2"><span class="font-bold text-gray-800 dark:text-white">الوجبة:</span> <span id="confirmation-item" class="text-gray-800 dark:text-white"></span></p>
-                    <p class="mb-2"><span class="font-bold text-gray-800 dark:text-white">الكمية:</span> <span id="confirmation-quantity" class="text-gray-800 dark:text-white"></span></p>
-                    <p class="mb-2"><span class="font-bold text-gray-800 dark:text-white">طريقة التوصيل:</span> <span id="confirmation-delivery" class="text-gray-800 dark:text-white"></span></p>
-                    <p><span class="font-bold text-gray-800 dark:text-white">المبلغ الكلي:</span> <span id="confirmation-total" class="text-orange-600 dark:text-orange-400 font-bold"></span></p>
-                </div>
-                <button id="close-confirmation" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-6 rounded-lg">إغلاق</button>
-            </div>
-        </div>
+  </header>
+  
+  <!-- Hero Section -->
+  <section id="home" class="header-bg text-white py-16">
+    <div class="container mx-auto px-4 text-center">
+      <h1 class="text-4xl md:text-5xl font-bold mb-4">قائمة الطعام اليمنية الأصيلة</h1>
+      <p class="text-xl mb-8 opacity-90 max-w-2xl mx-auto">استمتع بوجباتنا الطازجة المُعدة بحب وعناية من قبل أفضل الطهاة اليمنيين</p>
+      <a href="#menu" class="bg-white text-yellow-600 font-bold px-8 py-3 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition">
+        اكتشف القائمة
+      </a>
     </div>
+  </section>
+  
+  <!-- Menu Categories -->
+  <section class="py-6 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-wrap justify-center mb-6 space-x-2 space-x-reverse">
+        <button class="category-btn bg-yellow-500 text-white px-6 py-2 rounded-full font-medium active-category" data-category="all">
+          جميع الأصناف
+        </button>
+        <button class="category-btn bg-white text-gray-700 px-6 py-2 rounded-full font-medium hover:bg-gray-100" data-category="starters">
+          مقبلات
+        </button>
+        <button class="category-btn bg-white text-gray-700 px-6 py-2 rounded-full font-medium hover:bg-gray-100" data-category="main">
+          وجبات رئيسية
+        </button>
+        <button class="category-btn bg-white text-gray-700 px-6 py-2 rounded-full font-medium hover:bg-gray-100" data-category="drinks">
+          مشروبات
+        </button>
+        <button class="category-btn bg-white text-gray-700 px-6 py-2 rounded-full font-medium hover:bg-gray-100" data-category="desserts">
+          حلويات
+        </button>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Menu Section -->
+  <section id="menu" class="menu-section bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-10">
+        <h2 class="text-3xl font-bold text-gray-800 mb-4">قائمة الطعام اليمنية</h2>
+        <p class="text-gray-600 max-w-2xl mx-auto">استكشف أطباقنا المميزة المعدة بأفضل المكونات الطازجة</p>
+      </div>
+      
+      <!-- Traditional Yemeni Main Dishes -->
+      <div class="menu-category" data-category="main">
+        <h3 class="menu-category-title text-2xl font-bold text-gray-800">وجبات رئيسية</h3>
+        
+        <div class="grid md:grid-cols-2 gap-8">
+          <!-- Mandi -->
+          <div class="menu-item flex flex-col md:flex-row bg-white rounded-xl shadow-md overflow-hidden">
+            <div class="md:w-1/3 relative">
+              <span class="special-badge">الأكثر طلبًا</span>
+              <img src="/home/ubuntu/upload/search_images/DEptJgcnZVq4.jpg" alt="المندي اليمني" class="w-full h-48 object-cover menu-item-img">
+              <div class="meal-rating absolute bottom-2 right-2 bg-white px-2 py-1 rounded-full text-sm">
+                <i class="fas fa-star text-yellow-400 mr-1"></i> 4.8
+              </div>
+            </div>
+            <div class="md:w-2/3 p-5">
+              <div class="flex justify-between items-start">
+                <div>
+                  <h3 class="text-xl font-bold text-gray-800 mb-2">المندي اليمني</h3>
+                  <p class="text-gray-600 mb-3">أرز مطبوخ على الطريقة اليمنية مع الدجاج أو اللحم وخلطة بهارات فريدة</p>
+                  <div class="flex flex-wrap">
+                    <span class="ingredient-tag">أرز</span>
+                    <span class="ingredient-tag">لحم</span>
+                    <span class="ingredient-tag">بهارات يمنية</span>
+                    <span class="ingredient-tag">مرق</span>
+                    <span class="ingredient-tag">كزبرة</span>
+                  </div>
+                </div>
+                <span class="menu-price">٤٠ ر.س</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Fahita -->
+          <div class="menu-item flex flex-col md:flex-row bg-white rounded-xl shadow-md overflow-hidden">
+            <div class="md:w-1/3 relative">
+              <img src="/home/ubuntu/upload/search_images/8ZrPfR4hL4zj.jpg" alt="الفاهيتا اليمنية" class="w-full h-48 object-cover menu-item-img">
+              <div class="meal-rating absolute bottom-2 right-2 bg-white px-2 py-1 rounded-full text-sm">
+                <i class="fas fa-star text-yellow-400 mr-1"></i> 4.6
+              </div>
+            </div>
+            <div class="md:w-2/3 p-5">
+              <div class="flex justify-between items-start">
+                <div>
+                  <h3 class="text-xl font-bold text-gray-800 mb-2">الفاهيتا اليمنية</h3>
+                  <p class="text-gray-600 mb-3">لحم مفروم مع البصل والطماطم والبهارات اليمنية المميزة</p>
+                  <div class="flex flex-wrap">
+                    <span class="ingredient-tag">لحم</span>
+                    <span class="ingredient-tag">بصل</span>
+                    <span class="ingredient-tag">طماطم</span>
+                    <span class="ingredient-tag">فلفل أخضر</span>
+                    <span class="ingredient-tag">بهارات</span>
+                  </div>
+                </div>
+                <span class="menu-price">٣٥ ر.س</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Mafalfel -->
+          <div class="menu-item flex flex-col md:flex-row bg-white rounded-xl shadow-md overflow-hidden">
+            <div class="md:w-1/3 relative">
+              <img src="/home/ubuntu/upload/search_images/lWG64zhgF98o.jpg" alt="المفلفل اليمني" class="w-full h-48 object-cover menu-item-img">
+              <div class="meal-rating absolute bottom-2 right-2 bg-white px-2 py-1 rounded-full text-sm">
+                <i class="fas fa-star text-yellow-400 mr-1"></i> 4.7
+              </div>
+            </div>
+            <div class="md:w-2/3 p-5">
+              <div class="flex justify-between items-start">
+                <div>
+                  <h3 class="text-xl font-bold text-gray-800 mb-2">المفلفل اليمني</h3>
+                  <p class="text-gray-600 mb-3">لحم مفروم مع البصل والطماطم والبهارات اليمنية المميزة</p>
+                  <div class="flex flex-wrap">
+                    <span class="ingredient-tag">لحم</span>
+                    <span class="ingredient-tag">بصل</span>
+                    <span class="ingredient-tag">طماطم</span>
+                    <span class="ingredient-tag">فلفل أخضر</span>
+                    <span class="ingredient-tag">بهارات</span>
+                  </div>
+                </div>
+                <span class="menu-price">٣٨ ر.س</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Mataz -->
+          <div class="menu-item flex flex-col md:flex-row bg-white rounded-xl shadow-md overflow-hidden">
+            <div class="md:w-1/3 relative">
+              <img src="/home/ubuntu/upload/search_images/UxDyAddd1P3q.jpg" alt="المطبق اليمني" class="w-full h-48 object-cover menu-item-img">
+              <div class="meal-rating absolute bottom-2 right-2 bg-white px-2 py-1 rounded-full text-sm">
+                <i class="fas fa-star text-yellow-400 mr-1"></i> 4.5
+              </div>
+            </div>
+            <div class="md:w-2/3 p-5">
+              <div class="flex justify-between items-start">
+                <div>
+                  <h3 class="text-xl font-bold text-gray-800 mb-2">المطبق اليمني</h3>
+                  <p class="text-gray-600 mb-3">عجينة مفرودة مع اللحم والبيض والبصل، مقرمشة ومغطاة بالزيت</p>
+                  <div class="flex flex-wrap">
+                    <span class="ingredient-tag">عجينة</span>
+                    <span class="ingredient-tag">لحم</span>
+                    <span class="ingredient-tag">بيض</span>
+                    <span class="ingredient-tag">بصل</span>
+                    <span class="ingredient-tag">زعتر</span>
+                  </div>
+                </div>
+                <span class="menu-price">٣٢ ر.س</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Desserts -->
+      <div class="menu-category mt-12" data-category="desserts">
+        <h3 class="menu-category-title text-2xl font-bold text-gray-800">حلويات</h3>
+        
+        <div class="grid md:grid-cols-2 gap-8">
+          <!-- Knafeh -->
+          <div class="menu-item flex flex-col md:flex-row bg-white rounded-xl shadow-md overflow-hidden">
+            <div class="md:w-1/3 relative">
+              <img src="/home/ubuntu/upload/search_images/Q10AnVHHhggw.jpg" alt="الكنافة النابلسية" class="w-full h-48 object-cover menu-item-img">
+              <div class="meal-rating absolute bottom-2 right-2 bg-white px-2 py-1 rounded-full text-sm">
+                <i class="fas fa-star text-yellow-400 mr-1"></i> 4.9
+              </div>
+            </div>
+            <div class="md:w-2/3 p-5">
+              <div class="flex justify-between items-start">
+                <div>
+                  <h3 class="text-xl font-bold text-gray-800 mb-2">الكنافة اليمنية</h3>
+                  <p class="text-gray-600 mb-3">كنافة مقرمشة مع جبنة وقشطة، مغطاة بشربات حلو وفستق مطحون</p>
+                  <div class="flex flex-wrap">
+                    <span class="ingredient-tag">كنافة</span>
+                    <span class="ingredient-tag">جبنة</span>
+                    <span class="ingredient-tag">قشطة</span>
+                    <span class="ingredient-tag">شربات</span>
+                    <span class="ingredient-tag">فستق</span>
+                  </div>
+                </div>
+                <span class="menu-price">٢٢ ر.س</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Muzaffar -->
+          <div class="menu-item flex flex-col md:flex-row bg-white rounded-xl shadow-md overflow-hidden">
+            <div class="md:w-1/3 relative">
+              <img src="/home/ubuntu/upload/search_images/2gIc9tHrQL1E.jpg" alt="المزفر اليمني" class="w-full h-48 object-cover menu-item-img">
+              <div class="meal-rating absolute bottom-2 right-2 bg-white px-2 py-1 rounded-full text-sm">
+                <i class="fas fa-star text-yellow-400 mr-1"></i> 4.4
+              </div>
+            </div>
+            <div class="md:w-2/3 p-5">
+              <div class="flex justify-between items-start">
+                <div>
+                  <h3 class="text-xl font-bold text-gray-800 mb-2">المزفر اليمني</h3>
+                  <p class="text-gray-600 mb-3">حلوى تقليدية يمنية مصنوعة من الدقيق والسكر والزعفران</p>
+                  <div class="flex flex-wrap">
+                    <span class="ingredient-tag">دقيق</span>
+                    <span class="ingredient-tag">سكر</span>
+                    <span class="ingredient-tag">زعفران</span>
+                    <span class="ingredient-tag">ماء ورد</span>
+                    <span class="ingredient-tag">لوز</span>
+                  </div>
+                </div>
+                <span class="menu-price">١٨ ر.س</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Drinks -->
+      <div class="menu-category mt-12" data-category="drinks">
+        <h3 class="menu-category-title text-2xl font-bold text-gray-800">مشروبات</h3>
+        
+        <div class="grid md:grid-cols-2 gap-8">
+          <!-- Yemeni Tea -->
+          <div class="menu-item flex flex-col md:flex-row bg-white rounded-xl shadow-md overflow-hidden">
+            <div class="md:w-1/3 relative">
+              <img src="/home/ubuntu/upload/search_images/MNX07AKeZzn2.jpg" alt="الشاي اليمني" class="w-full h-48 object-cover menu-item-img">
+              <div class="meal-rating absolute bottom-2 right-2 bg-white px-2 py-1 rounded-full text-sm">
+                <i class="fas fa-star text-yellow-400 mr-1"></i> 4.7
+              </div>
+            </div>
+            <div class="md:w-2/3 p-5">
+              <div class="flex justify-between items-start">
+                <div>
+                  <h3 class="text-xl font-bold text-gray-800 mb-2">الشاي اليمني</h3>
+                  <p class="text-gray-600 mb-3">شاي أحمر مُحضر بالطريقة اليمنية التقليدية مع الحليب والسكر</p>
+                  <div class="flex flex-wrap">
+                    <span class="ingredient-tag">شاي أحمر</span>
+                    <span class="ingredient-tag">حليب</span>
+                    <span class="ingredient-tag">سكر</span>
+                    <span class="ingredient-tag">هيل</span>
+                  </div>
+                </div>
+                <span class="menu-price">٨ ر.س</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Yemeni Coffee -->
+          <div class="menu-item flex flex-col md:flex-row bg-white rounded-xl shadow-md overflow-hidden">
+            <div class="md:w-1/3 relative">
+              <span class="special-badge">مميز</span>
+              <img src="/home/ubuntu/upload/search_images/olm6zxbKqI7O.jpg" alt="القهوة اليمنية" class="w-full h-48 object-cover menu-item-img">
+              <div class="meal-rating absolute bottom-2 right-2 bg-white px-2 py-1 rounded-full text-sm">
+                <i class="fas fa-star text-yellow-400 mr-1"></i> 4.8
+              </div>
+            </div>
+            <div class="md:w-2/3 p-5">
+              <div class="flex justify-between items-start">
+                <div>
+                  <h3 class="text-xl font-bold text-gray-800 mb-2">القهوة اليمنية</h3>
+                  <p class="text-gray-600 mb-3">قهوة يمنية أصيلة محمصة بعناية مع الهيل والزنجبيل</p>
+                  <div class="flex flex-wrap">
+                    <span class="ingredient-tag">قهوة يمنية</span>
+                    <span class="ingredient-tag">هيل</span>
+                    <span class="ingredient-tag">زنجبيل</span>
+                    <span class="ingredient-tag">سكر</span>
+                  </div>
+                </div>
+                <span class="menu-price">١٢ ر.س</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Starters -->
+      <div class="menu-category mt-12" data-category="starters">
+        <h3 class="menu-category-title text-2xl font-bold text-gray-800">مقبلات</h3>
+        
+        <div class="grid md:grid-cols-2 gap-8">
+          <!-- Hummus -->
+          <div class="menu-item flex flex-col md:flex-row bg-white rounded-xl shadow-md overflow-hidden">
+            <div class="md:w-1/3 relative">
+              <img src="/home/ubuntu/upload/search_images/c2WsFRkGnUVZ.jpg" alt="الحمص اليمني" class="w-full h-48 object-cover menu-item-img">
+              <div class="meal-rating absolute bottom-2 right-2 bg-white px-2 py-1 rounded-full text-sm">
+                <i class="fas fa-star text-yellow-400 mr-1"></i> 4.5
+              </div>
+            </div>
+            <div class="md:w-2/3 p-5">
+              <div class="flex justify-between items-start">
+                <div>
+                  <h3 class="text-xl font-bold text-gray-800 mb-2">الحمص اليمني</h3>
+                  <p class="text-gray-600 mb-3">حمص مهروس مع الطحينة وزيت الزيتون والليمون</p>
+                  <div class="flex flex-wrap">
+                    <span class="ingredient-tag">حمص</span>
+                    <span class="ingredient-tag">طحينة</span>
+                    <span class="ingredient-tag">زيت زيتون</span>
+                    <span class="ingredient-tag">ليمون</span>
+                    <span class="ingredient-tag">ثوم</span>
+                  </div>
+                </div>
+                <span class="menu-price">١٥ ر.س</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Falafel -->
+          <div class="menu-item flex flex-col md:flex-row bg-white rounded-xl shadow-md overflow-hidden">
+            <div class="md:w-1/3 relative">
+              <img src="/home/ubuntu/upload/search_images/2FB8I8lOKFzU.jpg" alt="الفلافل اليمني" class="w-full h-48 object-cover menu-item-img">
+              <div class="meal-rating absolute bottom-2 right-2 bg-white px-2 py-1 rounded-full text-sm">
+                <i class="fas fa-star text-yellow-400 mr-1"></i> 4.6
+              </div>
+            </div>
+            <div class="md:w-2/3 p-5">
+              <div class="flex justify-between items-start">
+                <div>
+                  <h3 class="text-xl font-bold text-gray-800 mb-2">الفلافل اليمني</h3>
+                  <p class="text-gray-600 mb-3">كرات مقلية من الحمص والفول مع البقدونس والكزبرة</p>
+                  <div class="flex flex-wrap">
+                    <span class="ingredient-tag">حمص</span>
+                    <span class="ingredient-tag">فول</span>
+                    <span class="ingredient-tag">بقدونس</span>
+                    <span class="ingredient-tag">كزبرة</span>
+                    <span class="ingredient-tag">بصل</span>
+                  </div>
+                </div>
+                <span class="menu-price">١٢ ر.س</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-8">
+    <div class="container mx-auto px-4 text-center">
+      <h3 class="text-2xl font-bold mb-4" style="color: var(--primary);">مطعم اليمني</h3>
+      <p class="mb-4">أفضل الأطباق اليمنية الأصيلة في المملكة</p>
+      <div class="flex justify-center space-x-6 space-x-reverse mb-4">
+        <a href="#" class="text-gray-300 hover:text-yellow-400"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="text-gray-300 hover:text-yellow-400"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="text-gray-300 hover:text-yellow-400"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="text-gray-300 hover:text-yellow-400"><i class="fab fa-whatsapp"></i></a>
+      </div>
+      <p class="text-gray-400">&copy; 2024 مطعم اليمني. جميع الحقوق محفوظة.</p>
+    </div>
+  </footer>
 
-    <script>
-        // تغيير صور الأكل إلى placehold.co
-        document.addEventListener('DOMContentLoaded', function() {
-            // تضييق مساحة التحكم
-            const menuItems = document.querySelectorAll('.meal-card');
-            menuItems.forEach(item => {
-                item.style.maxWidth = '350px';
-                item.style.margin = '0 auto';
-            });
-            
-            // تغيير صور الأكل
-            const mealImages = document.querySelectorAll('.meal-img');
-            mealImages.forEach((img, index) => {
-                const colors = ['FFA500', '4B5563', '1E40AF', 'EF4444', '10B981', '8B5CF6'];
-                const texts = ['المنسف', 'المقلوبة', 'الكبسة', 'الفلافل', 'الكنافة', 'المعمول'];
-                const color = colors[index % colors.length];
-                const text = texts[index % texts.length];
-                
-                img.src = `https://placehold.co/400x300/${color}/FFFFFF?text=${text}`;
-            });
-            
-            // إعداد واجهة التحكم
-            const orderButtons = document.querySelectorAll('.order-btn');
-            orderButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const mealCard = this.closest('.meal-card');
-                    const id = mealCard.dataset.id;
-                    const name = mealCard.querySelector('h3').textContent;
-                    const desc = mealCard.querySelector('p').textContent;
-                    const priceText = mealCard.querySelector('.text-orange-600').textContent;
-                    const price = parseInt(priceText.replace(/[^\d]/g, ''));
-                    
-                    document.getElementById('meal-id').value = id;
-                    document.getElementById('modal-meal-name').textContent = name;
-                    document.getElementById('modal-meal-desc').textContent = desc;
-                    document.getElementById('modal-meal-price').textContent = `${price} ر.س`;
-                    
-                    document.getElementById('order-modal').classList.remove('hidden');
-                });
-            });
-            
-            // إغلاق النوافذ المنبثقة
-            document.querySelectorAll('.close-modal, #cancel-order').forEach(element => {
-                element.addEventListener('click', function() {
-                    document.getElementById('order-modal').classList.add('hidden');
-                    document.getElementById('confirmation-modal').classList.add('hidden');
-                });
-            });
-            
-            // عرض حقل العنوان عند اختيار التوصيل
-            document.getElementById('delivery-method').addEventListener('change', function() {
-                const addressField = document.getElementById('delivery-address');
-                if (this.value === 'delivery') {
-                    addressField.classList.remove('hidden');
-                } else {
-                    addressField.classList.add('hidden');
-                }
-            });
-            
-            // تأكيد الطلب
-            document.getElementById('order-form').addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const mealName = document.getElementById('modal-meal-name').textContent;
-                const quantity = document.getElementById('quantity').value;
-                const deliveryMethod = document.getElementById('delivery-method').value;
-                const priceText = document.getElementById('modal-meal-price').textContent;
-                const price = parseInt(priceText.replace(/[^\d]/g, ''));
-                const total = price * quantity;
-                
-                document.getElementById('confirmation-item').textContent = mealName;
-                document.getElementById('confirmation-quantity').textContent = quantity;
-                document.getElementById('confirmation-delivery').textContent = 
-                    deliveryMethod === 'pickup' ? 'استلام من المطعم' : 'توصيل للمنزل';
-                document.getElementById('confirmation-total').textContent = `${total} ر.س`;
-                
-                document.getElementById('order-modal').classList.add('hidden');
-                document.getElementById('confirmation-modal').classList.remove('hidden');
-                
-                // تحديث عدد العناصر في عربة التسوق
-                const cartCount = document.getElementById('cart-count');
-                cartCount.textContent = parseInt(cartCount.textContent) + 1;
-            });
-            
-            // إغلاق نافذة التأكيد
-            document.getElementById('close-confirmation').addEventListener('click', function() {
-                document.getElementById('confirmation-modal').classList.add('hidden');
-            });
-            
-            // تفعيل الوضع المظلم
-            document.getElementById('theme-toggle').addEventListener('click', function() {
-                document.body.classList.toggle('dark');
-                this.innerHTML = document.body.classList.contains('dark') ? 
-                    '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
-            });
+  <script>
+    // Language Toggle Functionality
+    const langToggle = document.getElementById('lang-toggle');
+    const body = document.body;
+    const html = document.documentElement;
+    
+    // Translation data
+    const translations = {
+      ar: {
+        title: "مطعم اليمني - قائمة الطعام اليمنية الأصيلة",
+        restaurantName: "مطعم اليمني",
+        menu: "القائمة",
+        about: "من نحن",
+        contact: "اتصل بنا",
+        printMenu: "طباعة القائمة",
+        heroTitle: "قائمة الطعام اليمنية الأصيلة",
+        heroSubtitle: "استمتع بوجباتنا الطازجة المُعدة بحب وعناية من قبل أفضل الطهاة اليمنيين",
+        discoverMenu: "اكتشف القائمة",
+        allCategories: "جميع الأصناف",
+        starters: "مقبلات",
+        mainDishes: "وجبات رئيسية",
+        drinks: "مشروبات",
+        desserts: "حلويات",
+        menuTitle: "قائمة الطعام اليمنية",
+        menuSubtitle: "استكشف أطباقنا المميزة المعدة بأفضل المكونات الطازجة",
+        mostOrdered: "الأكثر طلبًا",
+        special: "مميز",
+        footerTitle: "مطعم اليمني",
+        footerSubtitle: "أفضل الأطباق اليمنية الأصيلة في المملكة",
+        footerCopyright: "© 2024 مطعم اليمني. جميع الحقوق محفوظة."
+      },
+      en: {
+        title: "Yemeni Restaurant - Authentic Yemeni Food Menu",
+        restaurantName: "Yemeni Restaurant",
+        menu: "Menu",
+        about: "About Us",
+        contact: "Contact Us",
+        printMenu: "Print Menu",
+        heroTitle: "Authentic Yemeni Food Menu",
+        heroSubtitle: "Enjoy our fresh meals prepared with love and care by the best Yemeni chefs",
+        discoverMenu: "Discover Menu",
+        allCategories: "All Categories",
+        starters: "Starters",
+        mainDishes: "Main Dishes",
+        drinks: "Drinks",
+        desserts: "Desserts",
+        menuTitle: "Yemeni Food Menu",
+        menuSubtitle: "Explore our special dishes prepared with the finest fresh ingredients",
+        mostOrdered: "Most Ordered",
+        special: "Special",
+        footerTitle: "Yemeni Restaurant",
+        footerSubtitle: "The best authentic Yemeni dishes in the Kingdom",
+        footerCopyright: "© 2024 Yemeni Restaurant. All rights reserved."
+      }
+    };
+    
+    // Menu items translations
+    const menuTranslations = {
+      ar: {
+        "المندي اليمني": "المندي اليمني",
+        "أرز مطبوخ على الطريقة اليمنية مع الدجاج أو اللحم وخلطة بهارات فريدة": "أرز مطبوخ على الطريقة اليمنية مع الدجاج أو اللحم وخلطة بهارات فريدة",
+        "الفاهيتا اليمنية": "الفاهيتا اليمنية",
+        "لحم مفروم مع البصل والطماطم والبهارات اليمنية المميزة": "لحم مفروم مع البصل والطماطم والبهارات اليمنية المميزة",
+        "المفلفل اليمني": "المفلفل اليمني",
+        "المطبق اليمني": "المطبق اليمني",
+        "عجينة مفرودة مع اللحم والبيض والبصل، مقرمشة ومغطاة بالزيت": "عجينة مفرودة مع اللحم والبيض والبصل، مقرمشة ومغطاة بالزيت",
+        "الكنافة اليمنية": "الكنافة اليمنية",
+        "كنافة مقرمشة مع جبنة وقشطة، مغطاة بشربات حلو وفستق مطحون": "كنافة مقرمشة مع جبنة وقشطة، مغطاة بشربات حلو وفستق مطحون",
+        "المزفر اليمني": "المزفر اليمني",
+        "حلوى تقليدية يمنية مصنوعة من الدقيق والسكر والزعفران": "حلوى تقليدية يمنية مصنوعة من الدقيق والسكر والزعفران",
+        "الشاي اليمني": "الشاي اليمني",
+        "شاي أحمر مُحضر بالطريقة اليمنية التقليدية مع الحليب والسكر": "شاي أحمر مُحضر بالطريقة اليمنية التقليدية مع الحليب والسكر",
+        "القهوة اليمنية": "القهوة اليمنية",
+        "قهوة يمنية أصيلة محمصة بعناية مع الهيل والزنجبيل": "قهوة يمنية أصيلة محمصة بعناية مع الهيل والزنجبيل",
+        "الحمص اليمني": "الحمص اليمني",
+        "حمص مهروس مع الطحينة وزيت الزيتون والليمون": "حمص مهروس مع الطحينة وزيت الزيتون والليمون",
+        "الفلافل اليمني": "الفلافل اليمني",
+        "كرات مقلية من الحمص والفول مع البقدونس والكزبرة": "كرات مقلية من الحمص والفول مع البقدونس والكزبرة",
+        // Ingredients translations
+        "أرز": "أرز",
+        "لحم": "لحم",
+        "بهارات يمنية": "بهارات يمنية",
+        "مرق": "مرق",
+        "كزبرة": "كزبرة",
+        "بصل": "بصل",
+        "طماطم": "طماطم",
+        "فلفل أخضر": "فلفل أخضر",
+        "بهارات": "بهارات",
+        "عجينة": "عجينة",
+        "بيض": "بيض",
+        "زعتر": "زعتر",
+        "كنافة": "كنافة",
+        "جبنة": "جبنة",
+        "قشطة": "قشطة",
+        "شربات": "شربات",
+        "فستق": "فستق",
+        "دقيق": "دقيق",
+        "سكر": "سكر",
+        "زعفران": "زعفران",
+        "ماء ورد": "ماء ورد",
+        "لوز": "لوز",
+        "شاي أحمر": "شاي أحمر",
+        "حليب": "حليب",
+        "هيل": "هيل",
+        "قهوة يمنية": "قهوة يمنية",
+        "زنجبيل": "زنجبيل",
+        "حمص": "حمص",
+        "طحينة": "طحينة",
+        "زيت زيتون": "زيت زيتون",
+        "ليمون": "ليمون",
+        "ثوم": "ثوم",
+        "فول": "فول",
+        "بقدونس": "بقدونس"
+      },
+      en: {
+        "المندي اليمني": "Yemeni Mandi",
+        "أرز مطبوخ على الطريقة اليمنية مع الدجاج أو اللحم وخلطة بهارات فريدة": "Rice cooked in Yemeni style with chicken or meat and unique spice blend",
+        "الفاهيتا اليمنية": "Yemeni Fahita",
+        "لحم مفروم مع البصل والطماطم والبهارات اليمنية المميزة": "Minced meat with onions, tomatoes and special Yemeni spices",
+        "المفلفل اليمني": "Yemeni Mafalfel",
+        "المطبق اليمني": "Yemeni Mataz",
+        "عجينة مفرودة مع اللحم والبيض والبصل، مقرمشة ومغطاة بالزيت": "Rolled dough with meat, eggs and onions, crispy and covered with oil",
+        "الكنافة اليمنية": "Yemeni Knafeh",
+        "كنافة مقرمشة مع جبنة وقشطة، مغطاة بشربات حلو وفستق مطحون": "Crispy knafeh with cheese and cream, covered with sweet syrup and ground pistachios",
+        "المزفر اليمني": "Yemeni Muzaffar",
+        "حلوى تقليدية يمنية مصنوعة من الدقيق والسكر والزعفران": "Traditional Yemeni dessert made from flour, sugar and saffron",
+        "الشاي اليمني": "Yemeni Tea",
+        "شاي أحمر مُحضر بالطريقة اليمنية التقليدية مع الحليب والسكر": "Black tea prepared in traditional Yemeni style with milk and sugar",
+        "القهوة اليمنية": "Yemeni Coffee",
+        "قهوة يمنية أصيلة محمصة بعناية مع الهيل والزنجبيل": "Authentic Yemeni coffee carefully roasted with cardamom and ginger",
+        "الحمص اليمني": "Yemeni Hummus",
+        "حمص مهروس مع الطحينة وزيت الزيتون والليمون": "Mashed chickpeas with tahini, olive oil and lemon",
+        "الفلافل اليمني": "Yemeni Falafel",
+        "كرات مقلية من الحمص والفول مع البقدونس والكزبرة": "Fried balls of chickpeas and beans with parsley and coriander",
+        // Ingredients translations
+        "أرز": "Rice",
+        "لحم": "Meat",
+        "بهارات يمنية": "Yemeni Spices",
+        "مرق": "Broth",
+        "كزبرة": "Coriander",
+        "بصل": "Onions",
+        "طماطم": "Tomatoes",
+        "فلفل أخضر": "Green Pepper",
+        "بهارات": "Spices",
+        "عجينة": "Dough",
+        "بيض": "Eggs",
+        "زعتر": "Thyme",
+        "كنافة": "Knafeh",
+        "جبنة": "Cheese",
+        "قشطة": "Cream",
+        "شربات": "Syrup",
+        "فستق": "Pistachios",
+        "دقيق": "Flour",
+        "سكر": "Sugar",
+        "زعفران": "Saffron",
+        "ماء ورد": "Rose Water",
+        "لوز": "Almonds",
+        "شاي أحمر": "Black Tea",
+        "حليب": "Milk",
+        "هيل": "Cardamom",
+        "قهوة يمنية": "Yemeni Coffee",
+        "زنجبيل": "Ginger",
+        "حمص": "Chickpeas",
+        "طحينة": "Tahini",
+        "زيت زيتون": "Olive Oil",
+        "ليمون": "Lemon",
+        "ثوم": "Garlic",
+        "فول": "Beans",
+        "بقدونس": "Parsley"
+      }
+    };
+    
+    let currentLang = 'ar';
+    
+    langToggle.addEventListener('click', function() {
+      currentLang = currentLang === 'ar' ? 'en' : 'ar';
+      toggleLanguage();
+    });
+    
+    function toggleLanguage() {
+      if (currentLang === 'en') {
+        // Switch to English
+        html.setAttribute('lang', 'en');
+        html.setAttribute('dir', 'ltr');
+        body.style.fontFamily = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+        langToggle.textContent = 'عربي';
+        
+        // Update text content
+        document.title = translations.en.title;
+        updateTextContent(translations.en);
+        updateMenuItems(menuTranslations.en);
+        
+      } else {
+        // Switch to Arabic
+        html.setAttribute('lang', 'ar');
+        html.setAttribute('dir', 'rtl');
+        body.style.fontFamily = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+        langToggle.textContent = 'EN';
+        
+        // Update text content
+        document.title = translations.ar.title;
+        updateTextContent(translations.ar);
+        updateMenuItems(menuTranslations.ar);
+      }
+    }
+    
+    function updateTextContent(trans) {
+      // Update main navigation and headers
+      const elements = {
+        'h1': trans.restaurantName,
+        '.nav-link[href="#menu"]': trans.menu,
+        '.nav-link[href="#about"]': trans.about,
+        '.nav-link[href="#contact"]': trans.contact,
+        '#print-menu': `<i class="fas fa-print"></i> ${trans.printMenu}`,
+        '.header-bg h1': trans.heroTitle,
+        '.header-bg p': trans.heroSubtitle,
+        '.header-bg a': trans.discoverMenu,
+        '[data-category="all"]': trans.allCategories,
+        '[data-category="starters"]': trans.starters,
+        '[data-category="main"]': trans.mainDishes,
+        '[data-category="drinks"]': trans.drinks,
+        '[data-category="desserts"]': trans.desserts,
+        '#menu h2': trans.menuTitle,
+        '#menu p': trans.menuSubtitle,
+        '.special-badge': trans.mostOrdered,
+        'footer h3': trans.footerTitle,
+        'footer p:first-of-type': trans.footerSubtitle,
+        'footer p:last-of-type': trans.footerCopyright
+      };
+      
+      Object.keys(elements).forEach(selector => {
+        const element = document.querySelector(selector);
+        if (element) {
+          if (selector === '#print-menu') {
+            element.innerHTML = elements[selector];
+          } else {
+            element.textContent = elements[selector];
+          }
+        }
+      });
+      
+      // Update category titles
+      const categoryTitles = document.querySelectorAll('.menu-category-title');
+      categoryTitles.forEach((title, index) => {
+        const categories = [trans.mainDishes, trans.desserts, trans.drinks, trans.starters];
+        if (categories[index]) {
+          title.textContent = categories[index];
+        }
+      });
+    }
+    
+    function updateMenuItems(menuTrans) {
+      // Update menu item names and descriptions
+      const menuItems = document.querySelectorAll('.menu-item h3');
+      menuItems.forEach(item => {
+        const arabicText = item.textContent;
+        if (menuTrans[arabicText]) {
+          item.textContent = menuTrans[arabicText];
+        }
+      });
+      
+      const menuDescriptions = document.querySelectorAll('.menu-item p');
+      menuDescriptions.forEach(desc => {
+        const arabicText = desc.textContent;
+        if (menuTrans[arabicText]) {
+          desc.textContent = menuTrans[arabicText];
+        }
+      });
+      
+      // Update ingredient tags
+      const ingredientTags = document.querySelectorAll('.ingredient-tag');
+      ingredientTags.forEach(tag => {
+        const arabicText = tag.textContent;
+        if (menuTrans[arabicText]) {
+          tag.textContent = menuTrans[arabicText];
+        }
+      });
+    }
+    
+    // Category filtering functionality
+    const categoryBtns = document.querySelectorAll('.category-btn');
+    const menuCategories = document.querySelectorAll('.menu-category');
+    
+    categoryBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        const category = this.getAttribute('data-category');
+        
+        // Update active button
+        categoryBtns.forEach(b => {
+          b.classList.remove('bg-yellow-500', 'text-white', 'active-category');
+          b.classList.add('bg-white', 'text-gray-700');
         });
-    </script>
+        this.classList.remove('bg-white', 'text-gray-700');
+        this.classList.add('bg-yellow-500', 'text-white', 'active-category');
+        
+        // Show/hide categories
+        menuCategories.forEach(cat => {
+          if (category === 'all' || cat.getAttribute('data-category') === category) {
+            cat.style.display = 'block';
+          } else {
+            cat.style.display = 'none';
+          }
+        });
+      });
+    });
+    
+    // Print functionality
+    document.getElementById('print-menu').addEventListener('click', function() {
+      window.print();
+    });
+    
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+  </script>
 </body>
 </html>
